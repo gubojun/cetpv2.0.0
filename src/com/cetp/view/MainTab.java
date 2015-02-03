@@ -7,6 +7,7 @@ import com.cetp.R;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
@@ -33,15 +34,17 @@ public class MainTab extends Activity {
 	private int zero = 0;// 动画图片偏移量
 	private int currIndex = 0;// 当前页卡编号
 	private int one;// 单个水平动画位移
-	private int two;
-	private int three;
 	private LinearLayout mClose;
 	private LinearLayout mCloseBtn;
 	private View layout;
 	private boolean menu_display = false;
 	private PopupWindow menuWindow;
 	private LayoutInflater inflater;
-
+	final String TYPE_OF_VIEW = "typeofview";
+	/** 用于保存用户状态 */
+//	final SharedPreferences myPrefs = getPreferences(MODE_PRIVATE);
+//	final int typeOfView = myPrefs.getInt(TYPE_OF_VIEW, 0);
+	
 	MainView mainview = new MainView(this);
 	// ListeningViewAnswer1 listeninganswer = new ListeningViewAnswer1(this);
 	// ReadingViewAnswer1 readingviewanswer = new ReadingViewAnswer1(this);
@@ -75,8 +78,8 @@ public class MainTab extends Activity {
 		int displayWidth = currDisplay.getWidth();
 		int displayHeight = currDisplay.getHeight();
 		one = displayWidth / 4; // 设置水平动画平移大小
-		two = one * 2;
-		three = one * 3;
+//		two = one * 2;
+//		three = one * 3;
 		// Log.i("info", "获取的屏幕分辨率为" + one + two + three + "X" + displayHeight);
 		// set();
 		// InitImageView();//使用动画
@@ -86,7 +89,7 @@ public class MainTab extends Activity {
 
 		view1 = mLi.inflate(R.layout.view_index, null);
 		view2 = mLi.inflate(R.layout.tab_main, null);
-		view3 = mLi.inflate(R.layout.tab_main, null);
+		view3 = mLi.inflate(R.layout.settingview, null);
 		view4 = mLi.inflate(R.layout.tab_main, null);
 		mainview.setView(view1);
 		
@@ -95,7 +98,6 @@ public class MainTab extends Activity {
 		views.add(view1);
 		views.add(view2);
 		views.add(view3);
-		viewAnswer = view3;
 		views.add(view4);
 		// 填充ViewPager的数据适配器
 		PagerAdapter mPagerAdapter = new PagerAdapter() {
@@ -158,71 +160,33 @@ public class MainTab extends Activity {
 			case 0:
 				mTab1.setImageDrawable(getResources().getDrawable(
 						R.drawable.tab_question_pressed));
-				if (currIndex == 1) {
-					animation = new TranslateAnimation(one, 0, 0, 0);
-					mTab2.setImageDrawable(getResources().getDrawable(
-							R.drawable.tab_passage_normal));
-				} else if (currIndex == 2) {
-					animation = new TranslateAnimation(two, 0, 0, 0);
-					mTab3.setImageDrawable(getResources().getDrawable(
-							R.drawable.tab_answer_normal));
-				} else if (currIndex == 3) {
-					animation = new TranslateAnimation(three, 0, 0, 0);
-					mTab4.setImageDrawable(getResources().getDrawable(
-							R.drawable.tab_settings_normal));
-				}
 				break;
 			case 1:
 				mTab2.setImageDrawable(getResources().getDrawable(
 						R.drawable.tab_passage_pressed));
-				if (currIndex == 0) {
-					animation = new TranslateAnimation(zero, one, 0, 0);
-					mTab1.setImageDrawable(getResources().getDrawable(
-							R.drawable.tab_question_normal));
-				} else if (currIndex == 2) {
-					animation = new TranslateAnimation(two, one, 0, 0);
-					mTab3.setImageDrawable(getResources().getDrawable(
-							R.drawable.tab_answer_normal));
-				} else if (currIndex == 3) {
-					animation = new TranslateAnimation(three, one, 0, 0);
-					mTab4.setImageDrawable(getResources().getDrawable(
-							R.drawable.tab_settings_normal));
-				}
 				break;
 			case 2:
 				mTab3.setImageDrawable(getResources().getDrawable(
 						R.drawable.tab_settings_pressed));
-				if (currIndex == 0) {
-					animation = new TranslateAnimation(zero, two, 0, 0);
-					mTab1.setImageDrawable(getResources().getDrawable(
-							R.drawable.tab_question_normal));
-				} else if (currIndex == 1) {
-					animation = new TranslateAnimation(one, two, 0, 0);
-					mTab2.setImageDrawable(getResources().getDrawable(
-							R.drawable.tab_passage_normal));
-				} else if (currIndex == 3) {
-					animation = new TranslateAnimation(three, two, 0, 0);
-					mTab4.setImageDrawable(getResources().getDrawable(
-							R.drawable.tab_settings_normal));
-				}
 				break;
 			case 3:
 				mTab4.setImageDrawable(getResources().getDrawable(
 						R.drawable.tab_answer_pressed));
-				if (currIndex == 0) {
-					animation = new TranslateAnimation(zero, three, 0, 0);
-					mTab1.setImageDrawable(getResources().getDrawable(
-							R.drawable.tab_question_normal));
-				} else if (currIndex == 1) {
-					animation = new TranslateAnimation(one, three, 0, 0);
-					mTab2.setImageDrawable(getResources().getDrawable(
-							R.drawable.tab_passage_normal));
-				} else if (currIndex == 2) {
-					animation = new TranslateAnimation(two, three, 0, 0);
-					mTab3.setImageDrawable(getResources().getDrawable(
-							R.drawable.tab_answer_normal));
-				}
 				break;
+			}
+			animation = new TranslateAnimation(one*currIndex, one*arg0, 0, 0);
+			if (currIndex == 0) {
+				mTab1.setImageDrawable(getResources().getDrawable(
+						R.drawable.tab_question_normal));
+			} else if (currIndex == 1) {
+				mTab2.setImageDrawable(getResources().getDrawable(
+						R.drawable.tab_passage_normal));
+			} else if (currIndex == 2) {
+				mTab3.setImageDrawable(getResources().getDrawable(
+						R.drawable.tab_settings_normal));
+			} else if (currIndex == 3) {
+				mTab4.setImageDrawable(getResources().getDrawable(
+						R.drawable.tab_answer_normal));
 			}
 			currIndex = arg0;
 			animation.setFillAfter(true);// True:图片停在动画结束位置
