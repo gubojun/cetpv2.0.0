@@ -19,7 +19,7 @@
         <ImageView
         	android:id="@+id/img_tab_now"
         	android:layout_width="wrap_content"
-        	android:layout_height="wrap_content"        	     	
+        	android:layout_height="wrap_content"    	     	
         	android:scaleType="matrix"
         	android:layout_gravity="bottom"            	
             android:layout_alignParentBottom="true"

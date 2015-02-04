@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -43,10 +44,10 @@ public class CommonTab extends Activity {
 	private boolean menu_display = false;
 	private PopupWindow menuWindow;
 	private LayoutInflater inflater;
-
-//	ListeningViewAnswer1 listeninganswer = new ListeningViewAnswer1(this);
-//	ReadingViewAnswer1 readingviewanswer = new ReadingViewAnswer1(this);
-//	ClozingViewAnswer1 clozingviewanswer = new ClozingViewAnswer1(this);
+	final String TYPE_OF_VIEW = "typeofview";
+	// ListeningViewAnswer1 listeninganswer = new ListeningViewAnswer1(this);
+	// ReadingViewAnswer1 readingviewanswer = new ReadingViewAnswer1(this);
+	// ClozingViewAnswer1 clozingviewanswer = new ClozingViewAnswer1(this);
 	View viewAnswer;
 
 	// private Button mRightBtn;
@@ -55,11 +56,16 @@ public class CommonTab extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		// 去掉标题栏
-//		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		// this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.commontab);
+		SharedPreferences MainTabPrefs = getSharedPreferences("view.MainTab",
+				MODE_PRIVATE);
+		int type = MainTabPrefs.getInt(TYPE_OF_VIEW, 0);
+		final String[] array = new String[] { "听力练习", "完型练习", "阅读练习", "词汇练习" };
+		setTitle(array[type]);
 		// 初始化皮肤
-//		SkinSettingManager mSettingManager = new SkinSettingManager(this);
-//		mSettingManager.initSkins();
+		// SkinSettingManager mSettingManager = new SkinSettingManager(this);
+		// mSettingManager.initSkins();
 
 		// 启动activity时不自动弹出软键盘
 		getWindow().setSoftInputMode(
@@ -96,10 +102,10 @@ public class CommonTab extends Activity {
 		// 将要分页显示的View装入数组中
 		LayoutInflater mLi = LayoutInflater.from(this);
 		View view1, view2, view3, view4;
-			view1 = mLi.inflate(R.layout.view_index, null);
-			view2 = mLi.inflate(R.layout.view_index, null);
-			view3 = mLi.inflate(R.layout.view_index, null);
-		view4 = mLi.inflate(R.layout.view_index, null);
+		view1 = mLi.inflate(R.layout.view_index, null);
+		view2 = mLi.inflate(R.layout.view_index, null);
+		view3 = mLi.inflate(R.layout.view_index, null);
+		view4 = mLi.inflate(R.layout.settingview, null);
 		// 每个页面的view数据
 		final ArrayList<View> views = new ArrayList<View>();
 		views.add(view1);
@@ -182,7 +188,8 @@ public class CommonTab extends Activity {
 						R.drawable.tab_settings_pressed));
 				break;
 			}
-			animation = new TranslateAnimation(one*currIndex, one*arg0, 0, 0);
+			animation = new TranslateAnimation(one * currIndex, one * arg0, 0,
+					0);
 			if (currIndex == 0) {
 				mTab1.setImageDrawable(getResources().getDrawable(
 						R.drawable.tab_question_normal));
@@ -220,9 +227,9 @@ public class CommonTab extends Activity {
 				menuWindow.dismiss();
 				menu_display = false;
 			} else {
-//				Intent intent = new Intent();
-//				intent.setClass(CommonTab.this, CETMain.class);
-//				startActivity(intent);
+				// Intent intent = new Intent();
+				// intent.setClass(CommonTab.this, CETMain.class);
+				// startActivity(intent);
 				finish();
 			}
 		}
@@ -234,7 +241,7 @@ public class CommonTab extends Activity {
 						.getSystemService(LAYOUT_INFLATER_SERVICE);
 				// 这里的main布局是在inflate中加入的哦，以前都是直接this.setContentView()的吧？呵呵
 				// 该方法返回的是一个View的对象，是布局中的根
-//				layout = inflater.inflate(R.layout.main_menu, null);
+				// layout = inflater.inflate(R.layout.main_menu, null);
 
 				// 下面我们要考虑了，我怎样将我的layout加入到PopupWindow中呢？？？很简单
 				menuWindow = new PopupWindow(layout, LayoutParams.FILL_PARENT,
@@ -244,9 +251,9 @@ public class CommonTab extends Activity {
 				menuWindow.showAtLocation(this.findViewById(R.id.maincetp),
 						Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0); // 设置layout在PopupWindow中显示的位置
 				// 如何获取我们main中的控件呢？也很简单
-//				mClose = (LinearLayout) layout.findViewById(R.id.menu_close);
-//				mCloseBtn = (LinearLayout) layout
-//						.findViewById(R.id.menu_close_btn);
+				// mClose = (LinearLayout) layout.findViewById(R.id.menu_close);
+				// mCloseBtn = (LinearLayout) layout
+				// .findViewById(R.id.menu_close_btn);
 
 				// 下面对每一个Layout进行单击事件的注册吧。。。
 				// 比如单击某个MenuItem的时候，他的背景色改变
@@ -256,9 +263,9 @@ public class CommonTab extends Activity {
 					public void onClick(View arg0) {
 						// Toast.makeText(Main.this, "退出",
 						// Toast.LENGTH_LONG).show();
-//						Intent intent = new Intent();
-//						intent.setClass(CommonTab.this, Exit.class);
-//						startActivity(intent);
+						// Intent intent = new Intent();
+						// intent.setClass(CommonTab.this, Exit.class);
+						// startActivity(intent);
 						menuWindow.dismiss(); // 响应点击事件之后关闭Menu
 						menu_display = false;
 					}

@@ -464,44 +464,45 @@ public final class R {
     }
     public static final class drawable {
         public static final int bottom_bar=0x7f020000;
-        public static final int ic_launcher=0x7f020001;
-        public static final int ic_preference_first_normal=0x7f020002;
-        public static final int ic_preference_first_pressed=0x7f020003;
-        public static final int ic_preference_last_normal=0x7f020004;
-        public static final int ic_preference_last_pressed=0x7f020005;
-        public static final int ic_preference_normal=0x7f020006;
-        public static final int ic_preference_pressed=0x7f020007;
-        public static final int ic_preference_single_normal=0x7f020008;
-        public static final int ic_preference_single_pressed=0x7f020009;
-        public static final int ic_user=0x7f02000a;
-        public static final int mm_submenu=0x7f02000b;
-        public static final int mm_submenu_normal=0x7f02000c;
-        public static final int mm_submenu_pressed=0x7f02000d;
-        public static final int mm_title_back_focused=0x7f02000e;
-        public static final int mm_title_back_normal=0x7f02000f;
-        public static final int mm_title_back_pressed=0x7f020010;
-        public static final int preference_fenxiang_item=0x7f020011;
-        public static final int preference_first_item=0x7f020012;
-        public static final int preference_item=0x7f020013;
-        public static final int preference_last_item=0x7f020014;
-        public static final int preference_meiri_item=0x7f020015;
-        public static final int preference_moni_item=0x7f020016;
-        public static final int preference_shoucang_item=0x7f020017;
-        public static final int preference_single_item=0x7f020018;
-        public static final int tab_answer_normal=0x7f020019;
-        public static final int tab_answer_pressed=0x7f02001a;
-        public static final int tab_bg=0x7f02001b;
-        public static final int tab_passage_normal=0x7f02001c;
-        public static final int tab_passage_pressed=0x7f02001d;
-        public static final int tab_question_normal=0x7f02001e;
-        public static final int tab_question_pressed=0x7f02001f;
-        public static final int tab_settings_normal=0x7f020020;
-        public static final int tab_settings_pressed=0x7f020021;
-        public static final int title_bar=0x7f020022;
-        public static final int wallpaper_2=0x7f020023;
+        public static final int copyright=0x7f020001;
+        public static final int ic_launcher=0x7f020002;
+        public static final int ic_preference_first_normal=0x7f020003;
+        public static final int ic_preference_first_pressed=0x7f020004;
+        public static final int ic_preference_last_normal=0x7f020005;
+        public static final int ic_preference_last_pressed=0x7f020006;
+        public static final int ic_preference_normal=0x7f020007;
+        public static final int ic_preference_pressed=0x7f020008;
+        public static final int ic_preference_single_normal=0x7f020009;
+        public static final int ic_preference_single_pressed=0x7f02000a;
+        public static final int ic_user=0x7f02000b;
+        public static final int mm_submenu=0x7f02000c;
+        public static final int mm_submenu_normal=0x7f02000d;
+        public static final int mm_submenu_pressed=0x7f02000e;
+        public static final int mm_title_back_focused=0x7f02000f;
+        public static final int mm_title_back_normal=0x7f020010;
+        public static final int mm_title_back_pressed=0x7f020011;
+        public static final int preference_fenxiang_item=0x7f020012;
+        public static final int preference_first_item=0x7f020013;
+        public static final int preference_item=0x7f020014;
+        public static final int preference_last_item=0x7f020015;
+        public static final int preference_meiri_item=0x7f020016;
+        public static final int preference_moni_item=0x7f020017;
+        public static final int preference_shoucang_item=0x7f020018;
+        public static final int preference_single_item=0x7f020019;
+        public static final int tab_answer_normal=0x7f02001a;
+        public static final int tab_answer_pressed=0x7f02001b;
+        public static final int tab_bg=0x7f02001c;
+        public static final int tab_passage_normal=0x7f02001d;
+        public static final int tab_passage_pressed=0x7f02001e;
+        public static final int tab_question_normal=0x7f02001f;
+        public static final int tab_question_pressed=0x7f020020;
+        public static final int tab_settings_normal=0x7f020021;
+        public static final int tab_settings_pressed=0x7f020022;
+        public static final int title_bar=0x7f020023;
+        public static final int wallpaper_2=0x7f020024;
     }
     public static final class id {
-        public static final int action_settings=0x7f090025;
+        public static final int action_settings=0x7f090028;
         public static final int imageView1=0x7f09001c;
         public static final int imageView2=0x7f09001d;
         public static final int img_answer=0x7f090005;
@@ -516,7 +517,10 @@ public final class R {
         public static final int index_rlt_meiri=0x7f090024;
         public static final int index_rlt_moni=0x7f090023;
         public static final int index_rlt_shoucang=0x7f090022;
+        public static final int linearLayout1=0x7f090025;
         public static final int main_bottom=0x7f090001;
+        public static final int main_login_btn=0x7f090026;
+        public static final int main_regist_btn=0x7f090027;
         public static final int main_top=0x7f09001a;
         public static final int maincetp=0x7f090000;
         public static final int radio0=0x7f09000b;
@@ -543,9 +547,11 @@ public final class R {
     public static final class layout {
         public static final int commontab=0x7f030000;
         public static final int fenxiang_dialog=0x7f030001;
-        public static final int settingview=0x7f030002;
-        public static final int tab_main=0x7f030003;
-        public static final int view_index=0x7f030004;
+        public static final int login=0x7f030002;
+        public static final int settingview=0x7f030003;
+        public static final int tab_main=0x7f030004;
+        public static final int view_index=0x7f030005;
+        public static final int welcome=0x7f030006;
     }
     public static final class menu {
         public static final int http=0x7f080000;

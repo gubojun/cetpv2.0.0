@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.cetp.R;
 
+import android.opengl.Visibility;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
@@ -11,6 +12,7 @@ import android.content.SharedPreferences;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -25,6 +27,7 @@ import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.Toast;
 
 public class MainTab extends Activity {
 	public static MainTab instance = null;
@@ -34,6 +37,8 @@ public class MainTab extends Activity {
 	private int zero = 0;// 动画图片偏移量
 	private int currIndex = 0;// 当前页卡编号
 	private int one;// 单个水平动画位移
+	private int two;
+	private int three;
 	private LinearLayout mClose;
 	private LinearLayout mCloseBtn;
 	private View layout;
@@ -42,9 +47,9 @@ public class MainTab extends Activity {
 	private LayoutInflater inflater;
 	final String TYPE_OF_VIEW = "typeofview";
 	/** 用于保存用户状态 */
-//	final SharedPreferences myPrefs = getPreferences(MODE_PRIVATE);
-//	final int typeOfView = myPrefs.getInt(TYPE_OF_VIEW, 0);
-	
+	// final SharedPreferences myPrefs = getPreferences(MODE_PRIVATE);
+	// final int typeOfView = myPrefs.getInt(TYPE_OF_VIEW, 0);
+
 	MainView mainview = new MainView(this);
 	// ListeningViewAnswer1 listeninganswer = new ListeningViewAnswer1(this);
 	// ReadingViewAnswer1 readingviewanswer = new ReadingViewAnswer1(this);
@@ -70,6 +75,7 @@ public class MainTab extends Activity {
 		mTab3 = (ImageView) findViewById(R.id.img_settings);
 		mTab4 = (ImageView) findViewById(R.id.img_answer);
 		mTabImg = (ImageView) findViewById(R.id.img_tab_now);
+
 		mTab1.setOnClickListener(new MyOnClickListener(0));
 		mTab2.setOnClickListener(new MyOnClickListener(1));
 		mTab3.setOnClickListener(new MyOnClickListener(2));
@@ -78,9 +84,13 @@ public class MainTab extends Activity {
 		int displayWidth = currDisplay.getWidth();
 		int displayHeight = currDisplay.getHeight();
 		one = displayWidth / 4; // 设置水平动画平移大小
-//		two = one * 2;
-//		three = one * 3;
-		// Log.i("info", "获取的屏幕分辨率为" + one + two + three + "X" + displayHeight);
+		two = one * 2;
+		three = one * 3;
+		Log.i("info", "获取的屏幕分辨率为" + one + two + three + "X" + displayHeight);
+		Toast.makeText(this, String.valueOf(mTabImg.getWidth()),
+				Toast.LENGTH_LONG).show();
+//		mTabImg.setVisibility(View.GONE);
+		mTabImg.setX(25);//(one - mTabImg.getWidth()) / 2);
 		// set();
 		// InitImageView();//使用动画
 		// 将要分页显示的View装入数组中
@@ -92,7 +102,7 @@ public class MainTab extends Activity {
 		view3 = mLi.inflate(R.layout.settingview, null);
 		view4 = mLi.inflate(R.layout.tab_main, null);
 		mainview.setView(view1);
-		
+
 		// 每个页面的view数据
 		final ArrayList<View> views = new ArrayList<View>();
 		views.add(view1);
@@ -174,7 +184,8 @@ public class MainTab extends Activity {
 						R.drawable.tab_answer_pressed));
 				break;
 			}
-			animation = new TranslateAnimation(one*currIndex, one*arg0, 0, 0);
+			animation = new TranslateAnimation(one * currIndex, one * arg0, 0,
+					0);
 			if (currIndex == 0) {
 				mTab1.setImageDrawable(getResources().getDrawable(
 						R.drawable.tab_question_normal));
@@ -206,14 +217,15 @@ public class MainTab extends Activity {
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) { // 获取
-																				// back键
-
-			// if (menu_display) { // 如果 Menu已经打开 ，先关闭Menu
-			// menuWindow.dismiss();
-			// menu_display = false;
-			// } else {
-			//
-			// }
+			if (menu_display) { // 如果 Menu已经打开 ，先关闭Menu
+				menuWindow.dismiss();
+				menu_display = false;
+			} else {
+				// Intent intent = new Intent();
+				// intent.setClass(CommonTab.this, CETMain.class);
+				// startActivity(intent);
+				finish();
+			}
 		}
 
 		else if (keyCode == KeyEvent.KEYCODE_MENU) { // 获取 Menu键
