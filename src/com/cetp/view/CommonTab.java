@@ -97,6 +97,15 @@ public class CommonTab extends Activity {
 		two = one * 2;
 		three = one * 3;
 		// Log.i("info", "获取的屏幕分辨率为" + one + two + three + "X" + displayHeight);
+		/*测量控件的width和height值*/
+		int width = View.MeasureSpec.makeMeasureSpec(0,
+				View.MeasureSpec.UNSPECIFIED);
+		int height = View.MeasureSpec.makeMeasureSpec(0,
+				View.MeasureSpec.UNSPECIFIED);
+		mTabImg.measure(width, height);
+		int w = mTabImg.getMeasuredWidth();
+		int sw=(one - w) / 2;
+		mTabImg.setX(sw>0?sw:0);
 		// set();
 		// InitImageView();//使用动画
 		// 将要分页显示的View装入数组中
