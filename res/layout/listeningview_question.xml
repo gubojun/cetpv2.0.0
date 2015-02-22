@@ -11,7 +11,8 @@
         android:layout_width="fill_parent"
         android:layout_height="45dp"
         android:background="@drawable/title_bar"
-        android:gravity="center_horizontal|center_vertical" >
+        android:gravity="center_horizontal|center_vertical"
+        android:visibility="gone" >
 
         <TextView
             android:layout_width="wrap_content"
@@ -37,7 +38,7 @@
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:gravity="center_vertical"
-            android:src="@drawable/btnmediaplay" />
+            android:src="@android:drawable/ic_media_play" />
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -49,15 +50,9 @@
                 android:id="@+id/seekBarAudio"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                android:background="@drawable/seekbar_bg"
-                android:max="15"
-                android:maxHeight="6dp"
-                android:minHeight="6dp"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:progressDrawable="@drawable/seekbar_style"
-                android:thumb="@drawable/thumb" />
+                android:layout_marginTop="1dp"
+                android:max="100"
+                android:progress="0" />
         </LinearLayout>
 
         <ImageView
@@ -68,8 +63,8 @@
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:gravity="center_vertical"
-            android:visibility="invisible"
-            android:src="@drawable/btnsetting" />
+            android:src="@drawable/btnsetting"
+            android:visibility="gone" />
     </RelativeLayout>
     <!-- Options Menu -->
 

@@ -1,11 +1,15 @@
 package com.cetp.view;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import com.cetp.R;
+import com.cetp.excel.MyFile;
+import com.cetp.service.PlayerService;
 
 import android.opengl.Visibility;
 import android.os.Bundle;
+import android.os.Environment;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -67,6 +71,13 @@ public class MainTab extends Activity {
 		getWindow().setSoftInputMode(
 				WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 		instance = this;
+		
+		MyFile file = new MyFile();
+		file.createPath();
+		
+		Log.w("OnCreate", Environment.getExternalStorageDirectory()
+				.getAbsolutePath() + "/cetpdata");
+		
 		mTabPager = (ViewPager) findViewById(R.id.tabpager);
 		mTabPager.setOnPageChangeListener(new MyOnPageChangeListener());
 
@@ -88,15 +99,15 @@ public class MainTab extends Activity {
 		three = one * 3;
 		Log.i("info", "获取的屏幕分辨率为" + one + two + three + "X" + displayHeight);
 
-		/*测量控件的width和height值*/
+		/* 测量控件的width和height值 */
 		int width = View.MeasureSpec.makeMeasureSpec(0,
 				View.MeasureSpec.UNSPECIFIED);
 		int height = View.MeasureSpec.makeMeasureSpec(0,
 				View.MeasureSpec.UNSPECIFIED);
 		mTabImg.measure(width, height);
 		int w = mTabImg.getMeasuredWidth();
-		int sw=(one - w) / 2;
-		mTabImg.setX(sw>0?sw:0);
+		int sw = (one - w) / 2;
+		mTabImg.setX(sw > 0 ? sw : 0);
 		// set();
 		// InitImageView();//使用动画
 		// 将要分页显示的View装入数组中
@@ -274,5 +285,12 @@ public class MainTab extends Activity {
 			return false;
 		}
 		return false;
+	}
+	@Override
+	protected void onDestroy() {
+		Intent intent = new Intent();
+		 intent.setClass(this, PlayerService.class);
+		 stopService(intent);// 停止Service
+		super.onDestroy();
 	}
 }

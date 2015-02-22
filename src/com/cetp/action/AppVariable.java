@@ -12,8 +12,10 @@ public class AppVariable {
 		public static int TypeOfView = 0;
 		// 0短对话，1长对话，3文章，4复合式听写
 		public static int TypeOfListening = 0;
+		//最大题目数,初始化题目数组时使用
+		public static int TOTAL_QUESTION_NUMBER=200;
 		// 记录题目的年份月份
-		public static String YearMonth = "";
+		public static String YearMonth = "200606";
 		// 记录四级六级
 		public static int CetX = 4;
 		// 记录音频文件名

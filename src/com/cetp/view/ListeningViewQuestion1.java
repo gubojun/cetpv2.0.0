@@ -23,7 +23,7 @@ public class ListeningViewQuestion1 {
 
 	public static final String TAG = "ListeningView";
 	// 新建听力数据类
-	//DBListeningOfQuestion db = new DBListeningOfQuestion(this);
+	// DBListeningOfQuestion db = new DBListeningOfQuestion(this);
 	// 音乐
 	public static int ifMusicStart = 1;// 判断音乐是否是第一次播放
 	public static final int MUSIC_FIRST_START = 1;
@@ -35,7 +35,7 @@ public class ListeningViewQuestion1 {
 	public static TextView txtListeningTimeTotal;// 音频总时间
 	public static TextView txtListeningTimeNow;// 音频当前时间
 
-	public static String[] listeningAnswer_All = new String[200];
+	public static String[] listeningAnswer_All = new String[AppVariable.Common.TOTAL_QUESTION_NUMBER];
 	private LinearLayout scrollContext;
 
 	boolean preHideTag = false;
@@ -44,17 +44,19 @@ public class ListeningViewQuestion1 {
 	/* 定义在播放列表中的当前选择项 */
 	public static int currentListItem = 0;
 	Context context;
-	//View view;
-	public ListeningViewQuestion1(Context c){
-		context=c;
-		//view =v;
+
+	// View view;
+	public ListeningViewQuestion1(Context c) {
+		context = c;
+		// view =v;
 	}
-	public void setView(View v){
+
+	public void setView(View v) {
 		findView(v);
 		setListener(context);
 		// 新建听力数据类
 		DBListeningOfQuestion db = new DBListeningOfQuestion(context);
-		for (int i = 0; i < 200; i++) {
+		for (int i = 0; i < AppVariable.Common.TOTAL_QUESTION_NUMBER; i++) {
 			listeningAnswer_All[i] = null;
 		}
 		db.open();
@@ -77,6 +79,7 @@ public class ListeningViewQuestion1 {
 		}
 		cur.close();
 	}
+
 	/**
 	 * 得到按钮
 	 */
@@ -89,8 +92,10 @@ public class ListeningViewQuestion1 {
 
 		imgListeningMedia = (ImageView) v.findViewById(R.id.optmedia);
 		imgListeningSetting = (ImageView) v.findViewById(R.id.optsetting);
-		txtListeningTimeTotal = (TextView) v.findViewById(R.id.txt_listening_time_total);
-		txtListeningTimeNow = (TextView) v.findViewById(R.id.txt_listening_time_now);
+		txtListeningTimeTotal = (TextView) v
+				.findViewById(R.id.txt_listening_time_total);
+		txtListeningTimeNow = (TextView) v
+				.findViewById(R.id.txt_listening_time_now);
 	}
 
 	/**
@@ -100,15 +105,16 @@ public class ListeningViewQuestion1 {
 		imgListeningMedia.setOnClickListener(ImageViewMusicListener);
 		/* 播放进度监听 */
 		audioSeekBar.setOnSeekBarChangeListener(new SeekBarChangeEvent());
-//		imgListeningSetting.setOnClickListener(this);
+		// imgListeningSetting.setOnClickListener(this);
 	}
-	//@Override
-//	private ImageView.OnClickListener 
-//	public void onClick(View v) {
-//		if (v == imgListeningSetting) {
-//			startActivity(new Intent(this, SettingView.class));
-//		}
-//	}
+
+	// @Override
+	// private ImageView.OnClickListener
+	// public void onClick(View v) {
+	// if (v == imgListeningSetting) {
+	// startActivity(new Intent(this, SettingView.class));
+	// }
+	// }
 	/**
 	 * 关于：音乐播放 音乐播放的动作
 	 */
@@ -123,18 +129,18 @@ public class ListeningViewQuestion1 {
 					playMusic(AppConstant.PlayerMag.PLAY_MAG);
 					// 按键变为暂停键
 					imgListeningMedia
-							.setImageResource(R.drawable.btnmediapause);
+							.setImageResource(android.R.drawable.ic_media_pause);
 				} else if (ifMusicStart == MUSIC_PAUSE) {
 					ifMusicStart = MUSIC_PLAYING;
 					playMusic(AppConstant.PlayerMag.PAUSE);
 					// 按键变为暂停键
 					imgListeningMedia
-							.setImageResource(R.drawable.btnmediapause);
+							.setImageResource(android.R.drawable.ic_media_pause);
 				} else if (ifMusicStart == MUSIC_PLAYING) {
 					ifMusicStart = MUSIC_PAUSE;
 					playMusic(AppConstant.PlayerMag.PAUSE);
 					// 按键变为播放键
-					imgListeningMedia.setImageResource(R.drawable.btnmediaplay);
+					imgListeningMedia.setImageResource(android.R.drawable.ic_media_play);
 				}
 			}
 		}
@@ -146,7 +152,9 @@ public class ListeningViewQuestion1 {
 		intent.setClass(context, PlayerService.class);
 		/* 启动service service要在AndroidManifest.xml注册如：<service></service> */
 		context.startService(intent);
+		//context.bindService(intent, conn, Context.BIND_AUTO_CREATE);
 	}
+
 	/* 拖放进度监听 ，别忘了Service里面还有个进度条刷新 */
 	class SeekBarChangeEvent implements SeekBar.OnSeekBarChangeListener {
 		@Override
@@ -175,11 +183,10 @@ public class ListeningViewQuestion1 {
 					ifMusicStart = MUSIC_PAUSE;
 					PlayerService.mMediaPlayer.pause();// 开始拖动进度条时，音乐暂停播放
 					// 按键变为播放键
-					imgListeningMedia.setImageResource(R.drawable.btnmediaplay);
+					imgListeningMedia.setImageResource(android.R.drawable.ic_media_play);
 				}
 			} else
-				Toast.makeText(context, "请点击播放按钮！",
-						Toast.LENGTH_SHORT).show();
+				Toast.makeText(context, "请点击播放按钮！", Toast.LENGTH_SHORT).show();
 
 		}
 
@@ -191,7 +198,7 @@ public class ListeningViewQuestion1 {
 					PlayerService.mMediaPlayer.start();// 停止拖动进度条时，音乐开始播放
 					// 按键变为暂停键
 					imgListeningMedia
-							.setImageResource(R.drawable.btnmediapause);
+							.setImageResource(android.R.drawable.ic_media_pause);
 				}
 			}
 		}

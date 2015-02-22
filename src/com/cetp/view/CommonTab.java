@@ -27,6 +27,8 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 
 import com.cetp.R;
+import com.cetp.action.AppVariable;
+import com.cetp.service.PlayerService;
 
 public class CommonTab extends Activity {
 	public static CommonTab instance = null;
@@ -45,9 +47,9 @@ public class CommonTab extends Activity {
 	private PopupWindow menuWindow;
 	private LayoutInflater inflater;
 	final String TYPE_OF_VIEW = "typeofview";
-	// ListeningViewAnswer1 listeninganswer = new ListeningViewAnswer1(this);
-	// ReadingViewAnswer1 readingviewanswer = new ReadingViewAnswer1(this);
-	// ClozingViewAnswer1 clozingviewanswer = new ClozingViewAnswer1(this);
+	ListeningViewAnswer1 listeninganswer = new ListeningViewAnswer1(this);
+	ReadingViewAnswer1 readingviewanswer = new ReadingViewAnswer1(this);
+	ClozingViewAnswer1 clozingviewanswer = new ClozingViewAnswer1(this);
 	View viewAnswer;
 
 	// private Button mRightBtn;
@@ -97,23 +99,57 @@ public class CommonTab extends Activity {
 		two = one * 2;
 		three = one * 3;
 		// Log.i("info", "获取的屏幕分辨率为" + one + two + three + "X" + displayHeight);
-		/*测量控件的width和height值*/
+		/* 测量控件的width和height值 */
 		int width = View.MeasureSpec.makeMeasureSpec(0,
 				View.MeasureSpec.UNSPECIFIED);
 		int height = View.MeasureSpec.makeMeasureSpec(0,
 				View.MeasureSpec.UNSPECIFIED);
 		mTabImg.measure(width, height);
 		int w = mTabImg.getMeasuredWidth();
-		int sw=(one - w) / 2;
-		mTabImg.setX(sw>0?sw:0);
+		int sw = (one - w) / 2;
+		mTabImg.setX(sw > 0 ? sw : 0);
 		// set();
 		// InitImageView();//使用动画
 		// 将要分页显示的View装入数组中
 		LayoutInflater mLi = LayoutInflater.from(this);
 		View view1, view2, view3, view4;
-		view1 = mLi.inflate(R.layout.view_index, null);
-		view2 = mLi.inflate(R.layout.view_index, null);
-		view3 = mLi.inflate(R.layout.view_index, null);
+		if (AppVariable.Common.TypeOfView == 0) {
+			view1 = mLi.inflate(R.layout.listeningview_question, null);
+			view2 = mLi.inflate(R.layout.listeningview_questiontext, null);
+			view3 = mLi.inflate(R.layout.listeningview_answer, null);
+
+			ListeningViewQuestion1 listeningviewquestion = new ListeningViewQuestion1(
+					this);
+			ListeningViewQuestiontext1 listeningviewquestiontext = new ListeningViewQuestiontext1(
+					this);
+			listeningviewquestion.setView(view1);
+			listeningviewquestiontext.setView(view2);
+			listeninganswer.setView(view3);
+		} else if (AppVariable.Common.TypeOfView == 1) {
+			view1 = mLi.inflate(R.layout.readingview_question, null);
+			view2 = mLi.inflate(R.layout.readingview_passage, null);
+			view3 = mLi.inflate(R.layout.readingview_answer, null);
+			ReadingViewQuestion1 readingviewquestion = new ReadingViewQuestion1(
+					this);
+			ReadingViewPassage1 readingviewpassage = new ReadingViewPassage1(
+					this);
+
+			readingviewquestion.setView(view1);
+			readingviewpassage.setView(view2);
+			readingviewanswer.setView(view3);
+		} else {
+			view1 = mLi.inflate(R.layout.clozingview_question, null);
+			view2 = mLi.inflate(R.layout.clozingview_passage, null);
+			view3 = mLi.inflate(R.layout.clozingview_answer, null);
+			ClozingViewQuestion1 clozingviewquestion = new ClozingViewQuestion1(
+					this);
+			ClozingViewPassage1 clozingviewpassage = new ClozingViewPassage1(
+					this);
+
+			clozingviewquestion.setView(view1);
+			clozingviewpassage.setView(view2);
+			clozingviewanswer.setView(view3);
+		}
 		view4 = mLi.inflate(R.layout.settingview, null);
 		// 每个页面的view数据
 		final ArrayList<View> views = new ArrayList<View>();
@@ -290,4 +326,18 @@ public class CommonTab extends Activity {
 		}
 		return false;
 	}
+
+	@Override
+	protected void onDestroy() {
+//		Intent intent = new Intent();
+//		 intent.setClass(this, PlayerService.class);
+//		 stopService(intent);// 停止Service
+//		 if(PlayerService.mMediaPlayer!=null)
+//			PlayerService.mMediaPlayer=null;
+		
+		if (PlayerService.mMediaPlayer!=null)
+			PlayerService.mMediaPlayer.reset();
+		super.onDestroy();
+	}
+
 }

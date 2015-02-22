@@ -6,13 +6,12 @@ import com.cetp.R;
 import com.cetp.action.AppConstant;
 import com.cetp.action.AppVariable;
 import com.cetp.view.ListeningViewQuestion1;
-import com.cetp.view.ListeningViewQuestion;
-import com.cetp.view.ListeningViewQuestiontext;
 
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
+import android.media.MediaPlayer.OnErrorListener;
 import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
@@ -21,6 +20,8 @@ public class PlayerService extends Service implements Runnable,
 		MediaPlayer.OnCompletionListener {
 	/* 定于一个多媒体对象 */
 	public static MediaPlayer mMediaPlayer = null;
+
+	public static PlayerService instance = null;
 	// 是否单曲循环
 	private static boolean isLoop = false;
 	// 用户操作
@@ -37,6 +38,7 @@ public class PlayerService extends Service implements Runnable,
 
 	@Override
 	public void onCreate() {
+		instance = this;
 		super.onCreate();
 		if (mMediaPlayer != null) {
 			mMediaPlayer.reset();
@@ -46,9 +48,23 @@ public class PlayerService extends Service implements Runnable,
 		mMediaPlayer = new MediaPlayer();
 		/* 监听播放是否完成 */
 		mMediaPlayer.setOnCompletionListener(this);
+		mMediaPlayer.setOnErrorListener(listener);
 		System.out.println("service onCreate");
 	}
-
+	OnErrorListener listener=new OnErrorListener() {
+		
+		@Override
+		public boolean onError(MediaPlayer mp, int what, int arg2) {
+			if(what==MediaPlayer.MEDIA_ERROR_UNKNOWN)
+				mMediaPlayer.reset();
+			else if(what ==-38)
+				Toast.makeText(PlayerService.this, "-38", Toast.LENGTH_SHORT)
+				.show();
+			else
+				Log.w("OnErrorListener","what=="+what+"  arg2=="+arg2);
+			return false;
+		}
+	};
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
@@ -85,12 +101,12 @@ public class PlayerService extends Service implements Runnable,
 			/* 重置多媒体 */
 			mMediaPlayer.reset();
 			/* 读取mp3文件 */
-			AppVariable.Common.MP3FILE = "/Lis_cet" + AppVariable.Common.CetX + "_"
-					+ AppVariable.Common.YearMonth + "_mp3.mp3";
+			AppVariable.Common.MP3FILE = "/Lis_cet" + AppVariable.Common.CetX
+					+ "_" + AppVariable.Common.YearMonth + "_mp3.mp3";
 			mMediaPlayer.setDataSource(MUSIC_PATH + AppVariable.Common.MP3FILE);
 			// + AppConstant.PlayerMag.LISTENING_MUSIC_NAME);
-			
-			Log.v(TAG,AppVariable.Common.MP3FILE);
+
+			Log.v(TAG, AppVariable.Common.MP3FILE);
 			/* 准备播放 */
 			mMediaPlayer.prepare();
 			/* 开始播放 */
@@ -148,15 +164,17 @@ public class PlayerService extends Service implements Runnable,
 		// } else {
 		// playMusic();
 		// }
-		Toast.makeText(PlayerService.this, "听力测试结束！", Toast.LENGTH_SHORT)
-				.show();
+		
+//			Toast.makeText(PlayerService.this, "听力测试结束！", Toast.LENGTH_SHORT)
+//					.show();
+
 		ListeningViewQuestion1.audioSeekBar.setMax(0);
 		ListeningViewQuestion1.ifMusicStart = 1;
 		ListeningViewQuestion1.imgListeningMedia
-		.setImageResource(R.drawable.btnmediaplay);
-//		ListeningViewQuestion.audioSeekBar.setMax(0);
-//		ListeningViewQuestion.ifMusicStart = 1;
-//		ListeningViewQuestion.imgListeningMedia
-//				.setImageResource(R.drawable.btnmediaplay);
+				.setImageResource(android.R.drawable.ic_media_play);
+		// ListeningViewQuestion.audioSeekBar.setMax(0);
+		// ListeningViewQuestion.ifMusicStart = 1;
+		// ListeningViewQuestion.imgListeningMedia
+		// .setImageResource(R.drawable.btnmediaplay);
 	}
 }
