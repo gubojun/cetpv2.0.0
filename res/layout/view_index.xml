@@ -45,7 +45,7 @@
                                 android:src="@android:drawable/ic_menu_today" />
 
                             <TextView
-                                android:id="@+id/textView1"
+                                android:id="@+id/txtdate"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="20150125" />
@@ -95,7 +95,8 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:paddingLeft="@dimen/activity_vertical_margin"
-                        android:paddingRight="@dimen/activity_vertical_margin" >
+                        android:paddingRight="@dimen/activity_vertical_margin" 
+                        android:visibility="gone">
 
                         <TextView
                             android:id="@+id/textView3"

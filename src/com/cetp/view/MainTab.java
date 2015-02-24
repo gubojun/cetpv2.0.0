@@ -1,9 +1,15 @@
 package com.cetp.view;
 
 import java.io.File;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 import com.cetp.R;
+import com.cetp.action.AppVariable;
 import com.cetp.excel.MyFile;
 import com.cetp.service.PlayerService;
 
@@ -11,13 +17,20 @@ import android.opengl.Visibility;
 import android.os.Bundle;
 import android.os.Environment;
 import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.text.Html;
+import android.text.format.DateUtils;
 import android.util.Log;
+import android.util.MonthDisplayHelper;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -25,15 +38,18 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
+import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 public class MainTab extends Activity {
@@ -41,6 +57,7 @@ public class MainTab extends Activity {
 	private ViewPager mTabPager;
 	private ImageView mTabImg;// 动画图片
 	private ImageView mTab1, mTab2, mTab3, mTab4;
+	private TextView txtDate;
 	private TextView txtSetting1, txtSetting2;
 	private int zero = 0;// 动画图片偏移量
 	private int currIndex = 0;// 当前页卡编号
@@ -54,6 +71,7 @@ public class MainTab extends Activity {
 	private PopupWindow menuWindow;
 	private LayoutInflater inflater;
 	final String TYPE_OF_VIEW = "typeofview";
+	final String YEARMONTH = "yearmonth";
 	/** 用于保存用户状态 */
 	// final SharedPreferences myPrefs = getPreferences(MODE_PRIVATE);
 	// final int typeOfView = myPrefs.getInt(TYPE_OF_VIEW, 0);
@@ -63,6 +81,15 @@ public class MainTab extends Activity {
 	// ReadingViewAnswer1 readingviewanswer = new ReadingViewAnswer1(this);
 	// ClozingViewAnswer1 clozingviewanswer = new ClozingViewAnswer1(this);
 	View viewAnswer;
+	// date and time
+	private int mYear;
+	private int mMonth;
+	private int mDay;
+	private int mHour;
+	private int mMinute;
+
+	static final int TIME_DIALOG_ID = 0;
+	static final int DATE_DIALOG_ID = 1;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -90,7 +117,6 @@ public class MainTab extends Activity {
 		mTab3 = (ImageView) findViewById(R.id.img_settings);
 		mTab4 = (ImageView) findViewById(R.id.img_answer);
 		mTabImg = (ImageView) findViewById(R.id.img_tab_now);
-		
 
 		mTab1.setOnClickListener(new MyOnClickListener(0));
 		mTab2.setOnClickListener(new MyOnClickListener(1));
@@ -162,19 +188,37 @@ public class MainTab extends Activity {
 		};
 
 		mTabPager.setAdapter(mPagerAdapter);
+		txtDate = (TextView) view1.findViewById(R.id.txtdate);
 		txtSetting1 = (TextView) view1.findViewById(R.id.txt_setting1);
 		txtSetting2 = (TextView) view1.findViewById(R.id.txt_setting2);
-		txtSetting1.setText(Html.fromHtml("<u>"+"设置"+"</u>"));
-		txtSetting2.setText(Html.fromHtml("<a>"+"设置"+"</a>"));
 		txtSetting1.setOnClickListener(txtonclick);
 		txtSetting2.setOnClickListener(txtonclick);
+		/**设置当前年月日****************************************************/
+		Date dateNow = new Date(System.currentTimeMillis());// 获取当前时间
+		txtDate.setText(DateUtils.dateToStr("yyyy/MM/dd", dateNow));
+		/*******************************************************************/
+		/**设置测试年份******************************************************/
+		/** 用于保存用户状态 */
+		final SharedPreferences myPrefs = this
+				.getPreferences(this.MODE_PRIVATE);
+		AppVariable.Common.YearMonth = myPrefs.getString(YEARMONTH, "200606");
+		Date d = DateUtils.strToDate("yyyyMM", AppVariable.Common.YearMonth);
+		Calendar c = Calendar.getInstance();
+		c.setTime(d);
+		mYear = c.get(Calendar.YEAR);
+		mMonth = c.get(Calendar.MONTH);
+		mDay = c.get(Calendar.DAY_OF_MONTH);
+		Log.v("yyyyMMdd", mYear + ":" + mMonth + ":" + mDay);
+		updateDisplay();
 	}
 
-	OnClickListener txtonclick=new OnClickListener (){
+	OnClickListener txtonclick = new OnClickListener() {
 		@Override
 		public void onClick(View v) {
 			if (v == txtSetting1) {
-				Toast.makeText(MainTab.this, "1", Toast.LENGTH_LONG).show();
+				// showMonPicker();
+				showDialog(DATE_DIALOG_ID);
+				// Toast.makeText(MainTab.this, "1", Toast.LENGTH_LONG).show();
 			} else if (v == txtSetting2) {
 				Toast.makeText(MainTab.this, "2", Toast.LENGTH_LONG).show();
 			}
@@ -315,5 +359,147 @@ public class MainTab extends Activity {
 		intent.setClass(this, PlayerService.class);
 		stopService(intent);// 停止Service
 		super.onDestroy();
+	}
+
+	@Override
+	protected Dialog onCreateDialog(int id) {
+		switch (id) {
+		case TIME_DIALOG_ID:
+			return new TimePickerDialog(this, mTimeSetListener, mHour, mMinute,
+					false);
+		case DATE_DIALOG_ID:
+			return new MyDatePickerDialog(this, mDateSetListener, mYear,
+					mMonth, mDay);
+		}
+		return null;
+	}
+
+	/**
+	 * 重写datePicker 1.只显示 年-月 2.title 只显示 年-月
+	 * 
+	 * @author gubojun
+	 */
+	public class MyDatePickerDialog extends DatePickerDialog {
+		public MyDatePickerDialog(Context context, OnDateSetListener callBack,
+				int year, int monthOfYear, int dayOfMonth) {
+
+			super(context, callBack, year, monthOfYear, dayOfMonth);
+
+			this.setTitle(year + "年" + (monthOfYear + 1) + "月");
+			// ((ViewGroup) ((ViewGroup) this.getDatePicker().getChildAt(0))
+			// .getChildAt(0)).getChildAt(2).setVisibility(View.GONE);
+		}
+
+		@Override
+		public void onDateChanged(DatePicker view, int year, int month, int day) {
+			super.onDateChanged(view, year, month, day);
+			this.setTitle(year + "年" + (month + 1) + "月");
+		}
+
+	}
+
+	public void showMonPicker() {
+		final Calendar localCalendar = Calendar.getInstance();
+		localCalendar.setTime(DateUtils.strToDate("yyyy-MM", txtSetting1
+				.getText().toString()));
+		new MyDatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+			@Override
+			public void onDateSet(DatePicker view, int year, int monthOfYear,
+					int dayOfMonth) {
+				localCalendar.set(1, year);
+				localCalendar.set(2, monthOfYear);
+				txtSetting1.setText(DateUtils.clanderTodatetime(localCalendar,
+						"yyyy-MM"));
+			}
+		}, localCalendar.get(1), localCalendar.get(2), localCalendar.get(5))
+				.show();
+	}
+
+	private static class DateUtils {
+
+		// 字符串类型日期转化成date类型
+		public static Date strToDate(String style, String date) {
+			SimpleDateFormat formatter = new SimpleDateFormat(style);
+			try {
+				return formatter.parse(date);
+			} catch (ParseException e) {
+				e.printStackTrace();
+				return new Date();
+			}
+		}
+
+		public static String dateToStr(String style, Date date) {
+			SimpleDateFormat formatter = new SimpleDateFormat(style);
+			return formatter.format(date);
+		}
+
+		public static String clanderTodatetime(Calendar calendar, String style) {
+			SimpleDateFormat formatter = new SimpleDateFormat(style);
+			return formatter.format(calendar.getTime());
+		}
+	}
+
+	@Override
+	protected void onPrepareDialog(int id, Dialog dialog) {
+		switch (id) {
+		case TIME_DIALOG_ID:
+			((TimePickerDialog) dialog).updateTime(mHour, mMinute);
+			break;
+		case DATE_DIALOG_ID:
+			((DatePickerDialog) dialog).updateDate(mYear, mMonth, mDay);
+			break;
+		}
+	}
+
+	private void updateDisplay() {
+
+		Calendar c = Calendar.getInstance();
+		c.set(mYear, mMonth, mDay);
+		Date d = c.getTime();
+
+		txtSetting1.setText(Html.fromHtml("<u>"
+				+ DateUtils.dateToStr("yyyy年MM月", d) + "</u>"));
+		// txtSetting2.setText(Html.fromHtml("<u>" + "设置" + "</u>"));
+
+		// txtSetting1.setText(new StringBuilder()
+		// // Month is 0 based so add 1
+		// .append(mMonth + 1).append("-").append(mDay).append("-")
+		// .append(mYear));
+		// .append(" ").append(pad(mHour)).append(":")
+		// .append(pad(mMinute)));
+		final SharedPreferences myPrefs = this
+				.getPreferences(this.MODE_PRIVATE);
+		AppVariable.Common.YearMonth = DateUtils.dateToStr("yyyyMM", d);
+		Editor editor = myPrefs.edit();
+		editor.putString(YEARMONTH, AppVariable.Common.YearMonth);
+		// Write other values as desired
+		editor.commit();
+	}
+
+	private DatePickerDialog.OnDateSetListener mDateSetListener = new DatePickerDialog.OnDateSetListener() {
+
+		public void onDateSet(DatePicker view, int year, int monthOfYear,
+				int dayOfMonth) {
+			mYear = year;
+			mMonth = monthOfYear;
+			mDay = dayOfMonth;
+			updateDisplay();
+		}
+	};
+
+	private TimePickerDialog.OnTimeSetListener mTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
+
+		public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+			mHour = hourOfDay;
+			mMinute = minute;
+			updateDisplay();
+		}
+	};
+
+	private static String pad(int c) {
+		if (c >= 10)
+			return String.valueOf(c);
+		else
+			return "0" + String.valueOf(c);
 	}
 }
