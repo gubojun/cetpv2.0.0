@@ -16,6 +16,7 @@ import android.content.SharedPreferences;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.text.Html;
 import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
@@ -23,6 +24,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
@@ -31,6 +33,7 @@ import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainTab extends Activity {
@@ -38,6 +41,7 @@ public class MainTab extends Activity {
 	private ViewPager mTabPager;
 	private ImageView mTabImg;// 动画图片
 	private ImageView mTab1, mTab2, mTab3, mTab4;
+	private TextView txtSetting1, txtSetting2;
 	private int zero = 0;// 动画图片偏移量
 	private int currIndex = 0;// 当前页卡编号
 	private int one;// 单个水平动画位移
@@ -71,13 +75,13 @@ public class MainTab extends Activity {
 		getWindow().setSoftInputMode(
 				WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 		instance = this;
-		
+
 		MyFile file = new MyFile();
 		file.createPath();
-		
+
 		Log.w("OnCreate", Environment.getExternalStorageDirectory()
 				.getAbsolutePath() + "/cetpdata");
-		
+
 		mTabPager = (ViewPager) findViewById(R.id.tabpager);
 		mTabPager.setOnPageChangeListener(new MyOnPageChangeListener());
 
@@ -86,6 +90,7 @@ public class MainTab extends Activity {
 		mTab3 = (ImageView) findViewById(R.id.img_settings);
 		mTab4 = (ImageView) findViewById(R.id.img_answer);
 		mTabImg = (ImageView) findViewById(R.id.img_tab_now);
+		
 
 		mTab1.setOnClickListener(new MyOnClickListener(0));
 		mTab2.setOnClickListener(new MyOnClickListener(1));
@@ -157,7 +162,24 @@ public class MainTab extends Activity {
 		};
 
 		mTabPager.setAdapter(mPagerAdapter);
+		txtSetting1 = (TextView) view1.findViewById(R.id.txt_setting1);
+		txtSetting2 = (TextView) view1.findViewById(R.id.txt_setting2);
+		txtSetting1.setText(Html.fromHtml("<u>"+"设置"+"</u>"));
+		txtSetting2.setText(Html.fromHtml("<a>"+"设置"+"</a>"));
+		txtSetting1.setOnClickListener(txtonclick);
+		txtSetting2.setOnClickListener(txtonclick);
 	}
+
+	OnClickListener txtonclick=new OnClickListener (){
+		@Override
+		public void onClick(View v) {
+			if (v == txtSetting1) {
+				Toast.makeText(MainTab.this, "1", Toast.LENGTH_LONG).show();
+			} else if (v == txtSetting2) {
+				Toast.makeText(MainTab.this, "2", Toast.LENGTH_LONG).show();
+			}
+		}
+	};
 
 	/**
 	 * 头标点击监听
@@ -286,11 +308,12 @@ public class MainTab extends Activity {
 		}
 		return false;
 	}
+
 	@Override
 	protected void onDestroy() {
 		Intent intent = new Intent();
-		 intent.setClass(this, PlayerService.class);
-		 stopService(intent);// 停止Service
+		intent.setClass(this, PlayerService.class);
+		stopService(intent);// 停止Service
 		super.onDestroy();
 	}
 }

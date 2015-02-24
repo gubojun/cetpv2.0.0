@@ -1,246 +1,264 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_vertical_margin"
-    android:paddingRight="@dimen/activity_vertical_margin"
-    android:paddingTop="@dimen/activity_vertical_margin" >
+    android:layout_height="fill_parent" >
 
-    <LinearLayout
-        android:id="@+id/index_lin_top"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:background="@android:drawable/edit_text"
-        android:orientation="vertical" >
-
-        <LinearLayout
-            android:layout_width="310dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" >
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center" >
-
-                <ImageView
-                    android:id="@+id/imageView1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@android:drawable/ic_menu_today" />
-
-                <TextView
-                    android:id="@+id/textView1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="20150125" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center" >
-
-                <ImageView
-                    android:id="@+id/imageView2"
-                    android:layout_width="32dp"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_user" />
-
-                <TextView
-                    android:id="@+id/textView2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="gubojun" />
-            </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" 
-            android:paddingLeft="@dimen/activity_vertical_margin"
-            android:paddingRight="@dimen/activity_vertical_margin">
-
-            <TextView
-                android:id="@+id/textView5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="测试年份：" />
-
-            <TextView
-                android:id="@+id/txt_setting1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="设置" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:paddingLeft="@dimen/activity_vertical_margin"
-            android:paddingRight="@dimen/activity_vertical_margin" >
-
-            <TextView
-                android:id="@+id/textView3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="距离考试还有：" />
-
-            <TextView
-                android:id="@+id/txt_setting2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="设置" />
-        </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
+    <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/index_lin_top"
-        android:orientation="vertical" >
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_vertical_margin"
+        android:paddingRight="@dimen/activity_vertical_margin"
+        android:paddingTop="@dimen/activity_vertical_margin" >
 
         <LinearLayout
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal" >
+            android:orientation="vertical" >
 
             <RelativeLayout
-                android:id="@+id/index_rlt_fenxiang"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="14dp"
-                android:layout_weight="1"
-                android:background="@drawable/preference_fenxiang_item"
-                android:clickable="true"
-                android:gravity="center_vertical" >
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
 
-                <ImageView
-                    android:id="@+id/index_img_fenxiang"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:id="@+id/index_lin_top"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:layout_centerHorizontal="true"
-                    android:clickable="true"
-                    android:scaleType="matrix"
-                    android:src="@drawable/bottom_bar" />
+                    android:background="@android:drawable/edit_text"
+                    android:orientation="vertical" >
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/index_img_fenxiang"
-                    android:layout_centerHorizontal="true"
-                    android:padding="8dp"
-                    android:text="分项练习"
-                    android:textColor="#FFF"
-                    android:textSize="17sp" />
+                    <LinearLayout
+                        android:layout_width="310dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" >
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:gravity="center" >
+
+                            <ImageView
+                                android:id="@+id/imageView1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@android:drawable/ic_menu_today" />
+
+                            <TextView
+                                android:id="@+id/textView1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="20150125" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center" >
+
+                            <ImageView
+                                android:id="@+id/imageView2"
+                                android:layout_width="32dp"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/ic_user" />
+
+                            <TextView
+                                android:id="@+id/textView2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="gubojun" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingLeft="@dimen/activity_vertical_margin"
+                        android:paddingRight="@dimen/activity_vertical_margin" >
+
+                        <TextView
+                            android:id="@+id/textView5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="测试年份：" />
+
+                        <TextView
+                            android:id="@+id/txt_setting1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="设置" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingLeft="@dimen/activity_vertical_margin"
+                        android:paddingRight="@dimen/activity_vertical_margin" >
+
+                        <TextView
+                            android:id="@+id/textView3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="距离考试还有：" />
+
+                        <TextView
+                            android:id="@+id/txt_setting2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="设置" />
+                    </LinearLayout>
+                </LinearLayout>
             </RelativeLayout>
 
             <RelativeLayout
-                android:id="@+id/index_rlt_shoucang"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="14dp"
-                android:layout_weight="1"
-                android:background="@drawable/preference_shoucang_item"
-                android:clickable="true"
-                android:gravity="center_vertical" >
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
 
-                <ImageView
-                    android:id="@+id/index_img_fenxiang"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:layout_centerHorizontal="true"
-                    android:clickable="true"
-                    android:scaleType="matrix"
-                    android:src="@drawable/bottom_bar" />
+                    android:orientation="vertical" >
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/index_img_fenxiang"
-                    android:layout_centerHorizontal="true"
-                    android:padding="8dp"
-                    android:text="我的收藏"
-                    android:textColor="#FFF"
-                    android:textSize="17sp" />
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal" >
+
+                        <RelativeLayout
+                            android:id="@+id/index_rlt_fenxiang"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="14dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/preference_fenxiang_item"
+                            android:clickable="true"
+                            android:gravity="center_vertical" >
+
+                            <ImageView
+                                android:id="@+id/index_img_fenxiang"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentTop="true"
+                                android:layout_centerHorizontal="true"
+                                android:clickable="true"
+                                android:scaleType="matrix"
+                                android:src="@drawable/bottom_bar" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/index_img_fenxiang"
+                                android:layout_centerHorizontal="true"
+                                android:padding="8dp"
+                                android:text="分项练习"
+                                android:textColor="#FFF"
+                                android:textSize="17sp" />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:id="@+id/index_rlt_shoucang"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="14dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/preference_shoucang_item"
+                            android:clickable="true"
+                            android:gravity="center_vertical" >
+
+                            <ImageView
+                                android:id="@+id/index_img_fenxiang"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentTop="true"
+                                android:layout_centerHorizontal="true"
+                                android:clickable="true"
+                                android:scaleType="matrix"
+                                android:src="@drawable/bottom_bar" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/index_img_fenxiang"
+                                android:layout_centerHorizontal="true"
+                                android:padding="8dp"
+                                android:text="我的收藏"
+                                android:textColor="#FFF"
+                                android:textSize="17sp" />
+                        </RelativeLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal" >
+
+                        <RelativeLayout
+                            android:id="@+id/index_rlt_moni"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="14dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/preference_moni_item"
+                            android:clickable="true"
+                            android:gravity="center_vertical" >
+
+                            <ImageView
+                                android:id="@+id/index_img_fenxiang"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentTop="true"
+                                android:layout_centerHorizontal="true"
+                                android:clickable="true"
+                                android:scaleType="matrix"
+                                android:src="@drawable/bottom_bar" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/index_img_fenxiang"
+                                android:layout_centerHorizontal="true"
+                                android:padding="8dp"
+                                android:text="模拟练习"
+                                android:textColor="#fff"
+                                android:textSize="17sp" />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:id="@+id/index_rlt_meiri"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="14dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/preference_meiri_item"
+                            android:clickable="true"
+                            android:gravity="center_vertical" >
+
+                            <ImageView
+                                android:id="@+id/index_img_fenxiang"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentTop="true"
+                                android:layout_centerHorizontal="true"
+                                android:clickable="true"
+                                android:scaleType="matrix"
+                                android:src="@drawable/bottom_bar" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/index_img_fenxiang"
+                                android:layout_centerHorizontal="true"
+                                android:padding="8dp"
+                                android:text="每日知识"
+                                android:textColor="#FFF"
+                                android:textSize="17sp" />
+                        </RelativeLayout>
+                    </LinearLayout>
+                </LinearLayout>
             </RelativeLayout>
         </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal" >
-
-            <RelativeLayout
-                android:id="@+id/index_rlt_moni"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="14dp"
-                android:layout_weight="1"
-                android:background="@drawable/preference_moni_item"
-                android:clickable="true"
-                android:gravity="center_vertical" >
-
-                <ImageView
-                    android:id="@+id/index_img_fenxiang"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:layout_centerHorizontal="true"
-                    android:clickable="true"
-                    android:scaleType="matrix"
-                    android:src="@drawable/bottom_bar" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/index_img_fenxiang"
-                    android:layout_centerHorizontal="true"
-                    android:padding="8dp"
-                    android:text="模拟练习"
-                    android:textColor="#fff"
-                    android:textSize="17sp" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/index_rlt_meiri"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="14dp"
-                android:layout_weight="1"
-                android:background="@drawable/preference_meiri_item"
-                android:clickable="true"
-                android:gravity="center_vertical" >
-
-                <ImageView
-                    android:id="@+id/index_img_fenxiang"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:layout_centerHorizontal="true"
-                    android:clickable="true"
-                    android:scaleType="matrix"
-                    android:src="@drawable/bottom_bar" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/index_img_fenxiang"
-                    android:layout_centerHorizontal="true"
-                    android:padding="8dp"
-                    android:text="每日知识"
-                    android:textColor="#FFF"
-                    android:textSize="17sp" />
-            </RelativeLayout>
-        </LinearLayout>
-    </LinearLayout>
+    </ScrollView>
 
 </RelativeLayout>
