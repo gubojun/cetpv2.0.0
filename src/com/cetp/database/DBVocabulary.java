@@ -46,6 +46,10 @@ public class DBVocabulary {
 		DBHelper = new DatabaseHelper(context);
 	}
 
+	public String getDatabaseName() {
+		return DATABASE_TABLE;
+	}
+
 	// ---打开数据库---
 
 	public DBVocabulary open() throws SQLException {

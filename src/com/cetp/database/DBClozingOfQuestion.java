@@ -23,8 +23,7 @@ public class DBClozingOfQuestion {
 	private static final String DATABASE_TABLE = "Clozing_Question";
 	// 创建完形表
 	private static final String DATABASE_CREATE_CLOZING_QUESTION = "create table if not exists "
-			+ DATABASE_TABLE
-			+ " (ID integer primary key autoincrement, "// 自增的
+			+ DATABASE_TABLE + " (ID integer primary key autoincrement, "// 自增的
 			+ "YYYYMM text not null, " // 年月
 			+ "QuestionType text not null, "// 题目类型
 			+ "QuestionNumber text not null, "// 题号
@@ -41,6 +40,10 @@ public class DBClozingOfQuestion {
 	public DBClozingOfQuestion(Context ctx) {
 		this.context = ctx;
 		DBHelper = new DatabaseHelper(context);
+	}
+
+	public String getDatabaseName() {
+		return DATABASE_TABLE;
 	}
 
 	// ---打开数据库---

@@ -17,7 +17,7 @@ import com.cetp.R;
 import com.cetp.action.AppVariable;
 import com.cetp.database.DBListeningOfQuestion;
 
-public class ListeningViewAnswer1 {
+public class ListeningViewAnswer {
 	private TextView txtQuestionNumber;// 题号
 	/** 正确答案 */
 	private TextView txtListeningAnswer;
@@ -48,7 +48,7 @@ public class ListeningViewAnswer1 {
 	private Button userAnswerDiolog;
 	Context context;
 
-	public ListeningViewAnswer1(Context c) {
+	public ListeningViewAnswer(Context c) {
 		context = c;
 	}
 
@@ -123,7 +123,7 @@ public class ListeningViewAnswer1 {
 		txtQuestionNumber.setTextSize(20);
 		txtQuestionNumber.setTextColor(context.getResources().getColor(
 				R.color.red));
-		String theAnswer = ListeningViewQuestion1.listeningAnswer_All[Integer
+		String theAnswer = ListeningViewQuestion.listeningAnswer_All[Integer
 				.parseInt((String) txtQuestionNumber.getText())];
 		theCorrectAnswer[Integer.parseInt((String) txtQuestionNumber.getText())] = cur
 				.getString(cur.getColumnIndex("Answer"));
@@ -162,7 +162,7 @@ public class ListeningViewAnswer1 {
 		if (dataCount != 0) {
 			while (NUM != questionAmount) {
 				NUM++;
-				theAnswer = ListeningViewQuestion1.listeningAnswer_All[NUM];
+				theAnswer = ListeningViewQuestion.listeningAnswer_All[NUM];
 				txtListeningAnswerOfUser = (TextView) v.findViewById(NUM);
 				myLayout = (LinearLayout) v.findViewById(NUM + 1000);
 

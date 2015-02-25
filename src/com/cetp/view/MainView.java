@@ -8,7 +8,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.database.Cursor;
 
+import android.sax.StartElementListener;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -19,6 +22,10 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.cetp.R;
+import com.cetp.action.AppVariable;
+import com.cetp.database.DBCommon;
+import com.cetp.database.DBListeningOfQuestion;
+import com.cetp.service.PlayerService;
 
 public class MainView {
 	// 定义按钮
@@ -33,6 +40,7 @@ public class MainView {
 	Activity activity;
 	View viewDialog;
 	final String TYPE_OF_VIEW = "typeofview";
+
 	public MainView(Context c) {
 		mContext = c;
 		activity = (Activity) c;
@@ -57,8 +65,10 @@ public class MainView {
 			RelativeLayout.OnClickListener {
 		private int selectedIndex = 0;
 		/** 用于保存用户状态 */
-		final SharedPreferences myPrefs = activity.getPreferences(mContext.MODE_PRIVATE);
+		final SharedPreferences myPrefs = activity
+				.getPreferences(mContext.MODE_PRIVATE);
 		int typeOfView = myPrefs.getInt(TYPE_OF_VIEW, 0);
+
 		@Override
 		public void onClick(View v) {
 			if (v == rltIndexfenxiang) {
@@ -81,18 +91,33 @@ public class MainView {
 									@Override
 									public void onClick(DialogInterface arg0,
 											int arg1) {
+										/** 将选择的项目保存 *************************************/
 										Editor editor = myPrefs.edit();
-										editor.putInt(TYPE_OF_VIEW, selectedIndex);
+										editor.putInt(TYPE_OF_VIEW,
+												selectedIndex);
 										// Write other values as desired
 										editor.commit();
-
+										AppVariable.Common.TypeOfView = selectedIndex;
 										// Toast.makeText(mContext,
 										// array[selectedIndex],
 										// Toast.LENGTH_LONG).show();
-										mContext.startActivity(new Intent(
-												mContext, CommonTab.class));
-//										activity.setTitle(array[selectedIndex]);
+										/** 检查数据表是否存在，数据表中是否有数据，没有则下载数据，导入数据 */
+										if (!DBCommon.checkDB(selectedIndex,
+												mContext)) {
+											Intent intent = new Intent();
+											intent.putExtra("VIEW",
+													selectedIndex);
+											intent.setClass(mContext,
+													DownLoadView.class);
+											mContext.startActivity(intent);
+											// Toast.makeText(mContext, "跳转到下载",
+											// Toast.LENGTH_LONG).show();
+										} else
+											mContext.startActivity(new Intent(
+													mContext, CommonTab.class));
+										// activity.setTitle(array[selectedIndex]);
 									}
+
 								}).setNegativeButton("取消", null).create();
 				alertDialog.show();
 			} else if (v == rltIndexshoucang) {
@@ -105,4 +130,34 @@ public class MainView {
 			}
 		}
 	}
+
+	// private boolean checkDB(int index) {
+	// boolean result = false;
+	// if (index == 0)
+	// result = checkListeningDB();
+	// else
+	//
+	// return result;
+	// }
+	//
+	// private boolean checkListeningDB() {
+	// boolean result = false;
+	// DBListeningOfQuestion db = new DBListeningOfQuestion(mContext);
+	// // else;
+	// db.open();
+	// if (db.checkTableExists(db.getDatabaseName())) {
+	// System.out.println("checkDB:Table(" + db.getDatabaseName()
+	// + ") exist");
+	// Cursor cur;// 结果集
+	// cur = db.getAllItem();
+	// if (cur.getCount() == 0) {
+	// Log.v("MainView", "no data in " + db.getDatabaseName());
+	// result = false;
+	// } else
+	// result = true;
+	// cur.close();
+	// }
+	// db.close();
+	// return result;
+	// }
 }

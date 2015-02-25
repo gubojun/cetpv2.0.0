@@ -44,6 +44,10 @@ public class DBListeningOfQuestion {
 		DBHelper = new DatabaseHelper(context);
 	}
 
+	public String getDatabaseName() {
+		return DATABASE_TABLE;
+	}
+
 	// private static class DatabaseHelper extends SQLiteOpenHelper {
 	// DatabaseHelper(Context context) {
 	// super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -194,6 +198,7 @@ public class DBListeningOfQuestion {
 		Log.v(TAG, "Activity State: checkSqlExists()");
 		boolean result = false;
 		if (tableName == null) {
+
 			return false;
 		}
 		SQLiteDatabase db = null;

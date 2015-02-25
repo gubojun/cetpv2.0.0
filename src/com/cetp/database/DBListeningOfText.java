@@ -11,24 +11,23 @@ public class DBListeningOfText {
 	public static final String KEY_ID = "ID";// id
 	public static final String KEY_YEARMONTH = "YYYYMM";// 年月
 	public static final String KEY_QUESIONTYPE = "QuestionType";// 题目类型
-	public static final String KEY_QUESTIONNUMBER = "QuestionNumber";//题号
-	public static final String KEY_PASSAGETEXT = "PassageText";//题目文本
-	public static final String KEY_QUESTIONSTARTNUMBER = "QuestionStartNumber";//文本所做的开始的题
-	public static final String KEY_QUESTIONENDNUMBER = "QuestionEndNumber";//文本所做的结束的题
-	public static final String KEY_QUESTIONTOTAL = "QuestionTotal";//总共的题数
+	public static final String KEY_QUESTIONNUMBER = "QuestionNumber";// 题号
+	public static final String KEY_PASSAGETEXT = "PassageText";// 题目文本
+	public static final String KEY_QUESTIONSTARTNUMBER = "QuestionStartNumber";// 文本所做的开始的题
+	public static final String KEY_QUESTIONENDNUMBER = "QuestionEndNumber";// 文本所做的结束的题
+	public static final String KEY_QUESTIONTOTAL = "QuestionTotal";// 总共的题数
 
 	private static final String TAG = "DBListening";
 	private static final String DATABASE_TABLE = "Listening_Comprehension_Passage";
 	private static final String DATABASE_CREATE = "create table if not exists "
-			+ DATABASE_TABLE
-			+ " (ID integer primary key autoincrement, "// 自增的
+			+ DATABASE_TABLE + " (ID integer primary key autoincrement, "// 自增的
 			+ "YYYYMM text not null, " // 年月
 			+ "QuestionType text not null, "// 题目类型
-			+ "QuestionNumber text not null, "//题号
-			+ "PassageText text not null, "//题目文本
-			+ "QuestionStartNumber text not null, "//文本所做的开始的题
-			+ "QuestionEndNumber text not null, "//文本所做的结束的题
-			+ "QuestionTotal text not null);";//总共的题数
+			+ "QuestionNumber text not null, "// 题号
+			+ "PassageText text not null, "// 题目文本
+			+ "QuestionStartNumber text not null, "// 文本所做的开始的题
+			+ "QuestionEndNumber text not null, "// 文本所做的结束的题
+			+ "QuestionTotal text not null);";// 总共的题数
 	private final Context context;
 	private DatabaseHelper DBHelper;
 	private SQLiteDatabase db;
@@ -36,6 +35,10 @@ public class DBListeningOfText {
 	public DBListeningOfText(Context ctx) {
 		this.context = ctx;
 		DBHelper = new DatabaseHelper(context);
+	}
+
+	public String getDatabaseName() {
+		return DATABASE_TABLE;
 	}
 
 	// ---打开数据库---
@@ -52,8 +55,9 @@ public class DBListeningOfText {
 
 	// ---向数据库中插入一个数据---
 	public long insertItem(String YYYYMM, String QuestionType,
-			String QuestionNumber, String PassageText, String QuestionStartNumber,
-			String QusetionEndNumber, String QuestionTotal) {
+			String QuestionNumber, String PassageText,
+			String QuestionStartNumber, String QusetionEndNumber,
+			String QuestionTotal) {
 		ContentValues initialValues = new ContentValues();
 		// 赋初值
 		initialValues.put(KEY_YEARMONTH, YYYYMM);
@@ -80,21 +84,20 @@ public class DBListeningOfText {
 	// ---检索所有数据---
 
 	public Cursor getAllItem() {
-		return db.query(DATABASE_TABLE, new String[] { KEY_ID,
-				KEY_YEARMONTH, KEY_QUESIONTYPE,KEY_QUESTIONNUMBER, KEY_PASSAGETEXT,
+		return db.query(DATABASE_TABLE, new String[] { KEY_ID, KEY_YEARMONTH,
+				KEY_QUESIONTYPE, KEY_QUESTIONNUMBER, KEY_PASSAGETEXT,
 				KEY_QUESTIONSTARTNUMBER, KEY_QUESTIONENDNUMBER,
-				KEY_QUESTIONTOTAL },
-				null, null, null, null, null);
+				KEY_QUESTIONTOTAL }, null, null, null, null, null);
 	}
 
 	// ---检索一个指定数据---
 
 	public Cursor getItem(long rowId) throws SQLException {
-		Cursor mCursor = db.query(true, DATABASE_TABLE, new String[] {
-				KEY_ID, KEY_YEARMONTH, KEY_QUESIONTYPE,KEY_QUESTIONNUMBER, KEY_PASSAGETEXT,
-				KEY_QUESTIONSTARTNUMBER, KEY_QUESTIONENDNUMBER,
-				KEY_QUESTIONTOTAL },
-				KEY_ID + "=" + rowId, null, null, null, null, null);
+		Cursor mCursor = db.query(true, DATABASE_TABLE, new String[] { KEY_ID,
+				KEY_YEARMONTH, KEY_QUESIONTYPE, KEY_QUESTIONNUMBER,
+				KEY_PASSAGETEXT, KEY_QUESTIONSTARTNUMBER,
+				KEY_QUESTIONENDNUMBER, KEY_QUESTIONTOTAL }, KEY_ID + "="
+				+ rowId, null, null, null, null, null);
 
 		if (mCursor != null) {
 			mCursor.moveToFirst();
@@ -103,11 +106,11 @@ public class DBListeningOfText {
 	}
 
 	public Cursor getItemFromYM(String YYYYMM) throws SQLException {
-		Cursor mCursor = db.query(true, DATABASE_TABLE, new String[] {
-				KEY_ID, KEY_YEARMONTH, KEY_QUESIONTYPE,KEY_QUESTIONNUMBER, KEY_PASSAGETEXT,
-				KEY_QUESTIONSTARTNUMBER, KEY_QUESTIONENDNUMBER,
-				KEY_QUESTIONTOTAL},
-				KEY_YEARMONTH + "=" + YYYYMM, null, null, null, null, null);
+		Cursor mCursor = db.query(true, DATABASE_TABLE, new String[] { KEY_ID,
+				KEY_YEARMONTH, KEY_QUESIONTYPE, KEY_QUESTIONNUMBER,
+				KEY_PASSAGETEXT, KEY_QUESTIONSTARTNUMBER,
+				KEY_QUESTIONENDNUMBER, KEY_QUESTIONTOTAL }, KEY_YEARMONTH + "="
+				+ YYYYMM, null, null, null, null, null);
 		if (mCursor != null) {
 			mCursor.moveToFirst();
 		}
@@ -115,9 +118,10 @@ public class DBListeningOfText {
 	}
 
 	// ---更新一个数据---
-	public boolean updateItem(long rowId,String YYYYMM, String QuestionType,
-			String QuestionNumber, String PassageText, String QuestionStartNumber,
-			String QusetionEndNumber, String QuestionTotal) {
+	public boolean updateItem(long rowId, String YYYYMM, String QuestionType,
+			String QuestionNumber, String PassageText,
+			String QuestionStartNumber, String QusetionEndNumber,
+			String QuestionTotal) {
 		ContentValues args = new ContentValues();
 		args.put(KEY_YEARMONTH, YYYYMM);
 		args.put(KEY_QUESIONTYPE, QuestionType);
@@ -126,7 +130,6 @@ public class DBListeningOfText {
 		args.put(KEY_QUESTIONSTARTNUMBER, QuestionStartNumber);
 		args.put(KEY_QUESTIONENDNUMBER, QusetionEndNumber);
 		args.put(KEY_QUESTIONTOTAL, QuestionTotal);
-
 
 		return db.update(DATABASE_TABLE, args, KEY_ID + "=" + rowId, null) > 0;
 	}

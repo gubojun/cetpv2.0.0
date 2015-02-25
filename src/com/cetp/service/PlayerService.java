@@ -5,7 +5,7 @@ import java.io.IOException;
 import com.cetp.R;
 import com.cetp.action.AppConstant;
 import com.cetp.action.AppVariable;
-import com.cetp.view.ListeningViewQuestion1;
+import com.cetp.view.ListeningViewQuestion;
 
 import android.app.Service;
 import android.content.Context;
@@ -114,14 +114,14 @@ public class PlayerService extends Service implements Runnable,
 			/* 是否单曲循环 */
 			mMediaPlayer.setLooping(isLoop);
 			// 设置进度条最大值
-			ListeningViewQuestion1.audioSeekBar
+			ListeningViewQuestion.audioSeekBar
 					.setMax(PlayerService.mMediaPlayer.getDuration());
 			// 设置总时间
 			int totalTime = mMediaPlayer.getDuration() / 1000;// 计算总时间
 			int secondTime = totalTime % 60;// 计算秒数
 			int minuteTime = totalTime / 60;// 计算分钟数
 
-			ListeningViewQuestion1.txtListeningTimeTotal.setText(String.format(
+			ListeningViewQuestion.txtListeningTimeTotal.setText(String.format(
 					"%1$02d", minuteTime)
 					+ ":"
 					+ String.format("%1$02d", secondTime));
@@ -146,7 +146,7 @@ public class PlayerService extends Service implements Runnable,
 				e.printStackTrace();
 			}
 			// 设置进度条位置
-			ListeningViewQuestion1.audioSeekBar.setProgress(CurrentPosition);
+			ListeningViewQuestion.audioSeekBar.setProgress(CurrentPosition);
 		}
 
 	}
@@ -168,9 +168,9 @@ public class PlayerService extends Service implements Runnable,
 //			Toast.makeText(PlayerService.this, "听力测试结束！", Toast.LENGTH_SHORT)
 //					.show();
 
-		ListeningViewQuestion1.audioSeekBar.setMax(0);
-		ListeningViewQuestion1.ifMusicStart = 1;
-		ListeningViewQuestion1.imgListeningMedia
+		ListeningViewQuestion.audioSeekBar.setMax(0);
+		ListeningViewQuestion.ifMusicStart = 1;
+		ListeningViewQuestion.imgListeningMedia
 				.setImageResource(android.R.drawable.ic_media_play);
 		// ListeningViewQuestion.audioSeekBar.setMax(0);
 		// ListeningViewQuestion.ifMusicStart = 1;

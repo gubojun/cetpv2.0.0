@@ -24,6 +24,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.content.res.Configuration;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
@@ -193,11 +194,11 @@ public class MainTab extends Activity {
 		txtSetting2 = (TextView) view1.findViewById(R.id.txt_setting2);
 		txtSetting1.setOnClickListener(txtonclick);
 		txtSetting2.setOnClickListener(txtonclick);
-		/**设置当前年月日****************************************************/
+		/** 设置当前年月日 ****************************************************/
 		Date dateNow = new Date(System.currentTimeMillis());// 获取当前时间
 		txtDate.setText(DateUtils.dateToStr("yyyy/MM/dd", dateNow));
-		/*******************************************************************/
-		/**设置测试年份******************************************************/
+		/********************************************************************/
+		/** 设置测试年份 ******************************************************/
 		/** 用于保存用户状态 */
 		final SharedPreferences myPrefs = this
 				.getPreferences(this.MODE_PRIVATE);
@@ -210,6 +211,8 @@ public class MainTab extends Activity {
 		mDay = c.get(Calendar.DAY_OF_MONTH);
 		Log.v("yyyyMMdd", mYear + ":" + mMonth + ":" + mDay);
 		updateDisplay();
+
+		
 	}
 
 	OnClickListener txtonclick = new OnClickListener() {
@@ -363,6 +366,13 @@ public class MainTab extends Activity {
 
 	@Override
 	protected Dialog onCreateDialog(int id) {
+//		/**********************************************************/
+//		Locale locale = new Locale("CH");
+//		Locale.setDefault(locale);
+//		Configuration config = new Configuration();
+//		config.locale = locale;
+//		getApplicationContext().getResources()
+//				.updateConfiguration(config, null);
 		switch (id) {
 		case TIME_DIALOG_ID:
 			return new TimePickerDialog(this, mTimeSetListener, mHour, mMinute,
@@ -370,6 +380,7 @@ public class MainTab extends Activity {
 		case DATE_DIALOG_ID:
 			return new MyDatePickerDialog(this, mDateSetListener, mYear,
 					mMonth, mDay);
+	
 		}
 		return null;
 	}
@@ -386,8 +397,9 @@ public class MainTab extends Activity {
 			super(context, callBack, year, monthOfYear, dayOfMonth);
 
 			this.setTitle(year + "年" + (monthOfYear + 1) + "月");
-			// ((ViewGroup) ((ViewGroup) this.getDatePicker().getChildAt(0))
-			// .getChildAt(0)).getChildAt(2).setVisibility(View.GONE);
+			/**隐藏日期选项*/
+			 ((ViewGroup) ((ViewGroup) this.getDatePicker().getChildAt(0))
+			 .getChildAt(0)).getChildAt(1).setVisibility(View.GONE);
 		}
 
 		@Override

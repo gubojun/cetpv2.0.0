@@ -47,7 +47,7 @@ public class CommonTab extends Activity {
 	private PopupWindow menuWindow;
 	private LayoutInflater inflater;
 	final String TYPE_OF_VIEW = "typeofview";
-	ListeningViewAnswer1 listeninganswer = new ListeningViewAnswer1(this);
+	ListeningViewAnswer listeninganswer = new ListeningViewAnswer(this);
 	ReadingViewAnswer1 readingviewanswer = new ReadingViewAnswer1(this);
 	ClozingViewAnswer1 clozingviewanswer = new ClozingViewAnswer1(this);
 	View viewAnswer;
@@ -118,7 +118,7 @@ public class CommonTab extends Activity {
 			view2 = mLi.inflate(R.layout.listeningview_questiontext, null);
 			view3 = mLi.inflate(R.layout.listeningview_answer, null);
 
-			ListeningViewQuestion1 listeningviewquestion = new ListeningViewQuestion1(
+			ListeningViewQuestion listeningviewquestion = new ListeningViewQuestion(
 					this);
 			ListeningViewQuestiontext1 listeningviewquestiontext = new ListeningViewQuestiontext1(
 					this);

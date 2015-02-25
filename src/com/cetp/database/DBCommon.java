@@ -14,6 +14,11 @@ public class DBCommon extends DatabaseHelper {
 	// private static final int version = 1; // 数据库版本
 	private DatabaseHelper DBHelper;
 	private SQLiteDatabase db;
+	public static boolean isListeningOfQuestion, isListeningOfText,
+			isListeningOfConversation;
+	public static boolean isClozingOfQuestion, isClozingOfText;
+	public static boolean isReadingOfQuestion, isReadingOfPassage;
+	public static boolean isVocabulary;
 
 	public DBCommon(Context context) {
 		super(context);
@@ -63,18 +68,6 @@ public class DBCommon extends DatabaseHelper {
 		DBHelper.close();
 	}
 
-	// ---向数据库中插入一个数据---
-	// public long insertItem(String YYYYMM, String QuestionType,
-	// String QuestionNumber, String QuestionText) {
-	// ContentValues initialValues = new ContentValues();
-	// // 赋初值
-	// initialValues.put(KEY_2, YYYYMM);
-	// initialValues.put(KEY_3, QuestionType);
-	// initialValues.put(KEY_4, QuestionNumber);
-	// initialValues.put(KEY_5, QuestionText);
-	// return db.insert(DATABASE_TABLE, null, initialValues);
-	// }
-
 	// ---删除所有数据---
 	public void deleteAllItem(String DATABASE_TABLE) {
 		db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE);
@@ -93,65 +86,187 @@ public class DBCommon extends DatabaseHelper {
 
 	}
 
-	// ---删除一个指定数据---
-	// public boolean deleteItem(long rowId) {
-	// return db.delete(DATABASE_TABLE, KEY_ID + "=" + rowId, null) > 0;
-	// }
+	/** 0听力 1完型 2阅读 3词汇 **/
+	public static boolean checkDB(int index, Context context) {
+		boolean result = false;
+		if (index == 0) {
+			isListeningOfQuestion = checkDBListeningOfQuestion(context);
+			isListeningOfText = checkDBListeningOfText(context);
+			isListeningOfConversation = checkDBListeningOfConversation(context);
+			result = isListeningOfQuestion & isListeningOfText
+					& isListeningOfConversation;
+		} else if (index == 1) {
+			isClozingOfQuestion = checkDBClozingOfQuestion(context);
+			isClozingOfText = checkDBClozingOfText(context);
+			result = isClozingOfQuestion & isClozingOfText;
+		} else if (index == 2) {
+			isReadingOfQuestion = checkDBReadingOfQuestion(context);
+			isReadingOfPassage = checkDBReadingOfPassage(context);
+			result = isReadingOfPassage & isReadingOfQuestion;
+		} else if (index == 3) {
+			isVocabulary = checkDBVocabulary(context);
+			result = isVocabulary;
+		}
+		return result;
+	}
 
-	// ---检索所有数据---
+	public static boolean checkDBListeningOfQuestion(Context context) {
+		boolean result = false;
+		DBListeningOfQuestion db = new DBListeningOfQuestion(context);
+		db.open();
+		if (db.checkTableExists(db.getDatabaseName())) {
+			System.out.println("checkDB:Table(" + db.getDatabaseName()
+					+ ") exist");
+			Cursor cur;// 结果集
+			cur = db.getAllItem();
+			if (cur.getCount() == 0) {
+				Log.v("MainView", "no data in " + db.getDatabaseName());
+				result = false;
+			} else
+				result = true;
+			cur.close();
+		}
+		db.close();
+		return result;
+	}
 
-	// public Cursor getAllItem() {
-	// return db.query(DATABASE_TABLE, new String[] { KEY_ID, KEY_YEARMONTH,
-	// KEY_QUESIONTYPE, KEY_QUESTIONNUMBER, KEY_QUESTIONTEXT }, null,
-	// null, null, null, null);
-	// }
+	public static boolean checkDBListeningOfText(Context context) {
+		boolean result = false;
+		DBListeningOfText db = new DBListeningOfText(context);
+		db.open();
+		if (db.checkTableExists(db.getDatabaseName())) {
+			System.out.println("checkDB:Table(" + db.getDatabaseName()
+					+ ") exist");
+			Cursor cur;// 结果集
+			cur = db.getAllItem();
+			if (cur.getCount() == 0) {
+				Log.v("MainView", "no data in " + db.getDatabaseName());
+				result = false;
+			} else
+				result = true;
+			cur.close();
+		}
+		db.close();
+		return result;
+	}
 
-	// ---检索一个指定数据---
+	public static boolean checkDBListeningOfConversation(Context context) {
+		boolean result = false;
+		DBListeningOfConversation db = new DBListeningOfConversation(context);
+		db.open();
+		if (db.checkTableExists(db.getDatabaseName())) {
+			System.out.println("checkDB:Table(" + db.getDatabaseName()
+					+ ") exist");
+			Cursor cur;// 结果集
+			cur = db.getAllItem();
+			if (cur.getCount() == 0) {
+				Log.v("MainView", "no data in " + db.getDatabaseName());
+				result = false;
+			} else
+				result = true;
+			cur.close();
+		}
+		db.close();
+		return result;
+	}
 
-	// public Cursor getItem(long rowId) throws SQLException {
-	// Cursor mCursor = db.query(true, DATABASE_TABLE, new String[] { KEY_ID,
-	// KEY_YEARMONTH, KEY_QUESIONTYPE, KEY_QUESTIONNUMBER,
-	// KEY_QUESTIONTEXT }, KEY_ID + "=" + rowId, null, null, null,
-	// null, null);
-	//
-	// if (mCursor != null) {
-	// mCursor.moveToFirst();
-	// }
-	// return mCursor;
-	// }
+	public static boolean checkDBClozingOfQuestion(Context context) {
+		boolean result = false;
+		DBClozingOfQuestion db = new DBClozingOfQuestion(context);
+		db.open();
+		if (db.checkTableExists(db.getDatabaseName())) {
+			System.out.println("checkDB:Table(" + db.getDatabaseName()
+					+ ") exist");
+			Cursor cur;// 结果集
+			cur = db.getAllItem();
+			if (cur.getCount() == 0) {
+				Log.v("MainView", "no data in " + db.getDatabaseName());
+				result = false;
+			} else
+				result = true;
+			cur.close();
+		}
+		db.close();
+		return result;
+	}
 
-	// ---更新一个数据---
-	// public boolean updateItem(long rowId, String YYYYMM, String QuestionType,
-	// String QuestionNumber, String QuestionText) {
-	// ContentValues args = new ContentValues();
-	// args.put(KEY_YEARMONTH, YYYYMM);
-	// args.put(KEY_QUESIONTYPE, QuestionType);
-	// args.put(KEY_QUESTIONNUMBER, QuestionNumber);
-	// args.put(KEY_QUESTIONTEXT, QuestionText);
-	//
-	// return db.update(DATABASE_TABLE, args, KEY_ID + "=" + rowId, null) > 0;
-	// }
+	public static boolean checkDBClozingOfText(Context context) {
+		boolean result = false;
+		DBClozingOfText db = new DBClozingOfText(context);
+		db.open();
+		if (db.checkTableExists(db.getDatabaseName())) {
+			System.out.println("checkDB:Table(" + db.getDatabaseName()
+					+ ") exist");
+			Cursor cur;// 结果集
+			cur = db.getAllItem();
+			if (cur.getCount() == 0) {
+				Log.v("MainView", "no data in " + db.getDatabaseName());
+				result = false;
+			} else
+				result = true;
+			cur.close();
+		}
+		db.close();
+		return result;
+	}
 
-	/**
-	 * 根据ID查询某条记录
-	 * 
-	 * @param id
-	 * @return
-	 */
-	// public Cursor findItem(Integer id) {
-	// Cursor cursor = db.rawQuery("select * from " + DATABASE_TABLE
-	// + " where ID=?", new String[] { id.toString() });
-	// Cursor 游标和ResultSet很像
-	// if (cursor.moveToFirst()) {
-	// Move the cursor to the first row. This
-	// method will return false if the cursor is
-	// empty.
-	// int rowId = cursor.getInt(cursor.getColumnIndex("ID"));
-	// String yearmonth = cursor
-	// .getString(cursor.getColumnIndex("YYYYMM"));
-	// String phone = cursor.getString(cursor.getColumnIndex("phone"));
-	// return cursor;
-	// }
-	// return null;
-	// }
+	public static boolean checkDBReadingOfQuestion(Context context) {
+		boolean result = false;
+		DBReadingOfQuestion db = new DBReadingOfQuestion(context);
+		db.open();
+		if (db.checkTableExists(db.getDatabaseName())) {
+			System.out.println("checkDB:Table(" + db.getDatabaseName()
+					+ ") exist");
+			Cursor cur;// 结果集
+			cur = db.getAllItem();
+			if (cur.getCount() == 0) {
+				Log.v("MainView", "no data in " + db.getDatabaseName());
+				result = false;
+			} else
+				result = true;
+			cur.close();
+		}
+		db.close();
+		return result;
+	}
+
+	public static boolean checkDBReadingOfPassage(Context context) {
+		boolean result = false;
+		DBReadingOfPassage db = new DBReadingOfPassage(context);
+		db.open();
+		if (db.checkTableExists(db.getDatabaseName())) {
+			System.out.println("checkDB:Table(" + db.getDatabaseName()
+					+ ") exist");
+			Cursor cur;// 结果集
+			cur = db.getAllItem();
+			if (cur.getCount() == 0) {
+				Log.v("MainView", "no data in " + db.getDatabaseName());
+				result = false;
+			} else
+				result = true;
+			cur.close();
+		}
+		db.close();
+		return result;
+	}
+
+	public static boolean checkDBVocabulary(Context context) {
+		boolean result = false;
+		DBVocabulary db = new DBVocabulary(context);
+		db.open();
+		if (db.checkTableExists(db.getDatabaseName())) {
+			System.out.println("checkDB:Table(" + db.getDatabaseName()
+					+ ") exist");
+			Cursor cur;// 结果集
+			cur = db.getAllItem();
+			if (cur.getCount() == 0) {
+				Log.v("MainView", "no data in " + db.getDatabaseName());
+				result = false;
+			} else
+				result = true;
+			cur.close();
+		}
+		db.close();
+		return result;
+	}
 }

@@ -11,18 +11,17 @@ public class DBListeningOfConversation {
 	public static final String KEY_ID = "ID";// id
 	public static final String KEY_YEARMONTH = "YYYYMM";// 年月
 	public static final String KEY_QUESIONTYPE = "QuestionType";// 题目类型
-	public static final String KEY_QUESTIONNUMBER = "QuestionNumber";//题号
-	public static final String KEY_QUESTIONTEXT = "QuestionText";//题目文本
+	public static final String KEY_QUESTIONNUMBER = "QuestionNumber";// 题号
+	public static final String KEY_QUESTIONTEXT = "QuestionText";// 题目文本
 
 	private static final String TAG = "DBListening";
 	private static final String DATABASE_TABLE = "Listening_Comprehension_Conversation";
 	private static final String DATABASE_CREATE = "create table if not exists "
-			+ DATABASE_TABLE
-			+ " (ID integer primary key autoincrement, "// 自增的
+			+ DATABASE_TABLE + " (ID integer primary key autoincrement, "// 自增的
 			+ "YYYYMM text not null, " // 年月
 			+ "QuestionType text not null, "// 题目类型
-			+ "QuestionNumber text not null, "//题号
-			+ "QuestionText text not null); ";//题目文本
+			+ "QuestionNumber text not null, "// 题号
+			+ "QuestionText text not null); ";// 题目文本
 	private final Context context;
 	private DatabaseHelper DBHelper;
 	private SQLiteDatabase db;
@@ -37,6 +36,10 @@ public class DBListeningOfConversation {
 	public DBListeningOfConversation open() throws SQLException {
 		db = DBHelper.getWritableDatabase();
 		return this;
+	}
+
+	public String getDatabaseName() {
+		return DATABASE_TABLE;
 	}
 
 	// ---关闭数据库---
@@ -70,19 +73,18 @@ public class DBListeningOfConversation {
 	// ---检索所有数据---
 
 	public Cursor getAllItem() {
-		return db.query(DATABASE_TABLE, new String[] { KEY_ID,
-				KEY_YEARMONTH, KEY_QUESIONTYPE,KEY_QUESTIONNUMBER, KEY_QUESTIONTEXT,
-				 },
-				null, null, null, null, null);
+		return db.query(DATABASE_TABLE, new String[] { KEY_ID, KEY_YEARMONTH,
+				KEY_QUESIONTYPE, KEY_QUESTIONNUMBER, KEY_QUESTIONTEXT, }, null,
+				null, null, null, null);
 	}
 
 	// ---检索一个指定数据---
 
 	public Cursor getItem(long rowId) throws SQLException {
-		Cursor mCursor = db.query(true, DATABASE_TABLE, new String[] {
-				KEY_ID, KEY_YEARMONTH, KEY_QUESIONTYPE,KEY_QUESTIONNUMBER, KEY_QUESTIONTEXT,
-				 },
-				KEY_ID + "=" + rowId, null, null, null, null, null);
+		Cursor mCursor = db.query(true, DATABASE_TABLE, new String[] { KEY_ID,
+				KEY_YEARMONTH, KEY_QUESIONTYPE, KEY_QUESTIONNUMBER,
+				KEY_QUESTIONTEXT, }, KEY_ID + "=" + rowId, null, null, null,
+				null, null);
 
 		if (mCursor != null) {
 			mCursor.moveToFirst();
@@ -91,10 +93,10 @@ public class DBListeningOfConversation {
 	}
 
 	public Cursor getItemFromYM(String YYYYMM) throws SQLException {
-		Cursor mCursor = db.query(true, DATABASE_TABLE, new String[] {
-				KEY_ID, KEY_YEARMONTH, KEY_QUESIONTYPE,KEY_QUESTIONNUMBER, KEY_QUESTIONTEXT,
-				},
-				KEY_YEARMONTH + "=" + YYYYMM, null, null, null, null, null);
+		Cursor mCursor = db.query(true, DATABASE_TABLE, new String[] { KEY_ID,
+				KEY_YEARMONTH, KEY_QUESIONTYPE, KEY_QUESTIONNUMBER,
+				KEY_QUESTIONTEXT, }, KEY_YEARMONTH + "=" + YYYYMM, null, null,
+				null, null, null);
 		if (mCursor != null) {
 			mCursor.moveToFirst();
 		}
@@ -102,14 +104,13 @@ public class DBListeningOfConversation {
 	}
 
 	// ---更新一个数据---
-	public boolean updateItem(long rowId,String YYYYMM, String QuestionType,
+	public boolean updateItem(long rowId, String YYYYMM, String QuestionType,
 			String QuestionNumber, String QuestionText) {
 		ContentValues args = new ContentValues();
 		args.put(KEY_YEARMONTH, YYYYMM);
 		args.put(KEY_QUESIONTYPE, QuestionType);
 		args.put(KEY_QUESTIONTEXT, QuestionNumber);
 		args.put(KEY_QUESTIONTEXT, QuestionText);
-
 
 		return db.update(DATABASE_TABLE, args, KEY_ID + "=" + rowId, null) > 0;
 	}

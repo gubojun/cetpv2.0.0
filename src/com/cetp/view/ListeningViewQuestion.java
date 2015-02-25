@@ -18,7 +18,7 @@ import com.cetp.database.DBListeningOfQuestion;
 import com.cetp.question.QuestionContext;
 import com.cetp.service.PlayerService;
 
-public class ListeningViewQuestion1 {
+public class ListeningViewQuestion {
 	public int FINGER_MOVE_ACTION = 0;
 
 	public static final String TAG = "ListeningView";
@@ -46,7 +46,7 @@ public class ListeningViewQuestion1 {
 	Context context;
 
 	// View view;
-	public ListeningViewQuestion1(Context c) {
+	public ListeningViewQuestion(Context c) {
 		context = c;
 		// view =v;
 	}
@@ -170,7 +170,7 @@ public class ListeningViewQuestion1 {
 			int secondTime = totalTime % 60;// 计算秒数
 			int minuteTime = totalTime / 60;// 计算分钟数
 			// 设置当前时间
-			ListeningViewQuestion1.txtListeningTimeNow.setText(String.format(
+			ListeningViewQuestion.txtListeningTimeNow.setText(String.format(
 					"%1$02d", minuteTime)
 					+ ":"
 					+ String.format("%1$02d", secondTime));

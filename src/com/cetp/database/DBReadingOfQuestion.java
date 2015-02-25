@@ -46,25 +46,9 @@ public class DBReadingOfQuestion {
 		DBHelper = new DatabaseHelper(context);
 	}
 
-	// private static class DatabaseHelper extends SQLiteOpenHelper {
-	// DatabaseHelper(Context context) {
-	// super(context, DATABASE_NAME, null, DATABASE_VERSION);
-	// }
-	//
-	// @Override
-	// public void onCreate(SQLiteDatabase db) {
-	// db.execSQL(DATABASE_CREATE);
-	// }
-	//
-	// @Override
-	// public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
-	// {
-	// Log.w(TAG, "Upgrading database from version " + oldVersion + " to "
-	// + newVersion + ", which will destroy all old data");
-	// db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE);
-	// onCreate(db);
-	// }
-	// }
+	public String getDatabaseName() {
+		return DATABASE_TABLE;
+	}
 
 	// ---打开数据库---
 
