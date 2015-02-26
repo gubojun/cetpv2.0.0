@@ -1,7 +1,7 @@
 package com.cetp.view;
 
 import com.cetp.R;
-import com.cetp.database.DBReadingOfQuestion;
+import com.cetp.database.DBClozingOfQuestion;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -13,116 +13,126 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
-import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.RadioGroup.LayoutParams;
 
-public class ReadingViewAnswer1 {
-	private String TAG = "ReadingViewAnswer1";
-	private TextView txtQuestionNumber;// 题号
-	private LinearLayout myLayout;// 水平线性布局
+public class ClozingViewAnswer {
+	private String TAG = "ClozingViewAnswer1";
+
+	private static String[] theCorrectAnswer = new String[200];
+	private LinearLayout myLayout;
 	private LinearLayout layout;
-	private TextView txtReadingAnswer;// 正确答案
-	private TextView txtReadingAnswerOfUser;// 用户所答的答案
-	private static int questionAmount;// 记录的题目数目
+
+	private TextView txtQuestionNumber;// 题号
+	/** 正确答案 */
+	private TextView txtClozingAnswer;
+	/** 用户所答的答案 */
+	private TextView txtClozingAnswerOfUser;
+	/** 记录题目的数目 */
+	private static int questionAmount;
+	/** 记录数据的数目 */
 	private static int dataCount;
 
-	// public static ReadingViewAnswer INSTANCE;
-	TabHost tabHost;
 	// ------布局方式--------
+	@SuppressWarnings("unused")
 	private final LinearLayout.LayoutParams LP_FF = new LinearLayout.LayoutParams(
 			LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
 	private final LinearLayout.LayoutParams LP_FW = new LinearLayout.LayoutParams(
 			LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+	@SuppressWarnings("unused")
 	private final LinearLayout.LayoutParams LP_WW = new LinearLayout.LayoutParams(
 			LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 	private Cursor cur;
 
-	private static int userRightAnswer = 0;
-	private static int userWrongAnswer = 0;
+	private int userRightAnswer = 0;
+
+	private int userWrongAnswer = 0;
+
 	private Button userAnswerDiolog;
-	private static String[] theCorrectAnswer = new String[200];
 	Context context;
 
-	public ReadingViewAnswer1(Context c) {
+	public ClozingViewAnswer(Context c) {
 		context = c;
 	}
 
 	public void setView(View v) {
-		DBReadingOfQuestion db = new DBReadingOfQuestion(context);
+		DBClozingOfQuestion db = new DBClozingOfQuestion(context);
 		questionAmount = 0;
 
-		// INSTANCE = this;
 		db.open();
 		Log.v(TAG, "Activity State: checkTableExists()");
-		if (db.checkTableExists("Reading_Comprehension_Question")) {
+		if (db.checkTableExists("Clozing_Passage")) {
 			// ---取出所有数据---
 			cur = db.getAllItem();
+			// cur.moveToFirst();
 		} else {
 			Toast.makeText(context, "数据不存在", Toast.LENGTH_SHORT).show();
 		}
 
-		dataCount = cur.getCount();
-		ScrollView ReadingViewScroll = (ScrollView) v
-				.findViewById(R.id.scr_reading_answer);
+		ScrollView clozingViewScroll = (ScrollView) v
+				.findViewById(R.id.scr_clozing_answer);
 		layout = new LinearLayout(context);
 
 		layout.setOrientation(LinearLayout.VERTICAL); // 控件对其方式为垂直排列
 		layout.setPadding(10, 0, 10, 0);
-		int NUMBER = 0;
+		// 记录数据的数目
+		dataCount = cur.getCount();
+		int AnswerID = 0;
 		while (cur.moveToNext()) {
-			NUMBER++;
+			AnswerID++;
+			// 每道题的线性布局
 			myLayout = new LinearLayout(context);
 			myLayout.setOrientation(LinearLayout.HORIZONTAL);// 水平布局
 			myLayout.setLayoutParams(LP_FW);
 			myLayout.setBackgroundResource(R.drawable.login_input);// 设置背景
-			myLayout.setId(NUMBER + 1000);
+			myLayout.setId(AnswerID + 1000);
 
 			txtQuestionNumber = new TextView(context);
-			txtReadingAnswer = new TextView(context);// 正确答案
-			txtReadingAnswerOfUser = new TextView(context);// 用户答案
-			txtReadingAnswerOfUser.setId(NUMBER);
-			setAnswerText(txtQuestionNumber, txtReadingAnswer,
-					txtReadingAnswerOfUser, context);
-			myLayout.addView(txtReadingAnswer);
-			myLayout.addView(txtReadingAnswerOfUser);
+			txtClozingAnswer = new TextView(context);// 正确答案
+			txtClozingAnswerOfUser = new TextView(context);// 用户答案
+			txtClozingAnswerOfUser.setId(AnswerID);
+			setAnswerText(txtQuestionNumber, txtClozingAnswer,
+					txtClozingAnswerOfUser, AnswerID, context);
+			// 每道题的线性布局包括题目的答案，用户的答案
+			myLayout.addView(txtClozingAnswer);
+			myLayout.addView(txtClozingAnswerOfUser);
+			// 设置背景
+			myLayout.setBackgroundResource(R.drawable.login_input);
+			// 题号加入总的线性布局
 			layout.addView(txtQuestionNumber);
+			// 题目布局加入总的线性布局
 			layout.addView(myLayout);
 		}
-		ReadingViewScroll.addView(layout);
+		clozingViewScroll.addView(layout);
 		cur.close();
 		db.close();
 	}
 
 	private void setAnswerText(TextView txtQuestionNumber,
-			TextView txtReadingAnswer, TextView txtReadingAnswerOfUser,
-			Context context) {
-
-		// 记录题目数目
+			TextView txtClozingAnswer, TextView txtListeningAnswerOfUser,
+			int AnswerID, Context context) {
 		questionAmount++;
 		txtQuestionNumber.setText(String.valueOf(questionAmount));
-		// txtQuestionNumber.setText(cur.getString(cur
-		// .getColumnIndex("QuestionNumber")));
 		txtQuestionNumber.setTextSize(20);
 		txtQuestionNumber.setTextColor(context.getResources().getColor(
 				R.color.red));
-		String theAnswer = ReadingViewQuestion1.readingAnswer_All[Integer
+		String theAnswer = ClozingViewQuestion.clozingAnswer_All[Integer
 				.parseInt((String) txtQuestionNumber.getText())];
+		/** 记录正确答案 */
 		theCorrectAnswer[Integer.parseInt((String) txtQuestionNumber.getText())] = cur
 				.getString(cur.getColumnIndex("Answer"));
-		if (theAnswer == null) {
-			theAnswer = "未作答";
-		}
-		txtReadingAnswer.setText("答案:"
-				+ cur.getString(cur.getColumnIndex("Answer")) + "  " + "你的作答:");
-		txtReadingAnswer.setTextSize(17);
+		String questionAnswer = cur.getString(cur.getColumnIndex("Answer"));
+		txtClozingAnswer.setText("答案:" + questionAnswer + "  " + "你的作答:");
+		txtClozingAnswer.setTextSize(17);
 
-		txtReadingAnswerOfUser.setText(theAnswer);
-		txtReadingAnswerOfUser.setTextSize(17);
-
+		txtListeningAnswerOfUser.setText(theAnswer);
+		txtListeningAnswerOfUser.setTextSize(17);
 		// 设置背景
-		// txtReadingAnswer.setBackgroundResource(R.drawable.login_input);
+		// if (questionAnswer.equals(theAnswer))
+		// txtClozingAnswer.setBackgroundResource(R.drawable.login_input);
+		// else
+		// txtListeningAnswer.setBackgroundResource(R.drawable.optbg);
 	}
 
 	private void showDialog(Context context) {
@@ -148,37 +158,41 @@ public class ReadingViewAnswer1 {
 		builder.show();
 	}
 
-	public void refresh(View v) {
+	/** 更新题目答案 */
+	void reFresh(View v) {
 		int NUM = 0;
 		String theAnswer;
+
 		userRightAnswer = 0;
 		userWrongAnswer = 0;
+
+		System.out.println(dataCount);		// 判断数据库是否有数据
 		if (dataCount != 0) {
 			while (NUM != questionAmount) {
 				NUM++;
-				theAnswer = ReadingViewQuestion1.readingAnswer_All[NUM];
-				txtReadingAnswerOfUser = (TextView) v.findViewById(NUM);
+				theAnswer = ClozingViewQuestion.clozingAnswer_All[NUM];
+				txtClozingAnswerOfUser = (TextView) v.findViewById(NUM);
 				myLayout = (LinearLayout) v.findViewById(NUM + 1000);
 				if (theAnswer == null) {
 					theAnswer = "未作答";
 				} else if (!theAnswer.equals(theCorrectAnswer[NUM])) {
 					myLayout.setBackgroundResource(R.drawable.login_input_dark);// 设置背景
-					txtReadingAnswerOfUser.setTextColor(context.getResources()
+					txtClozingAnswerOfUser.setTextColor(v.getResources()
 							.getColor(R.color.red));
 					userWrongAnswer++;
 				} else {
 					myLayout.setBackgroundResource(R.drawable.login_input_light);// 设置背景
-					txtReadingAnswerOfUser.setTextColor(context.getResources()
+					txtClozingAnswerOfUser.setTextColor(v.getResources()
 							.getColor(R.color.black));
 					userRightAnswer++;
 				}
-				txtReadingAnswerOfUser.setText(theAnswer);
+				txtClozingAnswerOfUser.setText(theAnswer);
 			}
 		}
-		cur.close();
 
-		userAnswerDiolog = (Button) v.findViewById(R.id.user_reading_diolog);
+		userAnswerDiolog = (Button) v.findViewById(R.id.user_clozing_diolog);
 		userAnswerDiolog.setOnClickListener(new OnClickListener() {
+
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub

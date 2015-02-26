@@ -48,8 +48,8 @@ public class CommonTab extends Activity {
 	private LayoutInflater inflater;
 	final String TYPE_OF_VIEW = "typeofview";
 	ListeningViewAnswer listeninganswer = new ListeningViewAnswer(this);
-	ReadingViewAnswer1 readingviewanswer = new ReadingViewAnswer1(this);
-	ClozingViewAnswer1 clozingviewanswer = new ClozingViewAnswer1(this);
+	ReadingViewAnswer readingviewanswer = new ReadingViewAnswer(this);
+	ClozingViewAnswer clozingviewanswer = new ClozingViewAnswer(this);
 	View viewAnswer;
 
 	// private Button mRightBtn;
@@ -120,7 +120,7 @@ public class CommonTab extends Activity {
 
 			ListeningViewQuestion listeningviewquestion = new ListeningViewQuestion(
 					this);
-			ListeningViewQuestiontext1 listeningviewquestiontext = new ListeningViewQuestiontext1(
+			ListeningViewQuestiontext listeningviewquestiontext = new ListeningViewQuestiontext(
 					this);
 			listeningviewquestion.setView(view1);
 			listeningviewquestiontext.setView(view2);
@@ -129,9 +129,9 @@ public class CommonTab extends Activity {
 			view1 = mLi.inflate(R.layout.readingview_question, null);
 			view2 = mLi.inflate(R.layout.readingview_passage, null);
 			view3 = mLi.inflate(R.layout.readingview_answer, null);
-			ReadingViewQuestion1 readingviewquestion = new ReadingViewQuestion1(
+			ReadingViewQuestion readingviewquestion = new ReadingViewQuestion(
 					this);
-			ReadingViewPassage1 readingviewpassage = new ReadingViewPassage1(
+			ReadingViewPassage readingviewpassage = new ReadingViewPassage(
 					this);
 
 			readingviewquestion.setView(view1);
@@ -141,9 +141,9 @@ public class CommonTab extends Activity {
 			view1 = mLi.inflate(R.layout.clozingview_question, null);
 			view2 = mLi.inflate(R.layout.clozingview_passage, null);
 			view3 = mLi.inflate(R.layout.clozingview_answer, null);
-			ClozingViewQuestion1 clozingviewquestion = new ClozingViewQuestion1(
+			ClozingViewQuestion clozingviewquestion = new ClozingViewQuestion(
 					this);
-			ClozingViewPassage1 clozingviewpassage = new ClozingViewPassage1(
+			ClozingViewPassage clozingviewpassage = new ClozingViewPassage(
 					this);
 
 			clozingviewquestion.setView(view1);

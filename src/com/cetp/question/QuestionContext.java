@@ -13,9 +13,9 @@ import android.widget.TextView;
 
 import com.cetp.R;
 import com.cetp.action.AppVariable;
-import com.cetp.view.ClozingViewQuestion1;
+import com.cetp.view.ClozingViewQuestion;
 import com.cetp.view.ListeningViewQuestion;
-import com.cetp.view.ReadingViewQuestion1;
+import com.cetp.view.ReadingViewQuestion;
 import com.cetp.view.VocabularyView;
 
 public class QuestionContext extends LinearLayout {
@@ -141,10 +141,10 @@ public class QuestionContext extends LinearLayout {
 				Answer_All = ListeningViewQuestion.listeningAnswer_All;
 				break;
 			case 1:
-				Answer_All = ReadingViewQuestion1.readingAnswer_All;
+				Answer_All = ReadingViewQuestion.readingAnswer_All;
 				break;
 			case 2:
-				Answer_All = ClozingViewQuestion1.clozingAnswer_All;
+				Answer_All = ClozingViewQuestion.clozingAnswer_All;
 				break;
 			case 3:
 				Answer_All = VocabularyView.vocabularyAnswer_All;

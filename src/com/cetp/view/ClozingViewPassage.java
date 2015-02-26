@@ -13,7 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.RadioGroup.LayoutParams;
 
-public class ClozingViewPassage1 {
+public class ClozingViewPassage {
 	private String TAG = "ClozingViewPassage";
 	/** Ã‚∫≈ */
 	private TextView txtQuestionNumber;
@@ -33,7 +33,7 @@ public class ClozingViewPassage1 {
 
 	Context context;
 
-	public ClozingViewPassage1(Context c) {
+	public ClozingViewPassage(Context c) {
 		context = c;
 	}
 

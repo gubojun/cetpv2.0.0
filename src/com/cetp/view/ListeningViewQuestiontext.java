@@ -1,20 +1,20 @@
 package com.cetp.view;
 
 import com.cetp.R;
-import com.cetp.database.DBReadingOfPassage;
+import com.cetp.action.AppVariable;
+import com.cetp.database.DBListeningOfText;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.RadioGroup.LayoutParams;
 
-public class ReadingViewPassage1 {
-	private String TAG = "ReadingViewQuestiontext";
+public class ListeningViewQuestiontext {
 	private TextView txtQuestionNumber;// 题号
 	private TextView originalText;// 原文
 
@@ -26,26 +26,28 @@ public class ReadingViewPassage1 {
 	private final LinearLayout.LayoutParams LP_WW = new LinearLayout.LayoutParams(
 			LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 	private Cursor cur;
-
+	/* 定义进度条 */
+	public static SeekBar audioSeekBar = null;
 	Context context;
-	public ReadingViewPassage1(Context c){
-		context=c;
+	public ListeningViewQuestiontext(Context c){
+		context =c;
 	}
-	public void setView(View v){
-		DBReadingOfPassage db = new DBReadingOfPassage(context);
-
+	public void setView(View v) {
+		TextView txtQuestionNumber;// 题号
+		TextView originalText;// 原文
+		DBListeningOfText db = new DBListeningOfText(context);
 		db.open();
-		Log.v(TAG, "Activity State: checkTableExists()");
-		if (db.checkTableExists("Reading_Comprehension_Passage")) {
+		if (db.checkTableExists("Listening_Comprehension_Passage")) {
 			// ---取出所有数据---
-			cur = db.getAllItem();
+			// cur = db.getAllItem();
+			cur = db.getItemFromYM(AppVariable.Common.YearMonth);
 			// cur.moveToFirst();
 		} else {
 			Toast.makeText(context, "数据不存在",
 					Toast.LENGTH_SHORT).show();
 		}
 
-		ScrollView readingViewScroll = (ScrollView) v.findViewById(R.id.scr_reading_questiontext);
+		ScrollView listeningViewScroll = (ScrollView) v.findViewById(R.id.scr_listening_questiontext);
 		LinearLayout layout = new LinearLayout(context);
 
 		layout.setOrientation(LinearLayout.VERTICAL); // 控件对其方式为垂直排列
@@ -53,16 +55,16 @@ public class ReadingViewPassage1 {
 		while (cur.moveToNext()) {
 			txtQuestionNumber = new TextView(context);
 			originalText = new TextView(context);// 原文
-			//加入背景
+			// 加入背景
 			originalText.setBackgroundResource(R.drawable.login_input);
-			//设置宽和高的布局
+			// 设置宽和高的布局
 			originalText.setLayoutParams(LP_FW);
 			setQuestionText(txtQuestionNumber, originalText, context);
 
 			layout.addView(txtQuestionNumber);
 			layout.addView(originalText);
 		}
-		readingViewScroll.addView(layout);
+		listeningViewScroll.addView(layout);
 		cur.close();
 		db.close();
 	}

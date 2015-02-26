@@ -86,6 +86,7 @@
                     android:layout_centerVertical="true"
                     android:scaleType="matrix"
                     android:src="@drawable/mm_submenu" />
+
             </RelativeLayout>
 
             <RelativeLayout
