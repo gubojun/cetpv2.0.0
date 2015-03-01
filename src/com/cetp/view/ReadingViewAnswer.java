@@ -32,9 +32,9 @@ public class ReadingViewAnswer {
 	TabHost tabHost;
 	// ------布局方式--------
 	private final LinearLayout.LayoutParams LP_FF = new LinearLayout.LayoutParams(
-			LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
+			LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
 	private final LinearLayout.LayoutParams LP_FW = new LinearLayout.LayoutParams(
-			LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+			LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
 	private final LinearLayout.LayoutParams LP_WW = new LinearLayout.LayoutParams(
 			LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 	private Cursor cur;
@@ -148,7 +148,7 @@ public class ReadingViewAnswer {
 		builder.show();
 	}
 
-	public void refresh(View v) {
+	public void reFresh(View v) {
 		int NUM = 0;
 		String theAnswer;
 		userRightAnswer = 0;

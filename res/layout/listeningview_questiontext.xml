@@ -3,12 +3,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-<LinearLayout
+
+    <LinearLayout
         android:id="@+id/title"
         android:layout_width="fill_parent"
         android:layout_height="45dp"
         android:background="@drawable/title_bar"
-        android:gravity="center_horizontal|center_vertical" >
+        android:gravity="center_horizontal|center_vertical"
+        android:visibility="gone" >
 
         <TextView
             android:layout_width="wrap_content"
@@ -17,12 +19,13 @@
             android:textColor="#ffffff"
             android:textSize="20sp" />
     </LinearLayout>
+
     <RelativeLayout
         android:id="@+id/optgallery"
         android:layout_width="fill_parent"
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"
-        android:gravity="center_vertical" >
+        android:gravity="center_vertical" android:visibility="gone" >
 
         <ImageView
             android:id="@+id/optmedia"
@@ -33,7 +36,7 @@
             android:layout_marginRight="5dp"
             android:gravity="center_vertical"
             android:src="@drawable/btnmediaplay"
-            android:visibility="invisible" />
+            />
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -53,8 +56,8 @@
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:progressDrawable="@drawable/seekbar_style"
-                android:thumb="@drawable/thumb" 
-                android:visibility="invisible"/>
+                android:thumb="@drawable/thumb"
+                />
         </LinearLayout>
 
         <ImageView
@@ -66,7 +69,7 @@
             android:layout_marginRight="5dp"
             android:gravity="center_vertical"
             android:src="@drawable/btnsetting"
-            android:visibility="invisible" />
+            />
     </RelativeLayout>
 
     <ScrollView
@@ -75,7 +78,6 @@
         android:layout_height="match_parent"
         android:layout_above="@+id/optgallery"
         android:layout_below="@+id/title" >
-
     </ScrollView>
 
 </RelativeLayout>

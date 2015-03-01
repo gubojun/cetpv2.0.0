@@ -399,7 +399,7 @@ public class MainTab extends Activity {
 			this.setTitle(year + "年" + (monthOfYear + 1) + "月");
 			/**隐藏日期选项*/
 			 ((ViewGroup) ((ViewGroup) this.getDatePicker().getChildAt(0))
-			 .getChildAt(0)).getChildAt(1).setVisibility(View.GONE);
+			 .getChildAt(0)).getChildAt(2).setVisibility(View.GONE);
 		}
 
 		@Override

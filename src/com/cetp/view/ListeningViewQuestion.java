@@ -1,6 +1,10 @@
 package com.cetp.view;
 
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.database.Cursor;
 import android.util.Log;
@@ -15,6 +19,7 @@ import com.cetp.R;
 import com.cetp.action.AppConstant;
 import com.cetp.action.AppVariable;
 import com.cetp.database.DBListeningOfQuestion;
+import com.cetp.excel.MyFile;
 import com.cetp.question.QuestionContext;
 import com.cetp.service.PlayerService;
 
@@ -78,6 +83,13 @@ public class ListeningViewQuestion {
 			scrollContext.addView(mylayout);
 		}
 		cur.close();
+		/* 得到mp3文件名 */
+		AppVariable.Common.MP3FILE = "/Lis_cet"
+				+ AppVariable.Common.CetX + "_"
+				+ AppVariable.Common.YearMonth + "_mp3.mp3";
+		if (!MyFile.isFileExist(AppVariable.Common.MP3FILE)) {
+			dialogDownloadTip();
+		} 
 	}
 
 	/**
@@ -125,11 +137,13 @@ public class ListeningViewQuestion {
 				System.out.println("onclick v==imgListeningMedia");
 				System.out.println(ifMusicStart);
 				if (ifMusicStart == MUSIC_FIRST_START) {
+
 					ifMusicStart = MUSIC_PLAYING;
 					playMusic(AppConstant.PlayerMag.PLAY_MAG);
 					// 按键变为暂停键
 					imgListeningMedia
 							.setImageResource(android.R.drawable.ic_media_pause);
+
 				} else if (ifMusicStart == MUSIC_PAUSE) {
 					ifMusicStart = MUSIC_PLAYING;
 					playMusic(AppConstant.PlayerMag.PAUSE);
@@ -140,11 +154,34 @@ public class ListeningViewQuestion {
 					ifMusicStart = MUSIC_PAUSE;
 					playMusic(AppConstant.PlayerMag.PAUSE);
 					// 按键变为播放键
-					imgListeningMedia.setImageResource(android.R.drawable.ic_media_play);
+					imgListeningMedia
+							.setImageResource(android.R.drawable.ic_media_play);
 				}
 			}
 		}
 	};
+
+	protected void dialogDownloadTip() {
+		AlertDialog.Builder builder = new Builder(context);
+		builder.setMessage("您需要下载吗？");
+		builder.setTitle("提示");
+		builder.setPositiveButton("确认", new OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.dismiss();
+				Intent intent = new Intent();
+				intent.setClass(context, DownLoadView.class);
+				context.startActivity(intent);
+			}
+		});
+		builder.setNegativeButton("取消", new OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.dismiss();
+			}
+		});
+		builder.create().show();
+	}
 
 	public void playMusic(int action) {
 		Intent intent = new Intent();
@@ -152,7 +189,7 @@ public class ListeningViewQuestion {
 		intent.setClass(context, PlayerService.class);
 		/* 启动service service要在AndroidManifest.xml注册如：<service></service> */
 		context.startService(intent);
-		//context.bindService(intent, conn, Context.BIND_AUTO_CREATE);
+		// context.bindService(intent, conn, Context.BIND_AUTO_CREATE);
 	}
 
 	/* 拖放进度监听 ，别忘了Service里面还有个进度条刷新 */
@@ -183,7 +220,8 @@ public class ListeningViewQuestion {
 					ifMusicStart = MUSIC_PAUSE;
 					PlayerService.mMediaPlayer.pause();// 开始拖动进度条时，音乐暂停播放
 					// 按键变为播放键
-					imgListeningMedia.setImageResource(android.R.drawable.ic_media_play);
+					imgListeningMedia
+							.setImageResource(android.R.drawable.ic_media_play);
 				}
 			} else
 				Toast.makeText(context, "请点击播放按钮！", Toast.LENGTH_SHORT).show();

@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cetp.R;
 import com.cetp.action.AppVariable;
@@ -26,7 +27,7 @@ public class QuestionContext extends LinearLayout {
 	RadioGroup radiogroup;
 	// ------布局方式--------
 	private final LinearLayout.LayoutParams LP_FW = new LinearLayout.LayoutParams(
-			LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+			LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
 
 	public QuestionContext(Context context, int NUMBER, Cursor cur) {
 		super(context);

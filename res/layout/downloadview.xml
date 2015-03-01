@@ -31,13 +31,13 @@
             android:id="@+id/lin_download"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
             android:orientation="vertical" >
 
             <RelativeLayout
                 android:id="@+id/rlt_download0"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="14dp"
                 android:background="@drawable/preference_single_item"
                 android:clickable="true"
                 android:gravity="center_vertical" >
@@ -86,7 +86,6 @@
                     android:layout_centerVertical="true"
                     android:scaleType="matrix"
                     android:src="@drawable/mm_submenu" />
-
             </RelativeLayout>
 
             <RelativeLayout
@@ -193,6 +192,5 @@
             </RelativeLayout>
         </LinearLayout>
     </ScrollView>
-
 
 </LinearLayout>

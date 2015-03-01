@@ -35,9 +35,9 @@ public class ListeningViewAnswer {
 	// ------布局方式--------
 	@SuppressWarnings("unused")
 	private final LinearLayout.LayoutParams LP_FF = new LinearLayout.LayoutParams(
-			LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
+			LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
 	private final LinearLayout.LayoutParams LP_FW = new LinearLayout.LayoutParams(
-			LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+			LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
 	@SuppressWarnings("unused")
 	private final LinearLayout.LayoutParams LP_WW = new LinearLayout.LayoutParams(
 			LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
@@ -143,13 +143,11 @@ public class ListeningViewAnswer {
 	}
 
 	class userAnswerDiologOnClickListener implements OnClickListener {
-
 		@Override
 		public void onClick(View arg0) {
 			// TODO Auto-generated method stub
 			showDialog(context);
 		}
-
 	}
 
 	/** 更新题目答案 */
@@ -189,7 +187,6 @@ public class ListeningViewAnswer {
 			}
 		}
 		cur.close();
-
 	}
 
 	private void showDialog(Context context) {
@@ -203,7 +200,6 @@ public class ListeningViewAnswer {
 		} else {
 			score = userRightAnswer * 100 / questionAmount;
 		}
-
 		builder.setMessage("正确：" + userRightAnswer + "\n" + "错误："
 				+ userWrongAnswer + "\n" + "未答：" + notAnswer + "\n" + "分数："
 				+ score + "分");
@@ -212,7 +208,6 @@ public class ListeningViewAnswer {
 				// setTitle("确认");
 			}
 		});
-
 		builder.show();
 	}
 }

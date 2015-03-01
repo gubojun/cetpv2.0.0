@@ -47,9 +47,10 @@ public class CommonTab extends Activity {
 	private PopupWindow menuWindow;
 	private LayoutInflater inflater;
 	final String TYPE_OF_VIEW = "typeofview";
-	ListeningViewAnswer listeninganswer = new ListeningViewAnswer(this);
+	ListeningViewAnswer listeningviewanswer = new ListeningViewAnswer(this);
 	ReadingViewAnswer readingviewanswer = new ReadingViewAnswer(this);
 	ClozingViewAnswer clozingviewanswer = new ClozingViewAnswer(this);
+	// VocabularyViewAnswer vocabularyviewanswer = new VocabularyViewAnswer();
 	View viewAnswer;
 
 	// private Button mRightBtn;
@@ -124,27 +125,36 @@ public class CommonTab extends Activity {
 					this);
 			listeningviewquestion.setView(view1);
 			listeningviewquestiontext.setView(view2);
-			listeninganswer.setView(view3);
+			listeningviewanswer.setView(view3);
 		} else if (AppVariable.Common.TypeOfView == 1) {
 			view1 = mLi.inflate(R.layout.readingview_question, null);
 			view2 = mLi.inflate(R.layout.readingview_passage, null);
 			view3 = mLi.inflate(R.layout.readingview_answer, null);
 			ReadingViewQuestion readingviewquestion = new ReadingViewQuestion(
 					this);
-			ReadingViewPassage readingviewpassage = new ReadingViewPassage(
-					this);
+			ReadingViewPassage readingviewpassage = new ReadingViewPassage(this);
 
 			readingviewquestion.setView(view1);
 			readingviewpassage.setView(view2);
 			readingviewanswer.setView(view3);
+		} else if (AppVariable.Common.TypeOfView == 2) {
+			view1 = mLi.inflate(R.layout.clozingview_question, null);
+			view2 = mLi.inflate(R.layout.clozingview_passage, null);
+			view3 = mLi.inflate(R.layout.clozingview_answer, null);
+			ClozingViewQuestion clozingviewquestion = new ClozingViewQuestion(
+					this);
+			ClozingViewPassage clozingviewpassage = new ClozingViewPassage(this);
+
+			clozingviewquestion.setView(view1);
+			clozingviewpassage.setView(view2);
+			clozingviewanswer.setView(view3);
 		} else {
 			view1 = mLi.inflate(R.layout.clozingview_question, null);
 			view2 = mLi.inflate(R.layout.clozingview_passage, null);
 			view3 = mLi.inflate(R.layout.clozingview_answer, null);
 			ClozingViewQuestion clozingviewquestion = new ClozingViewQuestion(
 					this);
-			ClozingViewPassage clozingviewpassage = new ClozingViewPassage(
-					this);
+			ClozingViewPassage clozingviewpassage = new ClozingViewPassage(this);
 
 			clozingviewquestion.setView(view1);
 			clozingviewpassage.setView(view2);
@@ -227,6 +237,14 @@ public class CommonTab extends Activity {
 			case 2:
 				mTab3.setImageDrawable(getResources().getDrawable(
 						R.drawable.tab_answer_pressed));
+				if (AppVariable.Common.TypeOfView == 0)
+					listeningviewanswer.reFresh(viewAnswer);
+				else if (AppVariable.Common.TypeOfView == 1)
+					clozingviewanswer.reFresh(viewAnswer);
+				else if (AppVariable.Common.TypeOfView == 2)
+					readingviewanswer.reFresh(viewAnswer);
+				else if (AppVariable.Common.TypeOfView == 3)
+					listeningviewanswer.reFresh(viewAnswer);
 				break;
 			case 3:
 				mTab4.setImageDrawable(getResources().getDrawable(
@@ -329,13 +347,13 @@ public class CommonTab extends Activity {
 
 	@Override
 	protected void onDestroy() {
-//		Intent intent = new Intent();
-//		 intent.setClass(this, PlayerService.class);
-//		 stopService(intent);// ֹͣService
-//		 if(PlayerService.mMediaPlayer!=null)
-//			PlayerService.mMediaPlayer=null;
-		
-		if (PlayerService.mMediaPlayer!=null)
+		// Intent intent = new Intent();
+		// intent.setClass(this, PlayerService.class);
+		// stopService(intent);// ֹͣService
+		// if(PlayerService.mMediaPlayer!=null)
+		// PlayerService.mMediaPlayer=null;
+
+		if (PlayerService.mMediaPlayer != null)
 			PlayerService.mMediaPlayer.reset();
 		super.onDestroy();
 	}
