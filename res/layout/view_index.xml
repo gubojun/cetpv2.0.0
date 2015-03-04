@@ -83,11 +83,18 @@
                             android:layout_height="wrap_content"
                             android:text="测试年份：" />
 
+                        <Spinner
+                            android:id="@+id/spn_ym"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawSelectorOnTop="true" />
+
                         <TextView
                             android:id="@+id/txt_setting1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="设置" />
+                            android:text="设置"
+                            android:visibility="gone" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -95,8 +102,8 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:paddingLeft="@dimen/activity_vertical_margin"
-                        android:paddingRight="@dimen/activity_vertical_margin" 
-                        android:visibility="gone">
+                        android:paddingRight="@dimen/activity_vertical_margin"
+                        android:visibility="gone" >
 
                         <TextView
                             android:id="@+id/textView3"
@@ -139,13 +146,13 @@
 
                             <ImageView
                                 android:id="@+id/index_img_fenxiang"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                                android:layout_width="72dp"
+                                android:layout_height="72dp"
                                 android:layout_alignParentTop="true"
                                 android:layout_centerHorizontal="true"
                                 android:clickable="true"
-                                android:scaleType="matrix"
-                                android:src="@drawable/bottom_bar" />
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/fenxiang" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -170,13 +177,13 @@
 
                             <ImageView
                                 android:id="@+id/index_img_fenxiang"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                                android:layout_width="72dp"
+                                android:layout_height="72dp"
                                 android:layout_alignParentTop="true"
                                 android:layout_centerHorizontal="true"
                                 android:clickable="true"
-                                android:scaleType="matrix"
-                                android:src="@drawable/bottom_bar" />
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/wrong" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -207,13 +214,13 @@
 
                             <ImageView
                                 android:id="@+id/index_img_fenxiang"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                                android:layout_width="72dp"
+                                android:layout_height="72dp"
                                 android:layout_alignParentTop="true"
                                 android:layout_centerHorizontal="true"
                                 android:clickable="true"
-                                android:scaleType="matrix"
-                                android:src="@drawable/bottom_bar" />
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/moni" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -238,13 +245,13 @@
 
                             <ImageView
                                 android:id="@+id/index_img_fenxiang"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                                android:layout_width="72dp"
+                                android:layout_height="72dp"
                                 android:layout_alignParentTop="true"
                                 android:layout_centerHorizontal="true"
                                 android:clickable="true"
-                                android:scaleType="matrix"
-                                android:src="@drawable/bottom_bar" />
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/meiri" />
 
                             <TextView
                                 android:layout_width="wrap_content"

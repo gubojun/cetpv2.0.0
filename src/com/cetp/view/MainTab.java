@@ -113,10 +113,10 @@ public class MainTab extends Activity {
 		mTabPager = (ViewPager) findViewById(R.id.tabpager);
 		mTabPager.setOnPageChangeListener(new MyOnPageChangeListener());
 
-		mTab1 = (ImageView) findViewById(R.id.img_question);
-		mTab2 = (ImageView) findViewById(R.id.img_passage);
+		mTab1 = (ImageView) findViewById(R.id.img_home);
+		mTab2 = (ImageView) findViewById(R.id.img_shoucang);
 		mTab3 = (ImageView) findViewById(R.id.img_settings);
-		mTab4 = (ImageView) findViewById(R.id.img_answer);
+		mTab4 = (ImageView) findViewById(R.id.img_more);
 		mTabImg = (ImageView) findViewById(R.id.img_tab_now);
 
 		mTab1.setOnClickListener(new MyOnClickListener(0));
@@ -255,11 +255,11 @@ public class MainTab extends Activity {
 			switch (arg0) {
 			case 0:
 				mTab1.setImageDrawable(getResources().getDrawable(
-						R.drawable.tab_question_pressed));
+						R.drawable.tab_home_pressed));
 				break;
 			case 1:
 				mTab2.setImageDrawable(getResources().getDrawable(
-						R.drawable.tab_passage_pressed));
+						R.drawable.tab_shoucang_pressed));
 				break;
 			case 2:
 				mTab3.setImageDrawable(getResources().getDrawable(
@@ -267,23 +267,23 @@ public class MainTab extends Activity {
 				break;
 			case 3:
 				mTab4.setImageDrawable(getResources().getDrawable(
-						R.drawable.tab_answer_pressed));
+						R.drawable.tab_more_pressed));
 				break;
 			}
 			animation = new TranslateAnimation(one * currIndex, one * arg0, 0,
 					0);
 			if (currIndex == 0) {
 				mTab1.setImageDrawable(getResources().getDrawable(
-						R.drawable.tab_question_normal));
+						R.drawable.tab_home_normal));
 			} else if (currIndex == 1) {
 				mTab2.setImageDrawable(getResources().getDrawable(
-						R.drawable.tab_passage_normal));
+						R.drawable.tab_shoucang_normal));
 			} else if (currIndex == 2) {
 				mTab3.setImageDrawable(getResources().getDrawable(
 						R.drawable.tab_settings_normal));
 			} else if (currIndex == 3) {
 				mTab4.setImageDrawable(getResources().getDrawable(
-						R.drawable.tab_answer_normal));
+						R.drawable.tab_more_normal));
 			}
 			currIndex = arg0;
 			animation.setFillAfter(true);// True:图片停在动画结束位置
@@ -324,7 +324,7 @@ public class MainTab extends Activity {
 				layout = inflater.inflate(R.menu.main, null);
 
 				// 下面我们要考虑了，我怎样将我的layout加入到PopupWindow中呢？？？很简单
-				menuWindow = new PopupWindow(layout, LayoutParams.FILL_PARENT,
+				menuWindow = new PopupWindow(layout, LayoutParams.MATCH_PARENT,
 						LayoutParams.WRAP_CONTENT); // 后两个参数是width和height
 				// menuWindow.showAsDropDown(layout); //设置弹出效果
 				// menuWindow.showAsDropDown(null, 0, layout.getHeight());

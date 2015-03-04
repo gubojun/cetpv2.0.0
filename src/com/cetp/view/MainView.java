@@ -8,15 +8,20 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.content.res.Resources;
 import android.database.Cursor;
 
 import android.sax.StartElementListener;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -40,6 +45,8 @@ public class MainView {
 	Activity activity;
 	View viewDialog;
 	final String TYPE_OF_VIEW = "typeofview";
+	final String YEARMONTH = "yearmonth";
+	SharedPreferences AppstartPrefs;
 
 	public MainView(Context c) {
 		mContext = c;
@@ -53,6 +60,50 @@ public class MainView {
 				.findViewById(R.id.index_rlt_shoucang);
 		rltIndexmoni = (RelativeLayout) v.findViewById(R.id.index_rlt_moni);
 		rltIndexmeiri = (RelativeLayout) v.findViewById(R.id.index_rlt_meiri);
+		/** 加载存储文件中的数据 */
+		AppstartPrefs = mContext.getSharedPreferences("view.MainTab",
+				mContext.MODE_PRIVATE);
+		AppVariable.Common.YearMonth = AppstartPrefs.getString(YEARMONTH,
+				"200606");
+		// ////////////////////////////////////////////////
+		System.out.println(AppVariable.Common.YearMonth);
+		// ////////////////////////////////////////////////
+		Spinner spnYM = (Spinner) v.findViewById(R.id.spn_ym);
+		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+				mContext, R.array.yearmonth,
+				android.R.layout.simple_spinner_item);
+		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		spnYM.setAdapter(adapter);
+		int pos = adapter.getPosition(AppVariable.Common.YearMonth.substring(0,
+				4) + "." + AppVariable.Common.YearMonth.substring(4));
+		// /////////////////////////////////
+		System.out.println("pos=" + pos);
+		// /////////////////////////////////
+		
+		spnYM.setSelection(pos, true);
+		spnYM.setOnItemSelectedListener(new OnItemSelectedListener() {
+			public void onItemSelected(AdapterView<?> parent, View view,
+					int position, long id) {
+				/** 得到资源文件中的年月 */
+				Resources res = mContext.getResources();
+				String[] YM = res.getStringArray(R.array.yearmonth);
+				AppVariable.Common.YearMonth = YM[position].substring(0, 4)
+						+ YM[position].substring(5);
+				/** 存储数据写回 */
+				Editor editor = AppstartPrefs.edit();
+				editor.putString(YEARMONTH, AppVariable.Common.YearMonth);
+				// Write other values as desired
+				editor.commit();
+
+				// showToast(AppVariable.Common.YearMonth);
+				// showToast("Spinner2: position=" + position + " id=" + id);
+			}
+
+			public void onNothingSelected(AdapterView<?> parent) {
+				showToast("Spinner2: unselected");
+			}
+		});
+
 		rltIndexfenxiang
 				.setOnClickListener(new RelativeLayoutOnClickListener());
 		rltIndexshoucang
@@ -61,22 +112,27 @@ public class MainView {
 		rltIndexmeiri.setOnClickListener(new RelativeLayoutOnClickListener());
 	}
 
+	void showToast(CharSequence msg) {
+		Toast.makeText(mContext, msg, Toast.LENGTH_SHORT).show();
+	}
+
 	class RelativeLayoutOnClickListener implements
 			RelativeLayout.OnClickListener {
 		private int selectedIndex = 0;
 		/** 用于保存用户状态 */
 		final SharedPreferences myPrefs = activity
 				.getPreferences(mContext.MODE_PRIVATE);
-		int typeOfView = myPrefs.getInt(TYPE_OF_VIEW, 0);
 
 		@Override
 		public void onClick(View v) {
 			if (v == rltIndexfenxiang) {
 				final String[] array = new String[] { "听力练习", "完型练习", "阅读练习",
 						"词汇练习" };
+				AppVariable.Common.TypeOfView = myPrefs.getInt(TYPE_OF_VIEW, 0);
 				Dialog alertDialog = new AlertDialog.Builder(mContext)
 						.setTitle("请选择")
-						.setSingleChoiceItems(array, typeOfView,
+						.setSingleChoiceItems(array,
+								AppVariable.Common.TypeOfView,
 								new DialogInterface.OnClickListener() {
 
 									@Override
@@ -103,7 +159,8 @@ public class MainView {
 										// Toast.LENGTH_LONG).show();
 										/** 检查数据表是否存在，数据表中是否有数据，没有则下载数据，导入数据 */
 										if (!DBCommon.checkDB(selectedIndex,
-												mContext)) {
+												mContext,
+												AppVariable.Common.YearMonth)) {
 											Intent intent = new Intent();
 											intent.putExtra("VIEW",
 													selectedIndex);

@@ -22,11 +22,6 @@
         <activity
             android:name="com.cetp.view.MainTab"
             android:label="@string/app_name" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".view.CommonTab" >
         </activity>
@@ -38,6 +33,15 @@
 
         <activity android:name=".view.DownLoadView" >
         </activity>
+        <activity android:name=".view.Appstart" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".view.Login"></activity>
+        <activity android:name=".view.Welcome"></activity>
     </application>
 
 </manifest>

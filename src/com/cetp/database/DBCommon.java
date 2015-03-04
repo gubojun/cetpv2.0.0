@@ -87,30 +87,31 @@ public class DBCommon extends DatabaseHelper {
 	}
 
 	/** 0听力 1完型 2阅读 3词汇 **/
-	public static boolean checkDB(int index, Context context) {
+	public static boolean checkDB(int index, Context context, String YM) {
 		boolean result = false;
 		if (index == 0) {
-			isListeningOfQuestion = checkDBListeningOfQuestion(context);
-			isListeningOfText = checkDBListeningOfText(context);
-			isListeningOfConversation = checkDBListeningOfConversation(context);
+			isListeningOfQuestion = checkDBListeningOfQuestion(context, YM);
+			isListeningOfText = checkDBListeningOfText(context, YM);
+			isListeningOfConversation = checkDBListeningOfConversation(context,
+					YM);
 			result = isListeningOfQuestion & isListeningOfText
 					& isListeningOfConversation;
 		} else if (index == 1) {
-			isClozingOfQuestion = checkDBClozingOfQuestion(context);
-			isClozingOfText = checkDBClozingOfText(context);
+			isClozingOfQuestion = checkDBClozingOfQuestion(context, YM);
+			isClozingOfText = checkDBClozingOfText(context, YM);
 			result = isClozingOfQuestion & isClozingOfText;
 		} else if (index == 2) {
-			isReadingOfQuestion = checkDBReadingOfQuestion(context);
-			isReadingOfPassage = checkDBReadingOfPassage(context);
+			isReadingOfQuestion = checkDBReadingOfQuestion(context, YM);
+			isReadingOfPassage = checkDBReadingOfPassage(context, YM);
 			result = isReadingOfPassage & isReadingOfQuestion;
 		} else if (index == 3) {
-			isVocabulary = checkDBVocabulary(context);
+			isVocabulary = checkDBVocabulary(context, YM);
 			result = isVocabulary;
 		}
 		return result;
 	}
 
-	public static boolean checkDBListeningOfQuestion(Context context) {
+	public static boolean checkDBListeningOfQuestion(Context context, String YM) {
 		boolean result = false;
 		DBListeningOfQuestion db = new DBListeningOfQuestion(context);
 		db.open();
@@ -118,7 +119,7 @@ public class DBCommon extends DatabaseHelper {
 			System.out.println("checkDB:Table(" + db.getDatabaseName()
 					+ ") exist");
 			Cursor cur;// 结果集
-			cur = db.getAllItem();
+			cur = db.getItemFromYM(YM);
 			if (cur.getCount() == 0) {
 				Log.v("MainView", "no data in " + db.getDatabaseName());
 				result = false;
@@ -130,7 +131,7 @@ public class DBCommon extends DatabaseHelper {
 		return result;
 	}
 
-	public static boolean checkDBListeningOfText(Context context) {
+	public static boolean checkDBListeningOfText(Context context, String YM) {
 		boolean result = false;
 		DBListeningOfText db = new DBListeningOfText(context);
 		db.open();
@@ -138,7 +139,7 @@ public class DBCommon extends DatabaseHelper {
 			System.out.println("checkDB:Table(" + db.getDatabaseName()
 					+ ") exist");
 			Cursor cur;// 结果集
-			cur = db.getAllItem();
+			cur = db.getItemFromYM(YM);
 			if (cur.getCount() == 0) {
 				Log.v("MainView", "no data in " + db.getDatabaseName());
 				result = false;
@@ -150,7 +151,8 @@ public class DBCommon extends DatabaseHelper {
 		return result;
 	}
 
-	public static boolean checkDBListeningOfConversation(Context context) {
+	public static boolean checkDBListeningOfConversation(Context context,
+			String YM) {
 		boolean result = false;
 		DBListeningOfConversation db = new DBListeningOfConversation(context);
 		db.open();
@@ -158,7 +160,7 @@ public class DBCommon extends DatabaseHelper {
 			System.out.println("checkDB:Table(" + db.getDatabaseName()
 					+ ") exist");
 			Cursor cur;// 结果集
-			cur = db.getAllItem();
+			cur = db.getItemFromYM(YM);
 			if (cur.getCount() == 0) {
 				Log.v("MainView", "no data in " + db.getDatabaseName());
 				result = false;
@@ -170,7 +172,7 @@ public class DBCommon extends DatabaseHelper {
 		return result;
 	}
 
-	public static boolean checkDBClozingOfQuestion(Context context) {
+	public static boolean checkDBClozingOfQuestion(Context context, String YM) {
 		boolean result = false;
 		DBClozingOfQuestion db = new DBClozingOfQuestion(context);
 		db.open();
@@ -178,7 +180,7 @@ public class DBCommon extends DatabaseHelper {
 			System.out.println("checkDB:Table(" + db.getDatabaseName()
 					+ ") exist");
 			Cursor cur;// 结果集
-			cur = db.getAllItem();
+			cur = db.getItemFromYM(YM);
 			if (cur.getCount() == 0) {
 				Log.v("MainView", "no data in " + db.getDatabaseName());
 				result = false;
@@ -190,7 +192,7 @@ public class DBCommon extends DatabaseHelper {
 		return result;
 	}
 
-	public static boolean checkDBClozingOfText(Context context) {
+	public static boolean checkDBClozingOfText(Context context, String YM) {
 		boolean result = false;
 		DBClozingOfText db = new DBClozingOfText(context);
 		db.open();
@@ -198,7 +200,7 @@ public class DBCommon extends DatabaseHelper {
 			System.out.println("checkDB:Table(" + db.getDatabaseName()
 					+ ") exist");
 			Cursor cur;// 结果集
-			cur = db.getAllItem();
+			cur = db.getItemFromYM(YM);
 			if (cur.getCount() == 0) {
 				Log.v("MainView", "no data in " + db.getDatabaseName());
 				result = false;
@@ -210,7 +212,7 @@ public class DBCommon extends DatabaseHelper {
 		return result;
 	}
 
-	public static boolean checkDBReadingOfQuestion(Context context) {
+	public static boolean checkDBReadingOfQuestion(Context context, String YM) {
 		boolean result = false;
 		DBReadingOfQuestion db = new DBReadingOfQuestion(context);
 		db.open();
@@ -218,7 +220,7 @@ public class DBCommon extends DatabaseHelper {
 			System.out.println("checkDB:Table(" + db.getDatabaseName()
 					+ ") exist");
 			Cursor cur;// 结果集
-			cur = db.getAllItem();
+			cur = db.getItemFromYM(YM);
 			if (cur.getCount() == 0) {
 				Log.v("MainView", "no data in " + db.getDatabaseName());
 				result = false;
@@ -230,7 +232,7 @@ public class DBCommon extends DatabaseHelper {
 		return result;
 	}
 
-	public static boolean checkDBReadingOfPassage(Context context) {
+	public static boolean checkDBReadingOfPassage(Context context, String YM) {
 		boolean result = false;
 		DBReadingOfPassage db = new DBReadingOfPassage(context);
 		db.open();
@@ -238,7 +240,7 @@ public class DBCommon extends DatabaseHelper {
 			System.out.println("checkDB:Table(" + db.getDatabaseName()
 					+ ") exist");
 			Cursor cur;// 结果集
-			cur = db.getAllItem();
+			cur = db.getItemFromYM(YM);
 			if (cur.getCount() == 0) {
 				Log.v("MainView", "no data in " + db.getDatabaseName());
 				result = false;
@@ -250,7 +252,7 @@ public class DBCommon extends DatabaseHelper {
 		return result;
 	}
 
-	public static boolean checkDBVocabulary(Context context) {
+	public static boolean checkDBVocabulary(Context context, String YM) {
 		boolean result = false;
 		DBVocabulary db = new DBVocabulary(context);
 		db.open();
@@ -258,7 +260,7 @@ public class DBCommon extends DatabaseHelper {
 			System.out.println("checkDB:Table(" + db.getDatabaseName()
 					+ ") exist");
 			Cursor cur;// 结果集
-			cur = db.getAllItem();
+			cur = db.getItemFromYM(YM);
 			if (cur.getCount() == 0) {
 				Log.v("MainView", "no data in " + db.getDatabaseName());
 				result = false;
