@@ -35,6 +35,7 @@ import android.widget.Toast;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 
 import com.cetp.R;
+import com.cetp.action.AppVariable;
 
 public class Login extends Activity {
 
@@ -118,6 +119,7 @@ public class Login extends Activity {
 			Editor editor = myPrefs.edit();
 			editor.putString(DEFAULTUSER, mUserName);
 			editor.commit();
+			AppVariable.User.G_USER_NAME = mUserName;
 
 			Intent intent = new Intent();
 			// intent.setClass(Login.this, LoadingActivity.class);
@@ -165,7 +167,7 @@ public class Login extends Activity {
 
 		if (code == 1) {
 			System.out.println("login successful");
-			isLoginSucceed = true; 
+			isLoginSucceed = true;
 		} else if (code == 0) {
 			System.out.println("password error");
 			Toast.makeText(this, "√‹¬Î¥ÌŒÛ£°", Toast.LENGTH_LONG).show();

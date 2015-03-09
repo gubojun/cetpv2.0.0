@@ -65,8 +65,6 @@ public class ListeningViewQuestion {
 			listeningAnswer_All[i] = null;
 		}
 		db.open();
-		scrollContext = (LinearLayout) v
-				.findViewById(R.id.lin_listeningquestion_scrollcontext);
 
 		// sqlite数据库游标
 		Cursor cur;// = db.getAllItem();
@@ -84,12 +82,11 @@ public class ListeningViewQuestion {
 		}
 		cur.close();
 		/* 得到mp3文件名 */
-		AppVariable.Common.MP3FILE = "/Lis_cet"
-				+ AppVariable.Common.CetX + "_"
+		AppVariable.Common.MP3FILE = "/Lis_cet" + AppVariable.Common.CetX + "_"
 				+ AppVariable.Common.YearMonth + "_mp3.mp3";
 		if (!MyFile.isFileExist(AppVariable.Common.MP3FILE)) {
 			dialogDownloadTip();
-		} 
+		}
 	}
 
 	/**
@@ -104,6 +101,10 @@ public class ListeningViewQuestion {
 
 		imgListeningMedia = (ImageView) v.findViewById(R.id.optmedia);
 		imgListeningSetting = (ImageView) v.findViewById(R.id.optsetting);
+
+		scrollContext = (LinearLayout) v
+				.findViewById(R.id.lin_listeningquestion_scrollcontext);
+
 		txtListeningTimeTotal = (TextView) v
 				.findViewById(R.id.txt_listening_time_total);
 		txtListeningTimeNow = (TextView) v

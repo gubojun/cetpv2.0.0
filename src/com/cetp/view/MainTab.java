@@ -78,9 +78,9 @@ public class MainTab extends Activity {
 	// final int typeOfView = myPrefs.getInt(TYPE_OF_VIEW, 0);
 
 	MainView mainview = new MainView(this);
-	// ListeningViewAnswer1 listeninganswer = new ListeningViewAnswer1(this);
-	// ReadingViewAnswer1 readingviewanswer = new ReadingViewAnswer1(this);
-	// ClozingViewAnswer1 clozingviewanswer = new ClozingViewAnswer1(this);
+	SettingView settingview = new SettingView(this);
+	MoreView moreview = new MoreView(this);
+
 	View viewAnswer;
 	// date and time
 	private int mYear;
@@ -149,8 +149,10 @@ public class MainTab extends Activity {
 		view1 = mLi.inflate(R.layout.view_index, null);
 		view2 = mLi.inflate(R.layout.tab_main, null);
 		view3 = mLi.inflate(R.layout.settingview, null);
-		view4 = mLi.inflate(R.layout.tab_main, null);
+		view4 = mLi.inflate(R.layout.moreview, null);
 		mainview.setView(view1);
+		settingview.setView(view3);
+		moreview.setView(view4);
 
 		// 每个页面的view数据
 		final ArrayList<View> views = new ArrayList<View>();
@@ -160,7 +162,6 @@ public class MainTab extends Activity {
 		views.add(view4);
 		// 填充ViewPager的数据适配器
 		PagerAdapter mPagerAdapter = new PagerAdapter() {
-
 			@Override
 			public boolean isViewFromObject(View arg0, Object arg1) {
 				return arg0 == arg1;
@@ -212,7 +213,6 @@ public class MainTab extends Activity {
 		Log.v("yyyyMMdd", mYear + ":" + mMonth + ":" + mDay);
 		updateDisplay();
 
-		
 	}
 
 	OnClickListener txtonclick = new OnClickListener() {
@@ -366,13 +366,13 @@ public class MainTab extends Activity {
 
 	@Override
 	protected Dialog onCreateDialog(int id) {
-//		/**********************************************************/
-//		Locale locale = new Locale("CH");
-//		Locale.setDefault(locale);
-//		Configuration config = new Configuration();
-//		config.locale = locale;
-//		getApplicationContext().getResources()
-//				.updateConfiguration(config, null);
+		// /**********************************************************/
+		// Locale locale = new Locale("CH");
+		// Locale.setDefault(locale);
+		// Configuration config = new Configuration();
+		// config.locale = locale;
+		// getApplicationContext().getResources()
+		// .updateConfiguration(config, null);
 		switch (id) {
 		case TIME_DIALOG_ID:
 			return new TimePickerDialog(this, mTimeSetListener, mHour, mMinute,
@@ -380,7 +380,7 @@ public class MainTab extends Activity {
 		case DATE_DIALOG_ID:
 			return new MyDatePickerDialog(this, mDateSetListener, mYear,
 					mMonth, mDay);
-	
+
 		}
 		return null;
 	}
@@ -397,9 +397,9 @@ public class MainTab extends Activity {
 			super(context, callBack, year, monthOfYear, dayOfMonth);
 
 			this.setTitle(year + "年" + (monthOfYear + 1) + "月");
-			/**隐藏日期选项*/
-			 ((ViewGroup) ((ViewGroup) this.getDatePicker().getChildAt(0))
-			 .getChildAt(0)).getChildAt(2).setVisibility(View.GONE);
+			/** 隐藏日期选项 */
+			((ViewGroup) ((ViewGroup) this.getDatePicker().getChildAt(0))
+					.getChildAt(0)).getChildAt(2).setVisibility(View.GONE);
 		}
 
 		@Override

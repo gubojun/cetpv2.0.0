@@ -45,7 +45,6 @@ import com.cetp.excel.MyFile;
 import com.cetp.excel.ReadXLS;
 import com.cetp.smart.impl.SmartDownloadProgressListener;
 import com.cetp.smart.impl.SmartFileDownloader;
-import com.cetp.view.MainView.RelativeLayoutOnClickListener;
 
 public class DownLoadView extends Activity {
 	public static final String TAG = "DownLoadView";

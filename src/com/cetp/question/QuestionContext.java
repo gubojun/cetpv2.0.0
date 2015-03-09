@@ -40,10 +40,10 @@ public class QuestionContext extends LinearLayout {
 		checkBoxText = new CheckBox(context);
 		checkBoxText.setOnCheckedChangeListener(new CheckBoxListener());
 		checkBoxText.setChecked(false);
-		checkBoxText.setText("标记");
+		checkBoxText.setText("");//setText("标记");
 		checkBoxText.setTextColor(getResources().getColor(R.color.orange));
 		checkBoxText.setTextSize(14);
-		checkBoxText.setVisibility(INVISIBLE);
+		checkBoxText.setVisibility(VISIBLE);
 		/* 单选按钮组 */
 		radiogroup = new RadioGroup(context);
 		setRadioButton(radiogroup, txtQuestionNumber, checkBoxText, context,
@@ -188,10 +188,31 @@ public class QuestionContext extends LinearLayout {
 		@Override
 		public void onCheckedChanged(CompoundButton buttonView,
 				boolean isChecked) {
+			/***************************************/
+			String[] Answer_All = null;
+			switch (AppVariable.Common.TypeOfView) {
+			case 0:
+				Answer_All = ListeningViewQuestion.listeningAnswer_All;
+				break;
+			case 1:
+				Answer_All = ReadingViewQuestion.readingAnswer_All;
+				break;
+			case 2:
+				Answer_All = ClozingViewQuestion.clozingAnswer_All;
+				break;
+			case 3:
+				Answer_All = VocabularyView.vocabularyAnswer_All;
+				break;
+			default:
+				break;
+			}
+			/*******************************************/
 			radiogroup = (RadioGroup) findViewById(buttonView.getId() - 0x20000000);
 			if (isChecked == true) {
 				// radiogroup.setBackgroundColor(getResources().getColor(
 				// R.color.gray));
+				radiogroup.setBackgroundResource(R.drawable.login_input_dark);
+			} else if (Answer_All[radiogroup.getId() / 10] != null) {
 				radiogroup.setBackgroundResource(R.drawable.login_input_light);
 			} else {
 				radiogroup.setBackgroundResource(R.drawable.login_input);

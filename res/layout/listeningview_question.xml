@@ -66,55 +66,12 @@
             android:src="@drawable/btnsetting"
             android:visibility="gone" />
     </RelativeLayout>
-    <!-- Options Menu -->
-
-    <LinearLayout
-        android:id="@+id/lnr_listening_time"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/optgallery"
-        android:orientation="horizontal" >
-
-        <!-- android:background="@color/beige" -->
-
-        <RelativeLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" >
-
-            <TextView
-                android:id="@+id/txt_listening_time_now"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:background="@color/antiquewhite"
-                android:gravity="left"
-                android:text="00:00"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" >
-
-            <TextView
-                android:id="@+id/txt_listening_time_total"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:background="@color/antiquewhite"
-                android:gravity="right"
-                android:text="00:00"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-        </RelativeLayout>
-    </LinearLayout>
 
     <ScrollView
         android:id="@+id/scr_listeningquestion_scroll"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_above="@+id/lnr_listening_time"
+        android:layout_above="@+id/optgallery"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/title" >
 
@@ -127,5 +84,51 @@
             android:paddingRight="20dp" >
         </LinearLayout>
     </ScrollView>
+
+    <RelativeLayout
+        android:id="@+id/opt_listening_time"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/optgallery"
+        android:gravity="center_vertical" >
+
+ 
+
+            <!-- android:background="@color/beige" -->
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true" >
+
+                <TextView
+                    android:id="@+id/txt_listening_time_now"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:background="@drawable/login_input"
+                    android:gravity="left"
+                    android:text="00:00"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+                <!-- android:background="@color/antiquewhite" -->
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true" >
+
+                <TextView
+                    android:id="@+id/txt_listening_time_total"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:background="@drawable/login_input"
+                    android:gravity="right"
+                    android:text="00:00"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+            </RelativeLayout>
+     
+    </RelativeLayout>
 
 </RelativeLayout>
