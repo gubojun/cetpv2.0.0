@@ -1,9 +1,17 @@
 package com.cetp.view;
 
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -16,8 +24,11 @@ import android.widget.RadioGroup.LayoutParams;
 import com.cetp.R;
 import com.cetp.action.AppVariable;
 import com.cetp.database.DBListeningOfQuestion;
+import com.cetp.database.DBWrongStat;
+import com.cetp.view.MainTab.DateUtils;
 
 public class ListeningViewAnswer {
+	final String TAG = "ListeningViewAnswer";
 	private TextView txtQuestionNumber;// 题号
 	/** 正确答案 */
 	private TextView txtListeningAnswer;
@@ -33,12 +44,10 @@ public class ListeningViewAnswer {
 	LinearLayout layout;
 	LinearLayout myLayout;
 	// ------布局方式--------
-	@SuppressWarnings("unused")
-	private final LinearLayout.LayoutParams LP_FF = new LinearLayout.LayoutParams(
+	private final LinearLayout.LayoutParams LP_MM = new LinearLayout.LayoutParams(
 			LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-	private final LinearLayout.LayoutParams LP_FW = new LinearLayout.LayoutParams(
+	private final LinearLayout.LayoutParams LP_MW = new LinearLayout.LayoutParams(
 			LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-	@SuppressWarnings("unused")
 	private final LinearLayout.LayoutParams LP_WW = new LinearLayout.LayoutParams(
 			LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 	private Cursor cur;
@@ -53,7 +62,7 @@ public class ListeningViewAnswer {
 	}
 
 	public void setView(View v) {
-		questionAmount=0;
+		questionAmount = 0;
 		userAnswerDiolog = (Button) v.findViewById(R.id.user_listening_diolog);
 		userAnswerDiolog.setOnClickListener(new OnClickListener() {
 			@Override
@@ -89,7 +98,7 @@ public class ListeningViewAnswer {
 			// 每道题的线性布局
 			myLayout = new LinearLayout(context);
 			myLayout.setOrientation(LinearLayout.HORIZONTAL);// 水平布局
-			myLayout.setLayoutParams(LP_FW);
+			myLayout.setLayoutParams(LP_MW);
 			myLayout.setBackgroundResource(R.drawable.login_input);// 设置背景
 			myLayout.setId(NUMBER + 1000);
 
@@ -111,6 +120,17 @@ public class ListeningViewAnswer {
 		listeningViewScroll.addView(layout1);
 		cur.close();
 		db.close();
+
+		Date dateNow = new Date(System.currentTimeMillis());// 获取当前时间
+		String now = MainTab.DateUtils.dateToStr("MMddHHmmss", dateNow);
+		Log.v(TAG, now);
+
+		/** 用于保存错误率 */
+		DBWrongStat dbWrong = new DBWrongStat(context);
+		dbWrong.open();
+		// 年月，错题数，题目总数
+		String[] result = new String[] { "", "", "", "" };
+		dbWrong.insertItem(result[0], result[1], result[2], result[3]);
 	}
 
 	private void setAnswerText(TextView txtQuestionNumber,

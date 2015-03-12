@@ -9,8 +9,16 @@
     tools:context=".WrongStat" >
 
     <TextView
+        android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/hello_world" />
+
+    <com.cetp.view.LineView
+        android:id="@+id/line"
+        android:layout_width="1024dp"
+        android:layout_height="576dp"
+        android:layout_centerInParent="true"
+        android:background="@color/antiquewhite" />
 
 </RelativeLayout>

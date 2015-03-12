@@ -427,7 +427,7 @@ public class MainTab extends Activity {
 				.show();
 	}
 
-	private static class DateUtils {
+	public static class DateUtils {
 
 		// 字符串类型日期转化成date类型
 		public static Date strToDate(String style, String date) {

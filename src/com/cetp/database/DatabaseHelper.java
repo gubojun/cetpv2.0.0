@@ -23,6 +23,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			"Clozing_Question", "Clozing_Passage" };
 	// 词汇数据表
 	private static final String DATABASE_TABLE_VOCABULARY = "Vocabulary_and_Structure";
+	// 错误数据表
+	private static final String DATABASE_TABLE_WRONG = "Wrong_Stat";
+	public static final String KEY_YEARMONTH = "YYYYMMDDHHMMSS";// 年月
+	public static final String KEY_WRONG = "Wrong";// 错题数
+	public static final String KEY_TOTAL = "Total";// 题目总数
+	public static final String KEY_WRONGSTAT = "WrongStat";// 错误率
+
 	// 创建听力表
 	private static final String DATABASE_CREATE_LISTENING0 = "create table if not exists "
 			+ DATABASE_TABLE_LISTENING[0]
@@ -113,6 +120,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			+ "SelectionD text not null, " // D选项
 			+ "Answer text not null, "// 答案
 			+ "Comments text);";// 备注
+	// 创建错误表
+	private static final String DATABASE_CREATE_WRONG = "create table if not exists "
+			+ DATABASE_TABLE_WRONG + " (ID integer primary key autoincrement, "// 自增的
+			+ KEY_YEARMONTH + " text not null, " // 年月
+			+ KEY_WRONG + " text not null, "// 题目类型
+			+ KEY_TOTAL + " text not null, "// 题号
+			+ KEY_WRONGSTAT + " text not null);";// 错误率
 
 	public DatabaseHelper(Context context) {
 		// 第三个参数CursorFactory指定在执行查询时获得一个游标实例的工厂类,设置为null,代表使用系统默认的工厂类
@@ -133,6 +147,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		db.execSQL(DATABASE_CREATE_CLOZING_PASSAGE);
 		/***** 建Vocabulary的数据库表 *****/
 		db.execSQL(DATABASE_CREATE_VOCABULARY);
+		/***** 建Wrong的数据库表 *****/
+		db.execSQL(DATABASE_CREATE_WRONG);
 	}
 
 	@Override
@@ -151,6 +167,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE_CLOZING[1]);
 		/***** 更新Vocabulary的数据库 *****/
 		db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE_VOCABULARY);
+		/***** 更新Wrong的数据库 *****/
+		db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE_WRONG);
 		onCreate(db);
 
 		// db.execSQL(" ALTER TABLE person ADD phone VARCHAR(12) NULL "); //

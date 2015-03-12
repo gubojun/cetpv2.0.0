@@ -2,6 +2,7 @@ package com.cetp.view;
 
 import java.util.ArrayList;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -14,6 +15,7 @@ import android.view.Display;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -47,6 +49,7 @@ public class CommonTab extends Activity {
 	private PopupWindow menuWindow;
 	private LayoutInflater inflater;
 	final String TYPE_OF_VIEW = "typeofview";
+	final String WRONGSTAT = "wrongstat";
 	ListeningViewAnswer listeningviewanswer = new ListeningViewAnswer(this);
 	ReadingViewAnswer readingviewanswer = new ReadingViewAnswer(this);
 	ClozingViewAnswer clozingviewanswer = new ClozingViewAnswer(this);
@@ -60,7 +63,13 @@ public class CommonTab extends Activity {
 		super.onCreate(savedInstanceState);
 		// 去掉标题栏
 		// this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+		ActionBar actionBar = this.getActionBar();
+		actionBar.setDisplayOptions(ActionBar.DISPLAY_HOME_AS_UP,
+				ActionBar.DISPLAY_HOME_AS_UP);
+
 		setContentView(R.layout.commontab);
+		/** 用于保存用户状态 */
 		SharedPreferences MainTabPrefs = getSharedPreferences("view.MainTab",
 				MODE_PRIVATE);
 		int type = MainTabPrefs.getInt(TYPE_OF_VIEW, 0);
@@ -199,6 +208,15 @@ public class CommonTab extends Activity {
 		};
 
 		mTabPager.setAdapter(mPagerAdapter);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if (item.getItemId() == android.R.id.home) {
+			finish();
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 	/**

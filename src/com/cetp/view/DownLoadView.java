@@ -109,9 +109,9 @@ public class DownLoadView extends Activity {
 			mp3File = "Lis_cet" + AppVariable.Common.CetX + "_"
 					+ AppVariable.Common.YearMonth + "_mp3.mp3";
 		}
-		// txt_title.setText(AppVariable.Common.YearMonth.substring(0, 4) + "年"
-		// + AppVariable.Common.YearMonth.substring(4) + "月" + "CET"
-		// + AppVariable.Common.CetX + "题库");
+		txt_title.setText(AppVariable.Common.YearMonth.substring(0, 4) + "年"
+				+ AppVariable.Common.YearMonth.substring(4) + "月" + "CET"
+				+ AppVariable.Common.CetX + "题库");
 	}
 
 	private void showDownloadDialog() {
@@ -130,11 +130,14 @@ public class DownLoadView extends Activity {
 
 	private void setView() {
 		TextView txt;
+		String str_temp;
 		switch (AppVariable.Common.TypeOfView) {
 		case 0:// Listening
 			if (DBCommon.isListeningOfQuestion)
 				rlt_download0.setVisibility(View.GONE);
 			else {
+				str_temp = MyFile.isFileExist(listeningFile) ? "导入听力题目"
+						: "听力题目下载";
 				txt = (TextView) rlt_download0.findViewById(R.id.txt_loadload0);
 				txt.setText("听力题目下载");
 			}
@@ -328,8 +331,7 @@ public class DownLoadView extends Activity {
 		rlt_download3 = (RelativeLayout) findViewById(R.id.rlt_download3);
 		rlt_download4 = (RelativeLayout) findViewById(R.id.rlt_download4);
 		rlt_reset = (RelativeLayout) findViewById(R.id.rlt_reset);
-
-		// txt_title = (TextView) findViewById(R.id.title);
+		txt_title = (TextView) findViewById(R.id.txt_title);
 	}
 
 	public void importListeningQuestion() {
@@ -844,26 +846,26 @@ public class DownLoadView extends Activity {
 				databaseHelper.close();
 				Toast.makeText(DownLoadView.this, "数据重置完毕！", Toast.LENGTH_SHORT)
 						.show();
-			} 
-//			else if (v == rlt_download4) {
-//				mp3Url = FilePath + mp3File;
-//				Log.v(TAG, mp3Url);
-//				String path = mp3Url;
-//				if (Environment.getExternalStorageState().equals(
-//						Environment.MEDIA_MOUNTED)) {
-////					p4.setVisibility(View.GONE);
-////					t4.setVisibility(View.GONE);
-////					rlt_download4.setVisibility(View.GONE);
-//					// showDownloadDialog();
-//					File dir = new File(
-//							Environment.getExternalStorageDirectory()
-//									+ "/cetpdata/");// 文件保存目录
-//					download(path, dir);
-//				} else {
-//					Toast.makeText(DownLoadView.this, R.string.sdcarderror,
-//							Toast.LENGTH_SHORT).show();
-//				}
-//			}
+			}
+			// else if (v == rlt_download4) {
+			// mp3Url = FilePath + mp3File;
+			// Log.v(TAG, mp3Url);
+			// String path = mp3Url;
+			// if (Environment.getExternalStorageState().equals(
+			// Environment.MEDIA_MOUNTED)) {
+			// // p4.setVisibility(View.GONE);
+			// // t4.setVisibility(View.GONE);
+			// // rlt_download4.setVisibility(View.GONE);
+			// // showDownloadDialog();
+			// File dir = new File(
+			// Environment.getExternalStorageDirectory()
+			// + "/cetpdata/");// 文件保存目录
+			// download(path, dir);
+			// } else {
+			// Toast.makeText(DownLoadView.this, R.string.sdcarderror,
+			// Toast.LENGTH_SHORT).show();
+			// }
+			// }
 		}
 	}
 
