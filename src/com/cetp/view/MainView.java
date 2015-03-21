@@ -1,5 +1,6 @@
 package com.cetp.view;
 
+import net.tsz.afinal.annotation.view.ViewInject;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -9,21 +10,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.res.Resources;
-import android.database.Cursor;
-
-import android.sax.StartElementListener;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,13 +25,13 @@ import android.widget.Toast;
 import com.cetp.R;
 import com.cetp.action.AppVariable;
 import com.cetp.database.DBCommon;
-import com.cetp.database.DBListeningOfQuestion;
-import com.cetp.service.PlayerService;
 
 public class MainView {
 	final String DEFAULTUSER = "defaultUser";
 	// ∂®“Â∞¥≈•
+	@ViewInject(id = R.id.index_rlt_fenxiang)
 	private RelativeLayout rltIndexfenxiang;
+	@ViewInject(id = R.id.index_rlt_shoucang)
 	private RelativeLayout rltIndexshoucang;
 	private RelativeLayout rltIndexmoni;
 	private RelativeLayout rltIndexmeiri;
@@ -60,6 +54,7 @@ public class MainView {
 	}
 
 	public void setView(View v) {
+
 		rltIndexfenxiang = (RelativeLayout) v
 				.findViewById(R.id.index_rlt_fenxiang);
 		rltIndexshoucang = (RelativeLayout) v
@@ -201,7 +196,7 @@ public class MainView {
 				Toast.makeText(mContext, "2", Toast.LENGTH_LONG).show();
 			} else if (v == rltIndexmoni || v == img3) {
 				Toast.makeText(mContext, "3", Toast.LENGTH_LONG).show();
-			} else if (v == rltIndexmeiri||v==img4) {
+			} else if (v == rltIndexmeiri || v == img4) {
 				Toast.makeText(mContext, "4", Toast.LENGTH_LONG).show();
 			}
 		}

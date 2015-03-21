@@ -1,5 +1,9 @@
 package com.cetp.view;
 
+import net.tsz.afinal.FinalActivity;
+import net.tsz.afinal.annotation.view.Select;
+import net.tsz.afinal.annotation.view.ViewInject;
+
 import com.cetp.R;
 import com.cetp.R.layout;
 import com.cetp.R.menu;
@@ -17,9 +21,10 @@ import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class WrongStat extends Activity {
+public class WrongStat extends FinalActivity {
 	final String TAG = "WrongStat";
 	private static final int MSG_DATA_CHANGE = 0x11;
+	@ViewInject(id = R.id.line)
 	private LineView mLineView;
 	private Handler mHandler;
 	private int mX = 0;
@@ -38,60 +43,13 @@ public class WrongStat extends Activity {
 
 		Log.v(TAG + "_onCreate", "分辨率：" + height + "x" + width);
 
-		mLineView = (LineView) this.findViewById(R.id.line);
+//		mLineView = (LineView) this.findViewById(R.id.line);
 
 		mLineView.SetInfo(new String[] { "7-11", "7-12", "7-13", "7-14",
 				"7-15", "7-16", "7-17" }, // X轴刻度
 				new String[] { "0", "20", "40", "60", "80", "100" }, // Y轴刻度
 				new String[] { "15", "23", "10", "36", "45", "40", "12" }, // 数据
 				"错误率");
-
-
-//		mHandler = new Handler() {
-//			@Override
-//			public void handleMessage(Message msg) {
-//				// TODO Auto-generated method stub
-//				switch (msg.what) {
-//				case MSG_DATA_CHANGE:
-//					mLineView.setLinePoint(msg.arg1, msg.arg2);
-//					break;
-//
-//				default:
-//					break;
-//				}
-//				super.handleMessage(msg);
-//			}
-//		};
-//
-//		new Thread() {
-//			public void run() {
-//				for (int index = 0; index < 20; index++) {
-//					Message message = new Message();
-//					if (mX < width - 100) {
-//						message.what = MSG_DATA_CHANGE;
-//						message.arg1 = mX;
-//						message.arg2 = (int) (Math.random() * 200);
-//						/** Log *************************************/
-//						String msg = String.valueOf(mX);
-//						Log.v(TAG, msg);
-//						/********************************************/
-//						mHandler.sendMessage(message);
-//						// interrupt();
-//					} else {
-//						this.interrupt();
-//						Log.v(TAG, "interrupt");
-//					}
-//					try {
-//						sleep(1000);
-//					} catch (InterruptedException e) {
-//						// TODO Auto-generated catch block
-//						e.printStackTrace();
-//					}
-//
-//					mX += 30;
-//				}
-//			};
-//		}.start();
 	}
 
 	@Override
