@@ -7,6 +7,7 @@ import javax.crypto.spec.PSource;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -81,6 +82,8 @@ public class DownLoadView extends Activity {
 	private String clozingUrl = FilePath + clozingFile;
 	private String vocabularyUrl = FilePath + vocabularyFile;
 	private String mp3Url = FilePath + mp3File;
+
+	private int typeOfView;
 	AlertDialog downloadDialog;
 	Cursor cur;
 	DatabaseHelper mDbHelper = null;
@@ -91,11 +94,6 @@ public class DownLoadView extends Activity {
 		super.onCreate(savedInstanceState);
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);// 去掉标题栏
 		setContentView(R.layout.downloadview);
-
-		findView();
-		ButtonSetListener();
-		setView();
-
 		if (AppVariable.Common.YearMonth != ""
 				&& AppVariable.Common.QUESTION_FILENAME != "") {
 			listeningFile = "Lis_CET" + AppVariable.Common.CetX + "_"
@@ -109,6 +107,14 @@ public class DownLoadView extends Activity {
 			mp3File = "Lis_cet" + AppVariable.Common.CetX + "_"
 					+ AppVariable.Common.YearMonth + "_mp3.mp3";
 		}
+		findView();
+		ButtonSetListener();
+		setView();
+		/** 测试用途 *******************************************************/
+		Intent intent = new Intent();
+		typeOfView = intent.getIntExtra("View", 0);
+		Log.v(TAG, "typeOfView=" + String.valueOf(typeOfView));
+		/***************************************************************/
 		txt_title.setText(AppVariable.Common.YearMonth.substring(0, 4) + "年"
 				+ AppVariable.Common.YearMonth.substring(4) + "月" + "CET"
 				+ AppVariable.Common.CetX + "题库");
@@ -128,33 +134,65 @@ public class DownLoadView extends Activity {
 				.findViewById(R.id.txt_downloadview_dialog_result);
 	}
 
+	private boolean isDownLoad(int typeOfView) {
+		switch (typeOfView) {
+		case 0:
+			Log.v(TAG + " listeningFile", listeningFile);
+			return MyFile.isFileExist("/" + listeningFile);
+		case 1:
+			return MyFile.isFileExist("/" + clozingFile);
+		case 2:
+			return MyFile.isFileExist("/" + readingFile);
+		case 3:
+			return MyFile.isFileExist("/" + vocabularyFile);
+		}
+		return false;
+	}
+
 	private void setView() {
 		TextView txt;
-		String str_temp;
 		switch (AppVariable.Common.TypeOfView) {
 		case 0:// Listening
-			if (DBCommon.isListeningOfQuestion)
-				rlt_download0.setVisibility(View.GONE);
-			else {
-				str_temp = MyFile.isFileExist(listeningFile) ? "导入听力题目"
-						: "听力题目下载";
+				// 判断是否下载数据
+			Log.v(TAG + " isDownLoad",
+					String.valueOf(isDownLoad(AppVariable.Common.TypeOfView)));
+			if (isDownLoad(AppVariable.Common.TypeOfView)) {
+				// 判断是否导入数据库
+				if (DBCommon.isListeningOfQuestion)
+					rlt_download0.setVisibility(View.GONE);
+				else {
+					rlt_download0.setVisibility(View.VISIBLE);
+					txt = (TextView) rlt_download0
+							.findViewById(R.id.txt_loadload0);
+					txt.setText("听力题目导入");
+				}
+				if (DBCommon.isListeningOfText)
+					rlt_download1.setVisibility(View.GONE);
+				else {
+					rlt_download1.setVisibility(View.VISIBLE);
+					txt = (TextView) rlt_download1
+							.findViewById(R.id.txt_loadload1);
+					txt.setText("听力原文导入");
+				}
+				if (DBCommon.isListeningOfConversation)
+					rlt_download2.setVisibility(View.GONE);
+				else {
+					rlt_download2.setVisibility(View.VISIBLE);
+					txt = (TextView) rlt_download2
+							.findViewById(R.id.txt_loadload2);
+					txt.setText("听力对话导入");
+				}
+				rlt_download3.setVisibility(View.GONE);
+
+			} else {
+				rlt_download0.setVisibility(View.VISIBLE);
 				txt = (TextView) rlt_download0.findViewById(R.id.txt_loadload0);
 				txt.setText("听力题目下载");
-			}
-			if (DBCommon.isListeningOfText)
 				rlt_download1.setVisibility(View.GONE);
-			else {
-				txt = (TextView) rlt_download1.findViewById(R.id.txt_loadload1);
-				txt.setText("听力原文下载");
-			}
-			if (DBCommon.isListeningOfConversation)
 				rlt_download2.setVisibility(View.GONE);
-			else {
-				txt = (TextView) rlt_download2.findViewById(R.id.txt_loadload2);
-				txt.setText("听力对话下载");
+				rlt_download3.setVisibility(View.GONE);
 			}
-			rlt_download3.setVisibility(View.GONE);
-
+			rlt_download4.setVisibility(View.VISIBLE);
 			/* 得到mp3文件名 */
 			AppVariable.Common.MP3FILE = "/Lis_cet" + AppVariable.Common.CetX
 					+ "_" + AppVariable.Common.YearMonth + "_mp3.mp3";
@@ -162,50 +200,90 @@ public class DownLoadView extends Activity {
 				rlt_download4.setVisibility(View.GONE);
 			break;
 		case 1:// clozing
-			if (DBCommon.isClozingOfQuestion)
-				rlt_download0.setVisibility(View.GONE);
-			else {
+				// 判断是否下载数据
+			if (isDownLoad(AppVariable.Common.TypeOfView)) {
+				// 判断是否导入数据库
+				if (DBCommon.isClozingOfQuestion)
+					rlt_download0.setVisibility(View.GONE);
+				else {
+					rlt_download0.setVisibility(View.VISIBLE);
+					txt = (TextView) rlt_download0
+							.findViewById(R.id.txt_loadload0);
+					txt.setText("完型题目导入");
+				}
+				if (DBCommon.isClozingOfText)
+					rlt_download1.setVisibility(View.GONE);
+				else {
+					rlt_download1.setVisibility(View.VISIBLE);
+					txt = (TextView) rlt_download1
+							.findViewById(R.id.txt_loadload1);
+					txt.setText("完型原文导入");
+				}
+				rlt_download2.setVisibility(View.GONE);
+				rlt_download3.setVisibility(View.GONE);
+				rlt_download4.setVisibility(View.GONE);
+			} else {
+				rlt_download0.setVisibility(View.VISIBLE);
 				txt = (TextView) rlt_download0.findViewById(R.id.txt_loadload0);
 				txt.setText("完型题目下载");
-			}
-			if (DBCommon.isClozingOfText)
 				rlt_download1.setVisibility(View.GONE);
-			else {
-				txt = (TextView) rlt_download1.findViewById(R.id.txt_loadload1);
-				txt.setText("完型原文下载");
+				rlt_download2.setVisibility(View.GONE);
+				rlt_download3.setVisibility(View.GONE);
+				rlt_download4.setVisibility(View.GONE);
 			}
-			rlt_download2.setVisibility(View.GONE);
-			rlt_download3.setVisibility(View.GONE);
-			rlt_download4.setVisibility(View.GONE);
 			break;
 		case 2:
-			if (DBCommon.isReadingOfQuestion)
-				rlt_download0.setVisibility(View.GONE);
-			else {
+			// 判断是否下载数据
+			if (isDownLoad(AppVariable.Common.TypeOfView)) {
+				// 判断是否导入数据库
+				if (DBCommon.isReadingOfQuestion)
+					rlt_download0.setVisibility(View.GONE);
+				else {
+					rlt_download0.setVisibility(View.VISIBLE);
+					txt = (TextView) rlt_download0
+							.findViewById(R.id.txt_loadload0);
+					txt.setText("阅读题目导入");
+				}
+				if (DBCommon.isReadingOfPassage)
+					rlt_download1.setVisibility(View.GONE);
+				else {
+					rlt_download1.setVisibility(View.VISIBLE);
+					txt = (TextView) rlt_download1
+							.findViewById(R.id.txt_loadload1);
+					txt.setText("阅读原文导入");
+				}
+				rlt_download2.setVisibility(View.GONE);
+				rlt_download3.setVisibility(View.GONE);
+				rlt_download4.setVisibility(View.GONE);
+			} else {
+				rlt_download0.setVisibility(View.VISIBLE);
 				txt = (TextView) rlt_download0.findViewById(R.id.txt_loadload0);
 				txt.setText("阅读题目下载");
-			}
-			if (DBCommon.isReadingOfPassage)
 				rlt_download1.setVisibility(View.GONE);
-			else {
-				txt = (TextView) rlt_download1.findViewById(R.id.txt_loadload1);
-				txt.setText("阅读原文下载");
+				rlt_download2.setVisibility(View.GONE);
+				rlt_download3.setVisibility(View.GONE);
+				rlt_download4.setVisibility(View.GONE);
 			}
-			rlt_download2.setVisibility(View.GONE);
-			rlt_download3.setVisibility(View.GONE);
-			rlt_download4.setVisibility(View.GONE);
 			break;
 		case 3:
-			if (DBCommon.isVocabulary)
-				rlt_download0.setVisibility(View.GONE);
-			else {
+			// 判断是否下载数据
+			if (isDownLoad(AppVariable.Common.TypeOfView)) {
+				rlt_download0.setVisibility(View.VISIBLE);
+				txt = (TextView) rlt_download0.findViewById(R.id.txt_loadload0);
+				txt.setText("词汇题目导入");
+				rlt_download1.setVisibility(View.GONE);
+				rlt_download2.setVisibility(View.GONE);
+				rlt_download3.setVisibility(View.GONE);
+				rlt_download4.setVisibility(View.GONE);
+			} else {
+				rlt_download0.setVisibility(View.VISIBLE);
 				txt = (TextView) rlt_download0.findViewById(R.id.txt_loadload0);
 				txt.setText("词汇题目下载");
+				rlt_download1.setVisibility(View.GONE);
+				rlt_download2.setVisibility(View.GONE);
+				rlt_download3.setVisibility(View.GONE);
+				rlt_download4.setVisibility(View.GONE);
 			}
-			rlt_download1.setVisibility(View.GONE);
-			rlt_download2.setVisibility(View.GONE);
-			rlt_download3.setVisibility(View.GONE);
-			rlt_download4.setVisibility(View.GONE);
 			break;
 		}
 	}
@@ -214,44 +292,200 @@ public class DownLoadView extends Activity {
 		rlt_download0.setOnClickListener(new Button.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				rlt_download0.setClickable(false);
-				String path = listeningUrl;
-				// 自己网盘里的文件，下载下来测试一下
-				path = "http://180.97.83.168:443/down/c33e861cd11e91a906383bf96fef539a-44544/Lis_CET4_201106.xls?cts=dx-f-182A136A67A2499659345&ctp=182A136A67A249&ctt=1424885064&limit=2&spd=2200000&ctk=f9abcbcb55dff70fc051f0746fa39e90&chk=c33e861cd11e91a906383bf96fef539a-44544&mtd=1";
-				if (Environment.getExternalStorageState().equals(
-						Environment.MEDIA_MOUNTED)) {
-					// showDownloadDialog();
-					File dir = new File(Environment
-							.getExternalStorageDirectory() + "/cetpdata");// 文件保存目录
+				if (!isDownLoad(AppVariable.Common.TypeOfView)) {// 如果题目没有下载
+					rlt_download0.setClickable(false);
+					rlt_download0
+							.setBackgroundResource(R.drawable.ic_preference_single_dark);
+					String path = listeningUrl;
+					// 自己网盘里的文件，下载下来测试一下
+					path = "http://180.97.83.168:443/down/c33e861cd11e91a906383bf96fef539a-44544/Lis_CET4_201106.xls?cts=dx-f-182A136A67A2499659345&ctp=182A136A67A249&ctt=1424885064&limit=2&spd=2200000&ctk=f9abcbcb55dff70fc051f0746fa39e90&chk=c33e861cd11e91a906383bf96fef539a-44544&mtd=1";
+					if (Environment.getExternalStorageState().equals(
+							Environment.MEDIA_MOUNTED)) {
+						// showDownloadDialog();
+						File dir = new File(Environment
+								.getExternalStorageDirectory() + "/cetpdata/");// 文件保存目录
 
-					// download(path, dir);
-					addProgressBar0();
-					download0(path, dir, handler0, p0, "size0");
-					importListeningQuestion();
-				} else {
-					Toast.makeText(DownLoadView.this, R.string.sdcarderror,
-							Toast.LENGTH_SHORT).show();
+						// download(path, dir);
+						addProgressBar0();
+						download0(path, dir, handler0, p0, "size0");
+					} else {
+						Toast.makeText(DownLoadView.this, R.string.sdcarderror,
+								Toast.LENGTH_SHORT).show();
+					}
+				} else {// 如果已经下载了听力题目
+					rlt_download0.setClickable(false);
+					rlt_download0
+							.setBackgroundResource(R.drawable.ic_preference_single_dark);
+					switch (AppVariable.Common.TypeOfView) {
+					case 0: {
+						DBListeningOfQuestion db1 = new DBListeningOfQuestion(
+								DownLoadView.this);
+						db1.open();// 打开数据库
+						cur = db1.getItemFromYM(AppVariable.Common.YearMonth);
+						// cur = db1.getAllItem();
+						if (cur.getCount() == 0) {
+							if (MyFile.isFileExist("/" + listeningFile)) {
+								String FileURL = MyFile.getsdPath() + "/"
+										+ listeningFile;
+								ReadXLS.readAllData(FileURL, db1);
+								db1.close();
+								Toast.makeText(DownLoadView.this, "数据导入完毕！",
+										Toast.LENGTH_SHORT).show();
+							}
+						}
+					}
+						break;
+
+					case 1: {
+						DBClozingOfQuestion db1 = new DBClozingOfQuestion(
+								DownLoadView.this);
+						db1.open();// 打开数据库
+						cur = db1.getItemFromYM(AppVariable.Common.YearMonth);
+						// cur = db1.getAllItem();
+						if (cur.getCount() == 0) {
+							if (MyFile.isFileExist("/" + clozingFile)) {
+								// 得到文件的路径
+								String FileURL = MyFile.getsdPath() + "/"
+										+ clozingFile;
+								ReadXLS.readAllData(FileURL, db1);
+								db1.close();
+								Toast.makeText(DownLoadView.this, "数据导入完毕！",
+										Toast.LENGTH_SHORT).show();
+							}
+						}
+					}
+						break;
+					case 2: {
+						DBReadingOfQuestion db1 = new DBReadingOfQuestion(
+								DownLoadView.this);
+						db1.open();// 打开数据库
+						cur = db1.getItemFromYM(AppVariable.Common.YearMonth);
+						// cur = db1.getAllItem();
+						if (cur.getCount() == 0) {
+							if (MyFile.isFileExist("/" + readingFile)) {
+								// 得到文件的路径
+								String FileURL = MyFile.getsdPath() + "/"
+										+ readingFile;
+								ReadXLS.readAllData(FileURL, db1);
+								db1.close();
+								Toast.makeText(DownLoadView.this, "数据导入完毕！",
+										Toast.LENGTH_SHORT).show();
+							}
+						}
+					}
+						break;
+					case 3: {
+						DBVocabulary db1 = new DBVocabulary(DownLoadView.this);
+						db1.open();// 打开数据库
+						cur = db1.getItemFromYM(AppVariable.Common.YearMonth);
+						// cur = db1.getAllItem();
+						if (cur.getCount() == 0) {
+							if (MyFile.isFileExist("/" + vocabularyFile)) {
+								// 得到文件的路径
+								String FileURL = MyFile.getsdPath() + "/"
+										+ vocabularyFile;
+								ReadXLS.readAllData(FileURL, db1);
+								db1.close();
+								Toast.makeText(DownLoadView.this, "数据导入完毕！",
+										Toast.LENGTH_SHORT).show();
+							}
+						}
+					}
+						break;
+					default:
+						Log.v(TAG, "downloadview wrong");
+					}
 				}
 			}
 		});
 		rlt_download1.setOnClickListener(new Button.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				rlt_download1.setClickable(false);
-				String path = clozingUrl;
-				path = "http://180.97.83.168:443/down/90c0b91845f0ac268e85227fe1b0c2b5-29184/Clo_CET4_201106.xls?cts=dx-f-182A136A67A2499659345&ctp=182A136A67A249&ctt=1424885110&limit=2&spd=2200000&ctk=9fd5db30e40933f591c0ec65b8886930&chk=90c0b91845f0ac268e85227fe1b0c2b5-29184&mtd=1";
-				if (Environment.getExternalStorageState().equals(
-						Environment.MEDIA_MOUNTED)) {
-					// showDownloadDialog();
-					File dir = new File(Environment
-							.getExternalStorageDirectory() + "/cetpdata/");// 文件保存目录
-					// download(path, dir);
-					// importClozingQuestion();
-					addProgressBar1();
-					download0(path, dir, handler1, p1, "size1");
-				} else {
-					Toast.makeText(DownLoadView.this, R.string.sdcarderror,
-							Toast.LENGTH_SHORT).show();
+				if (!isDownLoad(AppVariable.Common.TypeOfView)) {// 如果题目没有下载
+					rlt_download1.setClickable(false);
+					rlt_download1
+							.setBackgroundResource(R.drawable.ic_preference_single_dark);
+					String path = clozingUrl;
+					path = "http://180.97.83.168:443/down/90c0b91845f0ac268e85227fe1b0c2b5-29184/Clo_CET4_201106.xls?cts=dx-f-182A136A67A2499659345&ctp=182A136A67A249&ctt=1424885110&limit=2&spd=2200000&ctk=9fd5db30e40933f591c0ec65b8886930&chk=90c0b91845f0ac268e85227fe1b0c2b5-29184&mtd=1";
+					if (Environment.getExternalStorageState().equals(
+							Environment.MEDIA_MOUNTED)) {
+						// showDownloadDialog();
+						File dir = new File(Environment
+								.getExternalStorageDirectory() + "/cetpdata/");// 文件保存目录
+						// download(path, dir);
+						// importClozingQuestion();
+						addProgressBar1();
+						download0(path, dir, handler1, p1, "size1");
+					} else {
+						Toast.makeText(DownLoadView.this, R.string.sdcarderror,
+								Toast.LENGTH_SHORT).show();
+					}
+				} else {// 如果已经下载题目
+					rlt_download1.setVisibility(View.VISIBLE);
+					rlt_download1.setClickable(false);
+					rlt_download1
+							.setBackgroundResource(R.drawable.ic_preference_single_dark);
+					switch (AppVariable.Common.TypeOfView) {
+					case 0: {
+						DBListeningOfText db1 = new DBListeningOfText(
+								DownLoadView.this);
+						db1.open();// 打开数据库
+						cur = db1.getItemFromYM(AppVariable.Common.YearMonth);
+						// cur = db1.getAllItem();
+						if (cur.getCount() == 0) {
+							if (MyFile.isFileExist("/" + listeningFile)) {
+								String FileURL = MyFile.getsdPath() + "/"
+										+ listeningFile;
+								ReadXLS.readAllData(FileURL, db1);
+								db1.close();
+								Toast.makeText(DownLoadView.this, "数据导入完毕！",
+										Toast.LENGTH_SHORT).show();
+							}
+						}
+					}
+						break;
+
+					case 1: {
+						DBClozingOfText db1 = new DBClozingOfText(
+								DownLoadView.this);
+						db1.open();// 打开数据库
+						cur = db1.getItemFromYM(AppVariable.Common.YearMonth);
+						// cur = db1.getAllItem();
+						if (cur.getCount() == 0) {
+							if (MyFile.isFileExist("/" + clozingFile)) {
+								// 得到文件的路径
+								String FileURL = MyFile.getsdPath() + "/"
+										+ clozingFile;
+								ReadXLS.readAllData(FileURL, db1);
+								db1.close();
+								Toast.makeText(DownLoadView.this, "数据导入完毕！",
+										Toast.LENGTH_SHORT).show();
+							}
+						}
+					}
+						break;
+					case 2: {
+						DBReadingOfPassage db1 = new DBReadingOfPassage(
+								DownLoadView.this);
+						db1.open();// 打开数据库
+						cur = db1.getItemFromYM(AppVariable.Common.YearMonth);
+						// cur = db1.getAllItem();
+						if (cur.getCount() == 0) {
+							if (MyFile.isFileExist("/" + readingFile)) {
+								// 得到文件的路径
+								String FileURL = MyFile.getsdPath() + "/"
+										+ readingFile;
+								ReadXLS.readAllData(FileURL, db1);
+								db1.close();
+								Toast.makeText(DownLoadView.this, "数据导入完毕！",
+										Toast.LENGTH_SHORT).show();
+							}
+						}
+					}
+						break;
+					default:
+						Log.v(TAG, "downloadview wrong");
+					}
 				}
 			}
 		});
@@ -259,21 +493,52 @@ public class DownLoadView extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				rlt_download2.setClickable(false);
-				String path = readingUrl;
-				// SD卡正常挂载
-				if (Environment.getExternalStorageState().equals(
-						Environment.MEDIA_MOUNTED)) {
-					// showDownloadDialog();
-					File dir = new File(Environment
-							.getExternalStorageDirectory() + "/cetpdata/");// 文件保存目录
-					// download(path, dir);
-					// importReadingQuestion();
-					addProgressBar2();
-					download0(path, dir, handler2, p2, "size2");
-				} else {
-					Toast.makeText(DownLoadView.this, R.string.sdcarderror,
-							Toast.LENGTH_SHORT).show();
+				if (!isDownLoad(AppVariable.Common.TypeOfView)) {// 如果题目没有下载
+					rlt_download2.setClickable(false);
+					rlt_download2
+							.setBackgroundResource(R.drawable.ic_preference_single_dark);
+					String path = readingUrl;
+					// SD卡正常挂载
+					if (Environment.getExternalStorageState().equals(
+							Environment.MEDIA_MOUNTED)) {
+						// showDownloadDialog();
+						File dir = new File(Environment
+								.getExternalStorageDirectory() + "/cetpdata/");// 文件保存目录
+						// download(path, dir);
+						// importReadingQuestion();
+						addProgressBar2();
+						download0(path, dir, handler2, p2, "size2");
+					} else {
+						Toast.makeText(DownLoadView.this, R.string.sdcarderror,
+								Toast.LENGTH_SHORT).show();
+					}
+				} else {// 如果已经下载题目
+					rlt_download2.setVisibility(View.VISIBLE);
+					rlt_download2.setClickable(false);
+					rlt_download2
+							.setBackgroundResource(R.drawable.ic_preference_single_dark);
+					switch (AppVariable.Common.TypeOfView) {
+					case 0: {
+						DBListeningOfConversation db1 = new DBListeningOfConversation(
+								DownLoadView.this);
+						db1.open();// 打开数据库
+						cur = db1.getItemFromYM(AppVariable.Common.YearMonth);
+						// cur = db1.getAllItem();
+						if (cur.getCount() == 0) {
+							if (MyFile.isFileExist("/" + listeningFile)) {
+								String FileURL = MyFile.getsdPath() + "/"
+										+ listeningFile;
+								ReadXLS.readAllData(FileURL, db1);
+								db1.close();
+								Toast.makeText(DownLoadView.this, "数据导入完毕！",
+										Toast.LENGTH_SHORT).show();
+							}
+						}
+					}
+						break;
+					default:
+						Log.v(TAG, "downloadview wrong");
+					}
 				}
 			}
 
@@ -282,6 +547,8 @@ public class DownLoadView extends Activity {
 			@Override
 			public void onClick(View v) {
 				rlt_download3.setClickable(false);
+				rlt_download3
+						.setBackgroundResource(R.drawable.ic_preference_single_dark);
 				String path = vocabularyUrl;
 				if (Environment.getExternalStorageState().equals(
 						Environment.MEDIA_MOUNTED)) {
@@ -302,6 +569,8 @@ public class DownLoadView extends Activity {
 			@Override
 			public void onClick(View v) {
 				rlt_download4.setClickable(false);
+				rlt_download4
+						.setBackgroundResource(R.drawable.ic_preference_single_dark);
 				mp3Url = FilePath + mp3File;
 				Log.v(TAG, mp3Url);
 				String path = mp3Url;
@@ -365,7 +634,7 @@ public class DownLoadView extends Activity {
 				Toast.makeText(DownLoadView.this, "数据导入完毕！", Toast.LENGTH_SHORT)
 						.show();
 			} else {
-				Toast.makeText(DownLoadView.this, "没有网络数据！待更新。。。",// "请先下载文件！",
+				Toast.makeText(DownLoadView.this, "没有找到数据文件！",// "请先下载文件！",
 						Toast.LENGTH_SHORT).show();
 			}
 		} else
@@ -579,6 +848,8 @@ public class DownLoadView extends Activity {
 					rlt_download0.setVisibility(View.GONE);
 					Toast.makeText(DownLoadView.this, "下载成功",
 							Toast.LENGTH_SHORT).show();
+					importListeningQuestion();
+					// setView();
 				}
 				break;
 			case -1:
@@ -631,6 +902,7 @@ public class DownLoadView extends Activity {
 					// downloadDialog.dismiss();
 					Toast.makeText(DownLoadView.this, "下载成功",
 							Toast.LENGTH_SHORT).show();
+					importClozingQuestion();
 				}
 				break;
 			case -1:
@@ -683,6 +955,7 @@ public class DownLoadView extends Activity {
 					// downloadDialog.dismiss();
 					Toast.makeText(DownLoadView.this, "下载成功",
 							Toast.LENGTH_SHORT).show();
+					importReadingQuestion();
 				}
 				break;
 			case -1:
@@ -735,6 +1008,7 @@ public class DownLoadView extends Activity {
 					// downloadDialog.dismiss();
 					Toast.makeText(DownLoadView.this, "下载成功",
 							Toast.LENGTH_SHORT).show();
+					importVocabularyQuestion();
 				}
 				break;
 			case -1:

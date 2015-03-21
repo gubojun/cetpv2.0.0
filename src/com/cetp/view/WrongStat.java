@@ -3,6 +3,7 @@ package com.cetp.view;
 import com.cetp.R;
 import com.cetp.R.layout;
 import com.cetp.R.menu;
+import com.cetp.database.DBWrongStat;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -10,6 +11,7 @@ import android.os.Message;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Canvas;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -38,60 +40,39 @@ public class WrongStat extends Activity {
 
 		Log.v(TAG + "_onCreate", "分辨率：" + height + "x" + width);
 
+		DBWrongStat db = new DBWrongStat(this);
+		db.open();
+		Cursor cur = db.getAllItem();
+		// 记录的数目
+		int dataCount = cur.getCount();
+
+		String[] x = new String[] { "", "", "", "", "", "", "" };
+		String[] data = new String[] { "", "", "", "", "", "", "" };
+		if (dataCount > 0) {
+			cur.move(dataCount > 7 ? dataCount - 7 : 0);
+
+			Log.v(TAG, "dataCount=" + String.valueOf(dataCount));
+			int number = 0;
+			while (cur.moveToNext()) {
+				String t = cur.getString(cur.getColumnIndex("YYYYMMDDHHMMSS"));
+				if (t.length() > 4)
+					x[number] = t.substring(0, 2) + "-" + t.substring(2, 4);
+				else
+					x[number] = t;
+				Log.v(TAG, "x[" + String.valueOf(number) + "]=" + x[number]);
+				data[number] = cur.getString(cur.getColumnIndex("WrongStat"));
+				Log.v(TAG, "data[" + String.valueOf(number) + "]="
+						+ data[number]);
+				number++;
+			}
+		}
 		mLineView = (LineView) this.findViewById(R.id.line);
 
-		mLineView.SetInfo(new String[] { "7-11", "7-12", "7-13", "7-14",
-				"7-15", "7-16", "7-17" }, // X轴刻度
+		mLineView.SetInfo(x,
 				new String[] { "0", "20", "40", "60", "80", "100" }, // Y轴刻度
-				new String[] { "15", "23", "10", "36", "45", "40", "12" }, // 数据
-				"错误率");
-
-
-//		mHandler = new Handler() {
-//			@Override
-//			public void handleMessage(Message msg) {
-//				// TODO Auto-generated method stub
-//				switch (msg.what) {
-//				case MSG_DATA_CHANGE:
-//					mLineView.setLinePoint(msg.arg1, msg.arg2);
-//					break;
-//
-//				default:
-//					break;
-//				}
-//				super.handleMessage(msg);
-//			}
-//		};
-//
-//		new Thread() {
-//			public void run() {
-//				for (int index = 0; index < 20; index++) {
-//					Message message = new Message();
-//					if (mX < width - 100) {
-//						message.what = MSG_DATA_CHANGE;
-//						message.arg1 = mX;
-//						message.arg2 = (int) (Math.random() * 200);
-//						/** Log *************************************/
-//						String msg = String.valueOf(mX);
-//						Log.v(TAG, msg);
-//						/********************************************/
-//						mHandler.sendMessage(message);
-//						// interrupt();
-//					} else {
-//						this.interrupt();
-//						Log.v(TAG, "interrupt");
-//					}
-//					try {
-//						sleep(1000);
-//					} catch (InterruptedException e) {
-//						// TODO Auto-generated catch block
-//						e.printStackTrace();
-//					}
-//
-//					mX += 30;
-//				}
-//			};
-//		}.start();
+				data, "错误率");
+		cur.close();
+		db.close();
 	}
 
 	@Override
