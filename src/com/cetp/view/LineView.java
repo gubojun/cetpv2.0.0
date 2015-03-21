@@ -159,13 +159,13 @@ public class LineView extends View {
 //		}
 //	}
 
-	/**
-	 * @param curX
-	 *            which x position you want to draw.
-	 * @param curY
-	 *            which y position you want to draw.
-	 * @see all you put x-y position will connect to a line.
-	 */
+//	/**
+//	 * @param curX
+//	 *            which x position you want to draw.
+//	 * @param curY
+//	 *            which y position you want to draw.
+//	 * @see all you put x-y position will connect to a line.
+//	 */
 //	public void setLinePoint(int curX, int curY) {
 //		Map<String, Integer> temp = new HashMap<String, Integer>();
 //		temp.put(X_KEY, curX);

@@ -20,8 +20,8 @@ public class SettingView {
 	private RelativeLayout rltSettingFont;
 	private RelativeLayout rltSettingTime;
 	private RelativeLayout rltSettingBackground;
+	private RelativeLayout rltSettingNotify;
 	private RelativeLayout rltSettingPrivate;
-	private RelativeLayout rltSettingData;
 	private RelativeLayout rltSettingMessage;
 
 	private RelativeLayout rltSettingLogin;
@@ -56,22 +56,21 @@ public class SettingView {
 		initRelativeLayoutButton();
 
 		/* 得到当前音量对象 */
-		// mAudioManager = (AudioManager) context
-		// .getSystemService(Context.AUDIO_SERVICE);
-		//
-		// /* 把当前音量值赋给进度条 */
-		// audioVolume.setProgress(mAudioManager
-		// .getStreamVolume(AudioManager.STREAM_MUSIC));
-		// /* 监听音量 */
-		// audioVolume.setOnSeekBarChangeListener(new AudioVolumeChangeEvent());
-		// imgSettingVoiceDown.setOnClickListener(new
-		// AudioVolumeOnClickEvent());
-		// imgSettingVoiceUp.setOnClickListener(new AudioVolumeOnClickEvent());
+//		mAudioManager = (AudioManager) context
+//				.getSystemService(Context.AUDIO_SERVICE);
+//
+//		/* 把当前音量值赋给进度条 */
+//		audioVolume.setProgress(mAudioManager
+//				.getStreamVolume(AudioManager.STREAM_MUSIC));
+//		/* 监听音量 */
+//		audioVolume.setOnSeekBarChangeListener(new AudioVolumeChangeEvent());
+//		imgSettingVoiceDown.setOnClickListener(new AudioVolumeOnClickEvent());
+//		imgSettingVoiceUp.setOnClickListener(new AudioVolumeOnClickEvent());
 	}
 
 	private void findView(View v) {
 		// 声音进度条
-		// audioVolume = (SeekBar) v.findViewById(R.id.seekBarAudioVolume);
+//		audioVolume = (SeekBar) v.findViewById(R.id.seekBarAudioVolume);
 		rltSettingPersonalized = (RelativeLayout) v
 				.findViewById(R.id.rlt_setting_personalized);
 		rltSettingFont = (RelativeLayout) v.findViewById(R.id.rlt_setting_font);
@@ -81,18 +80,19 @@ public class SettingView {
 
 		rltSettingLogin = (RelativeLayout) v
 				.findViewById(R.id.rlt_setting_login);
+		rltSettingNotify = (RelativeLayout) v
+				.findViewById(R.id.rlt_setting_notify);
 		rltSettingPrivate = (RelativeLayout) v
 				.findViewById(R.id.rlt_setting_private);
-		rltSettingData = (RelativeLayout) v.findViewById(R.id.rlt_setting_data);
 		rltSettingMessage = (RelativeLayout) v
 				.findViewById(R.id.rlt_setting_message);
 		rltSettingAbout = (RelativeLayout) v
 				.findViewById(R.id.rlt_setting_about);
 
-		// imgSettingVoiceDown = (ImageView) v
-		// .findViewById(R.id.img_setting_voice_down);
-		// imgSettingVoiceUp = (ImageView) v
-		// .findViewById(R.id.img_setting_voice_up);
+//		imgSettingVoiceDown = (ImageView) v
+//				.findViewById(R.id.img_setting_voice_down);
+//		imgSettingVoiceUp = (ImageView) v
+//				.findViewById(R.id.img_setting_voice_up);
 	}
 
 	/**
@@ -137,59 +137,65 @@ public class SettingView {
 
 	class RelativeLayoutOnClickListener implements
 			RelativeLayout.OnClickListener {
+
 		@Override
 		public void onClick(View v) {
 			if (v == rltSettingPersonalized) {
-				// context.startActivity(new
-				// Intent(context.getApplicationContext(),
-				// PersonalizedView.class));
+//				context.startActivity(new Intent(context.getApplicationContext(),
+//						PersonalizedView.class));
 				// 第一个参数为启动时动画效果，第二个参数为退出时动画效果
-				activity.overridePendingTransition(
+				((Activity) context).overridePendingTransition(
 						ChangeType[AppVariable.Common.CHANGETYPE][0],
 						ChangeType[AppVariable.Common.CHANGETYPE][1]);
 			} else if (v == rltSettingFont) {
-				context.startActivity(new Intent(context, FontSettingView.class));
+//				context.startActivity(new Intent(context,
+//						FontSettingView.class));
 				// 第一个参数为启动时动画效果，第二个参数为退出时动画效果
-				activity.overridePendingTransition(
+				((Activity) context).overridePendingTransition(
 						ChangeType[AppVariable.Common.CHANGETYPE][0],
 						ChangeType[AppVariable.Common.CHANGETYPE][1]);
 			} else if (v == rltSettingTime) {
-				context.startActivity(new Intent(context, TimeSettingView.class));
+//				context.startActivity(new Intent(context,
+//						TimeSettingView.class));
 				// 第一个参数为启动时动画效果，第二个参数为退出时动画效果
-				activity.overridePendingTransition(
+				((Activity) context).overridePendingTransition(
 						ChangeType[AppVariable.Common.CHANGETYPE][0],
 						ChangeType[AppVariable.Common.CHANGETYPE][1]);
 			} else if (v == rltSettingLogin) {
 				context.startActivity(new Intent(context, Welcome.class));
 				// 第一个参数为启动时动画效果，第二个参数为退出时动画效果
-				activity.overridePendingTransition(
-						ChangeType[AppVariable.Common.CHANGETYPE][0],
-						ChangeType[AppVariable.Common.CHANGETYPE][1]);
+//				((Activity) context).overridePendingTransition(
+//						ChangeType[AppVariable.Common.CHANGETYPE][0],
+//						ChangeType[AppVariable.Common.CHANGETYPE][1]);
 			} else if (v == rltSettingBackground) {
-				context.startActivity(new Intent(context,
-						BackgroundSettingView.class));
+//				context.startActivity(new Intent(context,
+//						BackgroundSettingView.class));
 				// 第一个参数为启动时动画效果，第二个参数为退出时动画效果
-				activity.overridePendingTransition(
+				((Activity) context).overridePendingTransition(
 						ChangeType[AppVariable.Common.CHANGETYPE][0],
 						ChangeType[AppVariable.Common.CHANGETYPE][1]);
+			} else if (v == rltSettingNotify) {
+//				context.startActivity(new Intent(context, DefaultView.class));
+				// 第一个参数为启动时动画效果，第二个参数为退出时动画效果
+				((Activity) context).overridePendingTransition(
+						ChangeType[AppVariable.Common.CHANGETYPE][0],
+						ChangeType[AppVariable.Common.CHANGETYPE][1]);
+
+				// new AlertDialog.Builder(SettingView.this).setTitle("通用")
+				// .setIcon(android.R.drawable.ic_dialog_info)
+				// .setMessage("无").setNegativeButton("取消", null).show();
 			} else if (v == rltSettingPrivate) {
 				new AlertDialog.Builder(context).setTitle("隐私")
 						.setIcon(android.R.drawable.ic_dialog_info)
 						.setMessage("无").setNegativeButton("取消", null).show();
-			} else if (v == rltSettingData) {
-				context.startActivity(new Intent(context, DataManageView.class));
-				// 第一个参数为启动时动画效果，第二个参数为退出时动画效果
-				activity.overridePendingTransition(
-						ChangeType[AppVariable.Common.CHANGETYPE][0],
-						ChangeType[AppVariable.Common.CHANGETYPE][1]);
 			} else if (v == rltSettingMessage) {
 				showMessage();
 			} else if (v == rltSettingAbout) {
 				context.startActivity(new Intent(context, AboutView.class));
 				// 第一个参数为启动时动画效果，第二个参数为退出时动画效果
-				activity.overridePendingTransition(
-						ChangeType[AppVariable.Common.CHANGETYPE][0],
-						ChangeType[AppVariable.Common.CHANGETYPE][1]);
+//				((Activity) context).overridePendingTransition(
+//						ChangeType[AppVariable.Common.CHANGETYPE][0],
+//						ChangeType[AppVariable.Common.CHANGETYPE][1]);
 			}
 		}
 	}
@@ -211,9 +217,10 @@ public class SettingView {
 
 		rltSettingLogin.setOnClickListener(new RelativeLayoutOnClickListener());
 		// ------------------------------------------------
+		rltSettingNotify
+				.setOnClickListener(new RelativeLayoutOnClickListener());
 		rltSettingPrivate
 				.setOnClickListener(new RelativeLayoutOnClickListener());
-		rltSettingData.setOnClickListener(new RelativeLayoutOnClickListener());
 		rltSettingMessage
 				.setOnClickListener(new RelativeLayoutOnClickListener());
 		// ------------------------------------------------

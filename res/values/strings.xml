@@ -7,8 +7,5 @@
     <string name="sdcarderror">SDCard不存在或者写保护</string>
     <string name="title_more_wrong_stat">错误率统计</string>
     <string name="hello_world">Hello world!</string>
-    <string name="title_activity_data_manage_view">数据管理</string>
-    <string name="title_activity_local_data_manage_view">本地数据管理</string>
-    <string name="title_activity_color_select_view">颜色选择</string>
 
 </resources>

@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+
     <item android:id="@android:id/background">
         <shape>
             <corners android:radius="10dip" />
+
             <gradient
                 android:angle="270"
                 android:centerColor="#ff000000"
@@ -26,4 +28,5 @@
             </shape>
         </clip>
     </item>
+
 </layer-list>

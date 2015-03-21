@@ -51,7 +51,7 @@ public class MyFile {
 	public boolean createPath() {
 		if (hasSdcard()) {
 			if (!path.exists()) {
-				Log.w("createPath", "mkdirs");
+				Log.w("createPath","mkdirs");
 				path.mkdirs();
 			}
 			return true;

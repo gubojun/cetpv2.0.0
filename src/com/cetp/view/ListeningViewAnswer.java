@@ -120,6 +120,17 @@ public class ListeningViewAnswer {
 		listeningViewScroll.addView(layout1);
 		cur.close();
 		db.close();
+
+		Date dateNow = new Date(System.currentTimeMillis());// 获取当前时间
+		String now = MainTab.DateUtils.dateToStr("MMddHHmmss", dateNow);
+		Log.v(TAG, now);
+
+		/** 用于保存错误率 */
+		DBWrongStat dbWrong = new DBWrongStat(context);
+		dbWrong.open();
+		// 年月，错题数，题目总数
+		String[] result = new String[] { "", "", "", "" };
+		dbWrong.insertItem(result[0], result[1], result[2], result[3]);
 	}
 
 	private void setAnswerText(TextView txtQuestionNumber,
@@ -196,23 +207,6 @@ public class ListeningViewAnswer {
 			}
 		}
 		cur.close();
-
-		Date dateNow = new Date(System.currentTimeMillis());// 获取当前时间
-		String now = MainTab.DateUtils.dateToStr("MMddHHmmss", dateNow);
-		Log.v(TAG, now);
-
-		/** 用于保存错误率 */
-		DBWrongStat dbWrong = new DBWrongStat(context);
-		dbWrong.open();
-		// 年月，错题数，题目总数,错误率
-		String[] result = new String[] {
-				now,
-				String.valueOf(userWrongAnswer),
-				String.valueOf(questionAmount),
-				String.valueOf((userRightAnswer + userWrongAnswer) == 0 ? 0
-						: userWrongAnswer * 100 / (userRightAnswer + userWrongAnswer)) };
-
-		dbWrong.insertItem(result[0], result[1], result[2], result[3]);
 	}
 
 	private void showDialog(Context context) {

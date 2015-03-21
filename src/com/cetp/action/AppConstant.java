@@ -12,8 +12,7 @@ public interface AppConstant {
 	public class PlayerMag {
 		public static final int PLAY_MAG = 1;// 开始播放
 		public static final int PAUSE = 2;// 暂停播放
-		public static final String LISTENING_MUSIC_NAME = "/"
-				+ "cet4_201106.mp3";
+		public static final String LISTENING_MUSIC_NAME = "/"+"cet4_201106.mp3";
 		@SuppressLint("SdCardPath")
 		public static final String MUSIC_PATH = "/mnt/sdcard/cetpdata/";
 	}
@@ -41,10 +40,11 @@ public interface AppConstant {
 	public class Anim {
 		/** 界面切换动画 */
 		public static final int[][] ANIM_CHANGE_TYPE = {
-				{ R.anim.fade, R.anim.hold },
-				{ R.anim.zoomin, R.anim.zoomout },
-				{ R.anim.push_left_in, R.anim.push_left_out },
-				{ R.anim.push_right_in, R.anim.push_right_out },
-				{ R.anim.push_up_in, R.anim.push_up_out } };
+//				{ R.anim.fade, R.anim.hold },
+//				{ R.anim.zoomin, R.anim.zoomout },
+//				{ R.anim.push_left_in, R.anim.push_left_out },
+//				{ R.anim.push_right_in, R.anim.push_right_out },
+//				{ R.anim.push_up_in, R.anim.push_up_out } 
+				};
 	}
 }
