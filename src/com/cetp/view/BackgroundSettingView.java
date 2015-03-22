@@ -1,23 +1,24 @@
 package com.cetp.view;
 
+import net.tsz.afinal.FinalActivity;
+import net.tsz.afinal.annotation.view.ViewInject;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MotionEvent;
+import android.view.View;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 
 import com.cetp.R;
 import com.cetp.action.SkinSettingManager;
 
-public class BackgroundSettingView extends Activity {
+public class BackgroundSettingView extends FinalActivity {
 	private SkinSettingManager mSettingManager;
-
-	// private RadioButton radioButton1;
-	// private RadioButton radioButton2;
-	// private RadioButton radioButton3;
-	// private RadioButton radioButton4;
-	// private RadioButton radioButton5;
+	@ViewInject(id = R.id.button1, click = "btnClick")
+	Button b;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -67,6 +68,10 @@ public class BackgroundSettingView extends Activity {
 				}
 			}
 		});
+	}
+
+	public void btnClick(View v) {
+		startActivity(new Intent(getApplicationContext(), ColorSelectView.class));
 	}
 
 	// 这里为了简单实现，实现换肤

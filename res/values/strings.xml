@@ -9,5 +9,6 @@
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_data_manage_view">题库数据管理</string>
     <string name="title_activity_local_datamanage_view">本地数据管理</string>
+    <string name="title_activity_color_select_view">颜色选择</string>
 
 </resources>

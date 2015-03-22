@@ -147,7 +147,7 @@ public class MainTab extends Activity {
 		View view1, view2, view3, view4;
 
 		view1 = mLi.inflate(R.layout.view_index, null);
-		view2 = mLi.inflate(R.layout.tab_main, null);
+		view2 = mLi.inflate(R.layout.view_shoucang, null);
 		view3 = mLi.inflate(R.layout.settingview, null);
 		view4 = mLi.inflate(R.layout.moreview, null);
 		mainview.setView(view1);

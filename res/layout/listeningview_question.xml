@@ -81,7 +81,8 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:paddingLeft="20dp"
-            android:paddingRight="20dp" >
+            android:paddingRight="20dp"
+            android:paddingBottom="30dp" >
         </LinearLayout>
     </ScrollView>
 
@@ -91,8 +92,6 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/optgallery"
         android:gravity="center_vertical" >
-
- 
 
             <!-- android:background="@color/beige" -->
 

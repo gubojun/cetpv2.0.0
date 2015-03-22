@@ -58,6 +58,16 @@
             android:name="com.cetp.view.LocalDataManageView"
             android:label="@string/title_activity_local_datamanage_view" >
         </activity>
+        <activity android:name="com.cetp.view.BackgroundSettingView" >
+        </activity>
+        <activity android:name="com.cetp.view.FontSettingView" >
+        </activity>
+        <activity android:name="com.cetp.view.TimeSettingView" >
+        </activity>
+        <activity
+            android:name="com.cetp.view.ColorSelectView"
+            android:label="@string/title_activity_color_select_view" >
+        </activity>
     </application>
 
 </manifest>

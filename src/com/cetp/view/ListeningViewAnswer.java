@@ -213,14 +213,16 @@ public class ListeningViewAnswer {
 		/** 用于保存错误率 */
 		DBWrongStat dbWrong = new DBWrongStat(context);
 		dbWrong.open();
+		int wrongstat = userRightAnswer + userWrongAnswer > 0 ? userWrongAnswer
+				* 100 / (userRightAnswer + userWrongAnswer) : -1;
 		// 年月，错题数，题目总数
 		String[] result = new String[] {
 				DateUtils.dateToStr("yyyyMMddHHmmss", dateNow),
 				String.valueOf(userWrongAnswer),
-				String.valueOf(questionAmount),
-				String.valueOf(userWrongAnswer * 100
-						/ (userRightAnswer + userWrongAnswer)) };
-		dbWrong.insertItem(result[0], result[1], result[2], result[3]);
+				String.valueOf(questionAmount), String.valueOf(wrongstat) };
+		if (wrongstat >= 0)
+			dbWrong.insertItem(result[0], result[1], result[2], result[3]);
+		dbWrong.close();
 	}
 
 	private void showDialog(Context context) {

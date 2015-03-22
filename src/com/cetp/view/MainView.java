@@ -143,7 +143,8 @@ public class MainView {
 			if (v == rltIndexfenxiang || v == img1) {
 				final String[] array = new String[] { "Ã˝¡¶¡∑œ∞", "ÕÍ–Õ¡∑œ∞", "‘ƒ∂¡¡∑œ∞",
 						"¥ ª„¡∑œ∞" };
-				AppVariable.Common.TypeOfView = myPrefs.getInt(TYPE_OF_VIEW, 0);
+				AppVariable.Common.TypeOfView = selectedIndex = myPrefs.getInt(
+						TYPE_OF_VIEW, 0);
 				Dialog alertDialog = new AlertDialog.Builder(mContext)
 						.setTitle("«Î—°‘Ò")
 						.setSingleChoiceItems(array,
