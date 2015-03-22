@@ -1,57 +1,62 @@
 package com.cetp.question;
 
-public class QuestionListening extends Question implements SelectQ{
-	private String questiontext;
-	private String selectionA;
-	private String selectionB;
-	private String selectionC;
-	private String selectionD;
+public class QuestionListening extends Question implements SelectQ {
+	private String ID;
+	private String YYYYMM;// 年月
+	private String QuestionType;// 题目类型
+	private String QuestionNumber;// 题目号
+	private String SelectionA;
+	private String SelectionB;
+	private String SelectionC;
+	private String SelectionD;
+	private String Answer;
+	private String Comments;
 
-	public String getText() {
-		return questiontext;
+	public String getQNum() {
+		return QuestionNumber;
 	}
 
 	public String getSelectionA() {
-		return selectionA;
+		return SelectionA;
 	}
 
 	public String getSelectionB() {
-		return selectionB;
+		return SelectionB;
 	}
 
 	public String getSelectionC() {
-		return selectionC;
+		return SelectionC;
 	}
 
 	public String getSelectionD() {
-		return selectionD;
+		return SelectionD;
 	}
 
-	public void getText(String newtext) {
-		questiontext = newtext;
+	public void getQNum(String newtext) {
+		QuestionNumber = newtext;
 	}
 
 	@Override
 	public void setSelectionA(String newselectionA) {
 		// TODO Auto-generated method stub
-		selectionA = newselectionA;
+		SelectionA = newselectionA;
 	}
 
 	@Override
 	public void setSelectionB(String newselectionB) {
 		// TODO Auto-generated method stub
-		selectionB = newselectionB;
+		SelectionB = newselectionB;
 	}
 
 	@Override
 	public void setSelectionC(String newselectionC) {
 		// TODO Auto-generated method stub
-		selectionC = newselectionC;
+		SelectionC = newselectionC;
 	}
 
 	@Override
 	public void setSelectionD(String newselectionD) {
 		// TODO Auto-generated method stub
-		selectionD = newselectionD;
+		SelectionD = newselectionD;
 	}
 }

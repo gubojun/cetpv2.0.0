@@ -20,7 +20,7 @@ public class SettingView {
 	private RelativeLayout rltSettingFont;
 	private RelativeLayout rltSettingTime;
 	private RelativeLayout rltSettingBackground;
-	private RelativeLayout rltSettingNotify;
+	private RelativeLayout rltSettingDataManage;
 	private RelativeLayout rltSettingPrivate;
 	private RelativeLayout rltSettingMessage;
 
@@ -56,21 +56,22 @@ public class SettingView {
 		initRelativeLayoutButton();
 
 		/* 得到当前音量对象 */
-//		mAudioManager = (AudioManager) context
-//				.getSystemService(Context.AUDIO_SERVICE);
-//
-//		/* 把当前音量值赋给进度条 */
-//		audioVolume.setProgress(mAudioManager
-//				.getStreamVolume(AudioManager.STREAM_MUSIC));
-//		/* 监听音量 */
-//		audioVolume.setOnSeekBarChangeListener(new AudioVolumeChangeEvent());
-//		imgSettingVoiceDown.setOnClickListener(new AudioVolumeOnClickEvent());
-//		imgSettingVoiceUp.setOnClickListener(new AudioVolumeOnClickEvent());
+		// mAudioManager = (AudioManager) context
+		// .getSystemService(Context.AUDIO_SERVICE);
+		//
+		// /* 把当前音量值赋给进度条 */
+		// audioVolume.setProgress(mAudioManager
+		// .getStreamVolume(AudioManager.STREAM_MUSIC));
+		// /* 监听音量 */
+		// audioVolume.setOnSeekBarChangeListener(new AudioVolumeChangeEvent());
+		// imgSettingVoiceDown.setOnClickListener(new
+		// AudioVolumeOnClickEvent());
+		// imgSettingVoiceUp.setOnClickListener(new AudioVolumeOnClickEvent());
 	}
 
 	private void findView(View v) {
 		// 声音进度条
-//		audioVolume = (SeekBar) v.findViewById(R.id.seekBarAudioVolume);
+		// audioVolume = (SeekBar) v.findViewById(R.id.seekBarAudioVolume);
 		rltSettingPersonalized = (RelativeLayout) v
 				.findViewById(R.id.rlt_setting_personalized);
 		rltSettingFont = (RelativeLayout) v.findViewById(R.id.rlt_setting_font);
@@ -80,8 +81,9 @@ public class SettingView {
 
 		rltSettingLogin = (RelativeLayout) v
 				.findViewById(R.id.rlt_setting_login);
-		rltSettingNotify = (RelativeLayout) v
-				.findViewById(R.id.rlt_setting_notify);
+
+		rltSettingDataManage = (RelativeLayout) v
+				.findViewById(R.id.rlt_setting_datamanage);
 		rltSettingPrivate = (RelativeLayout) v
 				.findViewById(R.id.rlt_setting_private);
 		rltSettingMessage = (RelativeLayout) v
@@ -89,10 +91,10 @@ public class SettingView {
 		rltSettingAbout = (RelativeLayout) v
 				.findViewById(R.id.rlt_setting_about);
 
-//		imgSettingVoiceDown = (ImageView) v
-//				.findViewById(R.id.img_setting_voice_down);
-//		imgSettingVoiceUp = (ImageView) v
-//				.findViewById(R.id.img_setting_voice_up);
+		// imgSettingVoiceDown = (ImageView) v
+		// .findViewById(R.id.img_setting_voice_down);
+		// imgSettingVoiceUp = (ImageView) v
+		// .findViewById(R.id.img_setting_voice_up);
 	}
 
 	/**
@@ -141,22 +143,21 @@ public class SettingView {
 		@Override
 		public void onClick(View v) {
 			if (v == rltSettingPersonalized) {
-//				context.startActivity(new Intent(context.getApplicationContext(),
-//						PersonalizedView.class));
+				// context.startActivity(new
+				// Intent(context.getApplicationContext(),
+				// PersonalizedView.class));
 				// 第一个参数为启动时动画效果，第二个参数为退出时动画效果
 				((Activity) context).overridePendingTransition(
 						ChangeType[AppVariable.Common.CHANGETYPE][0],
 						ChangeType[AppVariable.Common.CHANGETYPE][1]);
 			} else if (v == rltSettingFont) {
-//				context.startActivity(new Intent(context,
-//						FontSettingView.class));
+				context.startActivity(new Intent(context, FontSettingView.class));
 				// 第一个参数为启动时动画效果，第二个参数为退出时动画效果
 				((Activity) context).overridePendingTransition(
 						ChangeType[AppVariable.Common.CHANGETYPE][0],
 						ChangeType[AppVariable.Common.CHANGETYPE][1]);
 			} else if (v == rltSettingTime) {
-//				context.startActivity(new Intent(context,
-//						TimeSettingView.class));
+				context.startActivity(new Intent(context, TimeSettingView.class));
 				// 第一个参数为启动时动画效果，第二个参数为退出时动画效果
 				((Activity) context).overridePendingTransition(
 						ChangeType[AppVariable.Common.CHANGETYPE][0],
@@ -164,18 +165,18 @@ public class SettingView {
 			} else if (v == rltSettingLogin) {
 				context.startActivity(new Intent(context, Welcome.class));
 				// 第一个参数为启动时动画效果，第二个参数为退出时动画效果
-//				((Activity) context).overridePendingTransition(
-//						ChangeType[AppVariable.Common.CHANGETYPE][0],
-//						ChangeType[AppVariable.Common.CHANGETYPE][1]);
+				((Activity) context).overridePendingTransition(
+						ChangeType[AppVariable.Common.CHANGETYPE][0],
+						ChangeType[AppVariable.Common.CHANGETYPE][1]);
 			} else if (v == rltSettingBackground) {
-//				context.startActivity(new Intent(context,
-//						BackgroundSettingView.class));
+				context.startActivity(new Intent(context,
+						BackgroundSettingView.class));
 				// 第一个参数为启动时动画效果，第二个参数为退出时动画效果
 				((Activity) context).overridePendingTransition(
 						ChangeType[AppVariable.Common.CHANGETYPE][0],
 						ChangeType[AppVariable.Common.CHANGETYPE][1]);
-			} else if (v == rltSettingNotify) {
-//				context.startActivity(new Intent(context, DefaultView.class));
+			} else if (v == rltSettingDataManage) {
+				context.startActivity(new Intent(context, DataManageView.class));
 				// 第一个参数为启动时动画效果，第二个参数为退出时动画效果
 				((Activity) context).overridePendingTransition(
 						ChangeType[AppVariable.Common.CHANGETYPE][0],
@@ -193,9 +194,9 @@ public class SettingView {
 			} else if (v == rltSettingAbout) {
 				context.startActivity(new Intent(context, AboutView.class));
 				// 第一个参数为启动时动画效果，第二个参数为退出时动画效果
-//				((Activity) context).overridePendingTransition(
-//						ChangeType[AppVariable.Common.CHANGETYPE][0],
-//						ChangeType[AppVariable.Common.CHANGETYPE][1]);
+				((Activity) context).overridePendingTransition(
+						ChangeType[AppVariable.Common.CHANGETYPE][0],
+						ChangeType[AppVariable.Common.CHANGETYPE][1]);
 			}
 		}
 	}
@@ -217,7 +218,7 @@ public class SettingView {
 
 		rltSettingLogin.setOnClickListener(new RelativeLayoutOnClickListener());
 		// ------------------------------------------------
-		rltSettingNotify
+		rltSettingDataManage
 				.setOnClickListener(new RelativeLayoutOnClickListener());
 		rltSettingPrivate
 				.setOnClickListener(new RelativeLayoutOnClickListener());

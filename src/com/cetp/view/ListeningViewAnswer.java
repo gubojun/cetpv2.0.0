@@ -6,6 +6,8 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import net.tsz.afinal.FinalDb;
+
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -25,6 +27,7 @@ import com.cetp.R;
 import com.cetp.action.AppVariable;
 import com.cetp.database.DBListeningOfQuestion;
 import com.cetp.database.DBWrongStat;
+import com.cetp.question.QuestionListening;
 import com.cetp.view.MainTab.DateUtils;
 
 public class ListeningViewAnswer {
@@ -74,6 +77,7 @@ public class ListeningViewAnswer {
 		DBListeningOfQuestion db = new DBListeningOfQuestion(context);
 		LinearLayout layout1;
 		LinearLayout myLayout;
+
 		db.open();
 		// Log.v(TAG, "Activity State: checkTableExists()");
 		if (db.checkTableExists("Listening_Comprehension_Passage")) {
@@ -124,13 +128,6 @@ public class ListeningViewAnswer {
 		Date dateNow = new Date(System.currentTimeMillis());// 获取当前时间
 		String now = MainTab.DateUtils.dateToStr("MMddHHmmss", dateNow);
 		Log.v(TAG, now);
-
-		/** 用于保存错误率 */
-		DBWrongStat dbWrong = new DBWrongStat(context);
-		dbWrong.open();
-		// 年月，错题数，题目总数
-		String[] result = new String[] { "", "", "", "" };
-		dbWrong.insertItem(result[0], result[1], result[2], result[3]);
 	}
 
 	private void setAnswerText(TextView txtQuestionNumber,
@@ -176,6 +173,10 @@ public class ListeningViewAnswer {
 		String theAnswer;
 		userRightAnswer = 0;
 		userWrongAnswer = 0;
+		// FinalDb dbW = FinalDb.create(context);
+		// QuestionListening Q_Lis = new QuestionListening();
+		// dbW.findAll(QuestionListening.class);
+
 		// 判断数据库是否有数据
 		if (dataCount != 0) {
 			while (NUM != questionAmount) {
@@ -207,6 +208,19 @@ public class ListeningViewAnswer {
 			}
 		}
 		cur.close();
+
+		Date dateNow = new Date(System.currentTimeMillis());// 获取当前时间
+		/** 用于保存错误率 */
+		DBWrongStat dbWrong = new DBWrongStat(context);
+		dbWrong.open();
+		// 年月，错题数，题目总数
+		String[] result = new String[] {
+				DateUtils.dateToStr("yyyyMMddHHmmss", dateNow),
+				String.valueOf(userWrongAnswer),
+				String.valueOf(questionAmount),
+				String.valueOf(userWrongAnswer * 100
+						/ (userRightAnswer + userWrongAnswer)) };
+		dbWrong.insertItem(result[0], result[1], result[2], result[3]);
 	}
 
 	private void showDialog(Context context) {

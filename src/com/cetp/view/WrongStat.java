@@ -1,12 +1,17 @@
 package com.cetp.view;
 
+import java.util.Iterator;
+import java.util.List;
+
 import net.tsz.afinal.FinalActivity;
+import net.tsz.afinal.FinalDb;
 import net.tsz.afinal.annotation.view.Select;
 import net.tsz.afinal.annotation.view.ViewInject;
 
 import com.cetp.R;
 import com.cetp.R.layout;
 import com.cetp.R.menu;
+import com.cetp.question.QuestionWrongStat;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -43,12 +48,27 @@ public class WrongStat extends FinalActivity {
 
 		Log.v(TAG + "_onCreate", "分辨率：" + height + "x" + width);
 
-//		mLineView = (LineView) this.findViewById(R.id.line);
+		// mLineView = (LineView) this.findViewById(R.id.line);
 
-		mLineView.SetInfo(new String[] { "7-11", "7-12", "7-13", "7-14",
-				"7-15", "7-16", "7-17" }, // X轴刻度
+		String[] x = new String[7];
+		String[] data = new String[7];
+		int num;
+		FinalDb dbWrong = FinalDb.create(this, "cetp");
+		List<QuestionWrongStat> qList = dbWrong
+				.findAll(QuestionWrongStat.class);
+		num = qList != null ? qList.size() : 0;
+		List<QuestionWrongStat> q = qList.subList(num >= 7 ? num - 7 : 0, num);
+		Iterator<QuestionWrongStat> i = q.iterator();
+		int c = 0;
+		while (i.hasNext()) {
+			QuestionWrongStat t = (QuestionWrongStat) i.next();
+			String s = t.getYYYYMMDDHHMMSS();
+			x[c] = s.substring(4, 6)+"-" + s.substring(6, 8);
+			data[c++] = t.getWrongStat();
+		}
+		mLineView.SetInfo(x, // X轴刻度
 				new String[] { "0", "20", "40", "60", "80", "100" }, // Y轴刻度
-				new String[] { "15", "23", "10", "36", "45", "40", "12" }, // 数据
+				data, // 数据
 				"错误率");
 	}
 

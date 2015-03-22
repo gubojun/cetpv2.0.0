@@ -172,7 +172,7 @@
             <!-- *********************************************************************** -->
 
             <RelativeLayout
-                android:id="@+id/rlt_setting_notify"
+                android:id="@+id/rlt_setting_datamanage"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="14dp"
@@ -184,7 +184,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="8dp"
-                    android:text="默认界面设置"
+                    android:text="题库数据管理"
                     android:textColor="#000"
                     android:textSize="17sp" />
 

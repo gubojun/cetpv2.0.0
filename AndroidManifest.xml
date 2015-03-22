@@ -50,6 +50,14 @@
             android:name="com.cetp.view.WrongStat"
             android:label="@string/title_more_wrong_stat" >
         </activity>
+        <activity
+            android:name="com.cetp.view.DataManageView"
+            android:label="@string/title_activity_data_manage_view" >
+        </activity>
+        <activity
+            android:name="com.cetp.view.LocalDataManageView"
+            android:label="@string/title_activity_local_datamanage_view" >
+        </activity>
     </application>
 
 </manifest>

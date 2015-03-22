@@ -40,11 +40,11 @@ public interface AppConstant {
 	public class Anim {
 		/** ΩÁ√Ê«–ªª∂Øª≠ */
 		public static final int[][] ANIM_CHANGE_TYPE = {
-//				{ R.anim.fade, R.anim.hold },
-//				{ R.anim.zoomin, R.anim.zoomout },
-//				{ R.anim.push_left_in, R.anim.push_left_out },
-//				{ R.anim.push_right_in, R.anim.push_right_out },
-//				{ R.anim.push_up_in, R.anim.push_up_out } 
+				{ R.anim.fade, R.anim.hold },
+				{ R.anim.zoomin, R.anim.zoomout },
+				{ R.anim.push_left_in, R.anim.push_left_out },
+				{ R.anim.push_right_in, R.anim.push_right_out },
+				{ R.anim.push_up_in, R.anim.push_up_out } 
 				};
 	}
 }
