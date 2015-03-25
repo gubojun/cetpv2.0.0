@@ -40,7 +40,7 @@ public class QuestionContext extends LinearLayout {
 		checkBoxText = new CheckBox(context);
 		checkBoxText.setOnCheckedChangeListener(new CheckBoxListener());
 		checkBoxText.setChecked(false);
-		checkBoxText.setText("");//setText("标记");
+		checkBoxText.setText("");// setText("标记");
 		checkBoxText.setTextColor(getResources().getColor(R.color.orange));
 		checkBoxText.setTextSize(14);
 		checkBoxText.setVisibility(VISIBLE);
@@ -136,18 +136,24 @@ public class QuestionContext extends LinearLayout {
 						.subSequence(0,
 								txtQuestionNumber.getText().length() - 1));
 			}
+			//String[] Question_All = null;
 			String[] Answer_All = null;
 			switch (AppVariable.Common.TypeOfView) {
 			case 0:
+				//Question_All = ListeningViewQuestion.listeningQuestion_All;
 				Answer_All = ListeningViewQuestion.listeningAnswer_All;
 				break;
 			case 1:
-				Answer_All = ReadingViewQuestion.readingAnswer_All;
-				break;
-			case 2:
+				//Question_All = ClozingViewQuestion.clozingQuestion_All;
 				Answer_All = ClozingViewQuestion.clozingAnswer_All;
 				break;
+			case 2:
+				//Question_All = ReadingViewQuestion.readingQuestion_All;
+				Answer_All = ReadingViewQuestion.readingAnswer_All;
+				break;
+
 			case 3:
+				//Question_All = VocabularyView.vocabularyQuestion_All;
 				Answer_All = VocabularyView.vocabularyAnswer_All;
 				break;
 			default:

@@ -37,9 +37,9 @@ public class ClozingViewAnswer {
 	// ------布局方式--------
 	@SuppressWarnings("unused")
 	private final LinearLayout.LayoutParams LP_FF = new LinearLayout.LayoutParams(
-			LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
+			LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
 	private final LinearLayout.LayoutParams LP_FW = new LinearLayout.LayoutParams(
-			LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+			LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
 	@SuppressWarnings("unused")
 	private final LinearLayout.LayoutParams LP_WW = new LinearLayout.LayoutParams(
 			LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
@@ -79,7 +79,7 @@ public class ClozingViewAnswer {
 		// 记录数据的数目
 		dataCount = cur.getCount();
 		int AnswerID = 0;
-		while (cur.moveToNext()) {
+		while (AnswerID < dataCount) {
 			AnswerID++;
 			// 每道题的线性布局
 			myLayout = new LinearLayout(context);
@@ -103,6 +103,7 @@ public class ClozingViewAnswer {
 			layout.addView(txtQuestionNumber);
 			// 题目布局加入总的线性布局
 			layout.addView(myLayout);
+			cur.moveToNext();
 		}
 		clozingViewScroll.addView(layout);
 		cur.close();
@@ -166,7 +167,7 @@ public class ClozingViewAnswer {
 		userRightAnswer = 0;
 		userWrongAnswer = 0;
 
-		System.out.println(dataCount);		// 判断数据库是否有数据
+		System.out.println(dataCount); // 判断数据库是否有数据
 		if (dataCount != 0) {
 			while (NUM != questionAmount) {
 				NUM++;

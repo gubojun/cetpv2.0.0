@@ -42,13 +42,13 @@ public class VocabularyViewAnswer extends Activity {
 	private TextView txtVocabularyAnswerOfUser;
 	/** 记录题目的数目 */
 	private static int questionAmount;
-	
+
 	private static int userWrongAnswer = 0;
-	
+
 	private static int userRightAnswer = 0;
 	/** 记录数据的数目 */
 	private static int dataCount;
-	
+
 	private Button userAnswerDiolog;
 
 	TabHost tabHost;
@@ -73,15 +73,10 @@ public class VocabularyViewAnswer extends Activity {
 		super.onCreate(savedInstanceState);
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);// 去掉标题栏
 		setContentView(R.layout.vocabularyview_answer);
-		
-		
-		
+
 		// 初始化题目数目
 		questionAmount = 0;
 
-		
-		
-		
 		db.open();
 		Log.v(TAG, "Activity State: checkTableExists()");
 		if (db.checkTableExists("Vocabulary_and_Structure")) {
@@ -100,28 +95,29 @@ public class VocabularyViewAnswer extends Activity {
 		int NUMBER = 0;
 		// 记录数据的数目
 		dataCount = cur.getCount();
-		while (cur.moveToNext()) {
+		while (NUMBER < dataCount) {
 			NUMBER++;
 			// 每道题的线性布局
 			myLayout = new LinearLayout(this);
 			myLayout.setOrientation(LinearLayout.HORIZONTAL);// 水平布局
 			myLayout.setLayoutParams(LP_FW);
 			myLayout.setBackgroundResource(R.drawable.login_input);// 设置背景
-			
+
 			txtQuestionNumber = new TextView(this);
 			txtVocabularyAnswer = new TextView(this);// 正确答案
 			txtVocabularyAnswerOfUser = new TextView(this);// 用户答案
 			txtVocabularyAnswerOfUser.setId(NUMBER);
 			setAnswerText(txtQuestionNumber, txtVocabularyAnswer,
-					txtVocabularyAnswerOfUser,NUMBER, this);
+					txtVocabularyAnswerOfUser, NUMBER, this);
 			// 每道题的线性布局包括题目的答案，用户的答案
 			myLayout.addView(txtVocabularyAnswer);
 			myLayout.addView(txtVocabularyAnswerOfUser);
-			
+
 			// 题号加入总的线性布局
 			layout.addView(txtQuestionNumber);
 			// 题目布局加入总的线性布局
 			layout.addView(myLayout);
+			cur.moveToNext();
 		}
 		VocabularyViewScroll.addView(layout);
 		cur.close();
@@ -138,8 +134,8 @@ public class VocabularyViewAnswer extends Activity {
 	 * @param context
 	 */
 	private void setAnswerText(TextView txtQuestionNumber,
-			TextView txtVocabularyAnswer, TextView txtVocabularyAnswerOfUser,int NUMBER,
-			Context context) {
+			TextView txtVocabularyAnswer, TextView txtVocabularyAnswerOfUser,
+			int NUMBER, Context context) {
 
 		// 记录题目数目
 		questionAmount++;
@@ -150,8 +146,8 @@ public class VocabularyViewAnswer extends Activity {
 		String theAnswer = VocabularyView.vocabularyAnswer_All[Integer
 				.parseInt((String) txtQuestionNumber.getText()) - 40];
 		theCorrectAnswer[NUMBER] = cur.getString(cur.getColumnIndex("Answer"));
-		txtVocabularyAnswer.setText("答案:"
-				+ theCorrectAnswer[NUMBER]+ "  " + "你的作答:");
+		txtVocabularyAnswer.setText("答案:" + theCorrectAnswer[NUMBER] + "  "
+				+ "你的作答:");
 		txtVocabularyAnswer.setTextSize(17);
 
 		txtVocabularyAnswerOfUser.setText(theAnswer);
@@ -159,31 +155,29 @@ public class VocabularyViewAnswer extends Activity {
 
 	}
 
-	
-	 private void showDialog(Context context) {  
-	        AlertDialog.Builder builder = new AlertDialog.Builder(context);  
-	        builder.setIcon(android.R.drawable.ic_dialog_info);  
-	        builder.setTitle("答案统计");  
-	        int notAnswer = questionAmount-userRightAnswer-userWrongAnswer;
-	        int score = 0;
-			if(questionAmount == 0){
-				score = 0;
-			}else{
-				score = userRightAnswer*100/questionAmount;
+	private void showDialog(Context context) {
+		AlertDialog.Builder builder = new AlertDialog.Builder(context);
+		builder.setIcon(android.R.drawable.ic_dialog_info);
+		builder.setTitle("答案统计");
+		int notAnswer = questionAmount - userRightAnswer - userWrongAnswer;
+		int score = 0;
+		if (questionAmount == 0) {
+			score = 0;
+		} else {
+			score = userRightAnswer * 100 / questionAmount;
+		}
+		builder.setMessage("正确：" + userRightAnswer + "\n" + "错误："
+				+ userWrongAnswer + "\n" + "未答：" + notAnswer + "\n分数：" + score
+				+ "分");
+		builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int whichButton) {
+				// setTitle("确认");
 			}
-	        builder.setMessage("正确："+userRightAnswer+"\n"+"错误："+userWrongAnswer+"\n"+"未答："+notAnswer+"\n分数："+score+"分");
-	        builder.setPositiveButton("确认",  
-	                new DialogInterface.OnClickListener() {  
-	                    public void onClick(DialogInterface dialog, int whichButton) {  
-//	                        setTitle("确认");  
-	                    }  
-	                });  
-	        
-	        builder.show();  
-	    }  
-	
-	
-	
+		});
+
+		builder.show();
+	}
+
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		// TODO Auto-generated method stub
@@ -211,26 +205,28 @@ public class VocabularyViewAnswer extends Activity {
 				txtVocabularyAnswerOfUser = (TextView) findViewById(NUM);
 				if (theAnswer == null) {
 					theAnswer = "未作答";
-				}else if(!theAnswer.equals(theCorrectAnswer[NUM])){
-					txtVocabularyAnswerOfUser.setBackgroundColor(getResources().getColor(R.color.red));
+				} else if (!theAnswer.equals(theCorrectAnswer[NUM])) {
+					txtVocabularyAnswerOfUser.setBackgroundColor(getResources()
+							.getColor(R.color.red));
 					userWrongAnswer++;
-				}else{
-					txtVocabularyAnswerOfUser.setBackgroundColor(BIND_AUTO_CREATE);
+				} else {
+					txtVocabularyAnswerOfUser
+							.setBackgroundColor(BIND_AUTO_CREATE);
 					userRightAnswer++;
 				}
 				txtVocabularyAnswerOfUser.setText(theAnswer);
 			}
 		}
-		
-		userAnswerDiolog = (Button)findViewById(R.id.user_vocabulary_diolog);
-		userAnswerDiolog.setOnClickListener(new OnClickListener(){
+
+		userAnswerDiolog = (Button) findViewById(R.id.user_vocabulary_diolog);
+		userAnswerDiolog.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				 showDialog(VocabularyViewAnswer.this);
+				showDialog(VocabularyViewAnswer.this);
 			}
-			
+
 		});
 	}
 
@@ -255,8 +251,8 @@ public class VocabularyViewAnswer extends Activity {
 		// 更新题目答案
 		reFresh();
 		// 初始化字体
-//		TextSettingManager mSettingManager = new TextSettingManager(this);
-//		mSettingManager.initText();
+		// TextSettingManager mSettingManager = new TextSettingManager(this);
+		// mSettingManager.initText();
 		// txtVocabularyAnswer.setTextColor(AppVariable.Font.G_TEXTCOLOR_PASSAGE);
 	}
 }

@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 import net.tsz.afinal.FinalDb;
@@ -27,6 +28,8 @@ import com.cetp.R;
 import com.cetp.action.AppVariable;
 import com.cetp.database.DBListeningOfQuestion;
 import com.cetp.database.DBWrongStat;
+import com.cetp.database.TableListeningOfQuestion;
+import com.cetp.database.TableListeningOfQuestionWrong;
 import com.cetp.question.QuestionListening;
 import com.cetp.view.MainTab.DateUtils;
 
@@ -70,10 +73,10 @@ public class ListeningViewAnswer {
 		userAnswerDiolog.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				showDialog(context);
 			}
 		});
+
 		DBListeningOfQuestion db = new DBListeningOfQuestion(context);
 		LinearLayout layout1;
 		LinearLayout myLayout;
@@ -97,7 +100,7 @@ public class ListeningViewAnswer {
 		// 记录题目的数目
 		dataCount = cur.getCount();
 		int NUMBER = 0;
-		while (cur.moveToNext()) {
+		while (NUMBER < dataCount) {
 			NUMBER++;
 			// 每道题的线性布局
 			myLayout = new LinearLayout(context);
@@ -120,6 +123,7 @@ public class ListeningViewAnswer {
 			layout1.addView(txtQuestionNumber);
 			// 题目布局加入总的线性布局
 			layout1.addView(myLayout);
+			cur.moveToNext();
 		}
 		listeningViewScroll.addView(layout1);
 		cur.close();
@@ -127,7 +131,7 @@ public class ListeningViewAnswer {
 
 		Date dateNow = new Date(System.currentTimeMillis());// 获取当前时间
 		String now = MainTab.DateUtils.dateToStr("MMddHHmmss", dateNow);
-		Log.v(TAG, now);
+		Log.v(TAG, "now=" + now);
 	}
 
 	private void setAnswerText(TextView txtQuestionNumber,
@@ -173,10 +177,19 @@ public class ListeningViewAnswer {
 		String theAnswer;
 		userRightAnswer = 0;
 		userWrongAnswer = 0;
-		// FinalDb dbW = FinalDb.create(context);
-		// QuestionListening Q_Lis = new QuestionListening();
-		// dbW.findAll(QuestionListening.class);
 
+		// 20150324--------------------------------------------------------
+		TableListeningOfQuestion t = new TableListeningOfQuestion();
+		TableListeningOfQuestionWrong tw = new TableListeningOfQuestionWrong();
+		FinalDb fdb = FinalDb.create(context, "cetp");
+		List<TableListeningOfQuestion> lisOfQList = fdb.findAllByWhere(
+				TableListeningOfQuestion.class, "YYYYMM="
+						+ AppVariable.Common.YearMonth);
+
+		Log.v(TAG, "questionAmount=" + questionAmount + "  dataCount="
+				+ dataCount);
+
+		// 20150324--------------------------------------------------------
 		// 判断数据库是否有数据
 		if (dataCount != 0) {
 			while (NUM != questionAmount) {
@@ -187,14 +200,55 @@ public class ListeningViewAnswer {
 
 				if (theAnswer == null) {
 					theAnswer = "未作答";
-				} else if (!theAnswer.equals(theCorrectAnswer[NUM])) {
+				} else if (!theAnswer.equals(theCorrectAnswer[NUM])) {// 回答错误
 					myLayout.setBackgroundResource(R.drawable.login_input_dark);// 设置背景
 					txtListeningAnswerOfUser.setTextColor(v.getResources()
 							.getColor(R.color.red));
+					if (lisOfQList != null) {
+						String s;
+						s = lisOfQList.get(NUM - 1).getYYYYMM();
+						t.setYYYYMM(s);
+						tw.setYYYYMM(s);
+						s = lisOfQList.get(NUM - 1).getQuestionType();
+						t.setQuestionType(s);
+						tw.setQuestionType(s);
+						s = lisOfQList.get(NUM - 1).getQuestionNumber();
+						t.setQuestionNumber(s);
+						tw.setQuestionNumber(s);
+						s = lisOfQList.get(NUM - 1).getSelectionA();
+						t.setSelectionA(s);
+						tw.setSelectionA(s);
+						s = lisOfQList.get(NUM - 1).getSelectionB();
+						t.setSelectionB(s);
+						tw.setSelectionB(s);
+						s = lisOfQList.get(NUM - 1).getSelectionC();
+						t.setSelectionC(s);
+						tw.setSelectionC(s);
+						s = lisOfQList.get(NUM - 1).getSelectionD();
+						t.setSelectionD(s);
+						tw.setSelectionD(s);
+						s = lisOfQList.get(NUM - 1).getAnswer();
+						t.setAnswer(s);
+						tw.setAnswer(s);
+						s = lisOfQList.get(NUM - 1).getComments();
+						t.setComments("w");
+						tw.setComments(s);
+						tw.setDate(new Date());
+
+						if (tw.getComments() != "w") {
+							fdb.save(tw);
+							t.setYYYYMM(lisOfQList.get(NUM - 1).getYYYYMM());
+							fdb.update(
+									t,
+									"YYYYMM=" + t.getYYYYMM()
+											+ " and QuestionNumber="
+											+ t.getQuestionNumber());
+						}
+					}
 					// txtListeningAnswerOfUser.setBackgroundColor(getResources()
 					// .getColor(R.color.red));
 					userWrongAnswer++;
-				} else {
+				} else {// 回答正确
 					myLayout.setBackgroundResource(R.drawable.login_input_light);// 设置背景
 					txtListeningAnswerOfUser.setTextColor(v.getResources()
 							.getColor(R.color.black));
@@ -207,6 +261,9 @@ public class ListeningViewAnswer {
 
 			}
 		}
+
+		Log.v(TAG, "记录数量：" + (lisOfQList != null ? lisOfQList.size() : 0));
+
 		cur.close();
 
 		Date dateNow = new Date(System.currentTimeMillis());// 获取当前时间

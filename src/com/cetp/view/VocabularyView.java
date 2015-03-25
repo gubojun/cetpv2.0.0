@@ -25,10 +25,11 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.cetp.R;
+import com.cetp.action.AppVariable;
 import com.cetp.database.DBVocabulary;
 import com.cetp.question.QuestionContext;
 
-public class VocabularyView extends Activity implements Runnable{
+public class VocabularyView extends Activity implements Runnable {
 	public static final String TAG = "VocabularyView";
 	private Thread mThread;
 	private Handler myHandler;
@@ -38,7 +39,8 @@ public class VocabularyView extends Activity implements Runnable{
 	private Chronometer timer;
 	private boolean timerstop = false;
 
-	public static String[] vocabularyAnswer_All = new String[200];
+	public static String[] vocabularyQuestion_All = new String[AppVariable.Common.TOTAL_QUESTION_NUMBER];
+	public static String[] vocabularyAnswer_All = new String[AppVariable.Common.TOTAL_QUESTION_NUMBER];
 
 	/** 新建词汇数据类 */
 	DBVocabulary db = new DBVocabulary(this);
@@ -54,6 +56,7 @@ public class VocabularyView extends Activity implements Runnable{
 	boolean preHideTag = false;
 
 	int progressbar = 0;// 进度条
+
 	// /////////////////////////////////////////////////////
 	@SuppressLint("HandlerLeak")
 	@Override
@@ -118,11 +121,13 @@ public class VocabularyView extends Activity implements Runnable{
 		Cursor cur = db.getAllItem();
 		if (cur.getCount() == 0)
 			Toast.makeText(this, "请先下载并导入数据！", Toast.LENGTH_SHORT).show();
+		int dataCount = cur.getCount();
 		int NUMBER = 0;// NUMBER表示id号，表示题号（要加1），表示题目数
-		while (cur.moveToNext()) {// 循环产生RadioGroup控件
+		while (NUMBER < dataCount) {// 循环产生RadioGroup控件
 			NUMBER++;
 			QuestionContext mylayout = new QuestionContext(this, NUMBER, cur);
 			scrollContext.addView(mylayout);
+			cur.moveToNext();
 
 		}
 		cur.close();

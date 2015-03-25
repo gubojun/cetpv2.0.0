@@ -3,6 +3,7 @@ package com.cetp.view;
 import java.util.Calendar;
 
 import com.cetp.R;
+import com.cetp.action.AppVariable;
 import com.cetp.database.DBClozingOfQuestion;
 import com.cetp.question.QuestionContext;
 
@@ -26,10 +27,11 @@ public class ClozingViewQuestion implements Runnable {
 	protected static final int msg_Key = 0x1234;
 	private Chronometer timer;
 	private boolean timerstop = false;
+	public static String[] clozingQuestion_All = new String[AppVariable.Common.TOTAL_QUESTION_NUMBER];
 	/**
 	 * 记录用户所答的答案 下标从1开始
 	 */
-	public static String[] clozingAnswer_All = new String[200];
+	public static String[] clozingAnswer_All = new String[AppVariable.Common.TOTAL_QUESTION_NUMBER];
 
 	int progressbar = 0;// 进度条
 
@@ -97,11 +99,13 @@ public class ClozingViewQuestion implements Runnable {
 		cur = db.getAllItem();
 		if (cur.getCount() == 0)
 			Toast.makeText(context, "请先下载并导入数据！", Toast.LENGTH_SHORT).show();
+		int dataCount = cur.getCount();
 		int NUMBER = 0;// NUMBER表示id号，表示题号（要加1），表示题目数
-		while (cur.moveToNext()) {// 循环产生RadioGroup控件
+		while (NUMBER < dataCount) {// 循环产生RadioGroup控件
 			NUMBER++;
 			QuestionContext mylayout = new QuestionContext(context, NUMBER, cur);
 			scrollContext.addView(mylayout);
+			cur.moveToNext();
 		}
 		cur.close();
 		db.close();

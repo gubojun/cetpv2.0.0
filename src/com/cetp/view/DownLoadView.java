@@ -245,32 +245,32 @@ public class DownLoadView extends Activity {
 				String path = listeningUrl;
 				// 自己网盘里的文件，下载下来测试一下
 				path = "http://180.97.83.168:443/down/c33e861cd11e91a906383bf96fef539a-44544/Lis_CET4_201106.xls?cts=dx-f-182A136A67A2499659345&ctp=182A136A67A249&ctt=1424885064&limit=2&spd=2200000&ctk=f9abcbcb55dff70fc051f0746fa39e90&chk=c33e861cd11e91a906383bf96fef539a-44544&mtd=1";
-				if (AppVariable.Common.TypeOfView == 0
-						&& !MyFile.isFileExist("/" + listeningFile))
-					if (Environment.getExternalStorageState().equals(
-							Environment.MEDIA_MOUNTED)) {
-						// showDownloadDialog();
+
+				if (Environment.getExternalStorageState().equals(
+						Environment.MEDIA_MOUNTED)) {
+					// showDownloadDialog();
+					if (AppVariable.Common.TypeOfView == 0
+							&& !MyFile.isFileExist("/" + listeningFile)) {
 						File dir = new File(Environment
 								.getExternalStorageDirectory() + "/cetpdata");// 文件保存目录
 
 						// download(path, dir);
 						addProgressBar0();
 						download0(path, dir, handler0, p0, "size0");
-
 					} else {
-						Toast.makeText(DownLoadView.this, R.string.sdcarderror,
-								Toast.LENGTH_SHORT).show();
+						if (AppVariable.Common.TypeOfView == 0)
+							importListeningQuestion();
+						else if (AppVariable.Common.TypeOfView == 1) {
+							importClozingQuestion();
+						} else if (AppVariable.Common.TypeOfView == 2) {
+							importReadingQuestion();
+						} else if (AppVariable.Common.TypeOfView == 4) {
+							importVocabularyQuestion();
+						}
 					}
-				else {
-					if (AppVariable.Common.TypeOfView == 0)
-						importListeningQuestion();
-					else if (AppVariable.Common.TypeOfView == 1) {
-						importClozingQuestion();
-					} else if (AppVariable.Common.TypeOfView == 2) {
-						importReadingQuestion();
-					} else if (AppVariable.Common.TypeOfView == 4) {
-						importVocabularyQuestion();
-					}
+				} else {
+					Toast.makeText(DownLoadView.this, R.string.sdcarderror,
+							Toast.LENGTH_SHORT).show();
 				}
 			}
 		});
@@ -282,10 +282,11 @@ public class DownLoadView extends Activity {
 						.setBackgroundResource(R.drawable.ic_preference_single_dark);
 				String path = clozingUrl;
 				path = "http://180.97.83.168:443/down/90c0b91845f0ac268e85227fe1b0c2b5-29184/Clo_CET4_201106.xls?cts=dx-f-182A136A67A2499659345&ctp=182A136A67A249&ctt=1424885110&limit=2&spd=2200000&ctk=9fd5db30e40933f591c0ec65b8886930&chk=90c0b91845f0ac268e85227fe1b0c2b5-29184&mtd=1";
-				if (AppVariable.Common.TypeOfView == 1
-						&& !MyFile.isFileExist("/" + clozingFile))
-					if (Environment.getExternalStorageState().equals(
-							Environment.MEDIA_MOUNTED)) {
+
+				if (Environment.getExternalStorageState().equals(
+						Environment.MEDIA_MOUNTED)) {
+					if (AppVariable.Common.TypeOfView == 1
+							&& !MyFile.isFileExist("/" + clozingFile)) {
 						// showDownloadDialog();
 						File dir = new File(Environment
 								.getExternalStorageDirectory() + "/cetpdata/");// 文件保存目录
@@ -294,17 +295,17 @@ public class DownLoadView extends Activity {
 						addProgressBar1();
 						download0(path, dir, handler1, p1, "size1");
 					} else {
-						Toast.makeText(DownLoadView.this, R.string.sdcarderror,
-								Toast.LENGTH_SHORT).show();
+						if (AppVariable.Common.TypeOfView == 0)
+							importListeningText();
+						else if (AppVariable.Common.TypeOfView == 1) {
+							importClozingText();
+						} else if (AppVariable.Common.TypeOfView == 2) {
+							importReadingPassage();
+						}
 					}
-				else {
-					if (AppVariable.Common.TypeOfView == 0)
-						importListeningText();
-					else if (AppVariable.Common.TypeOfView == 1) {
-						importClozingText();
-					} else if (AppVariable.Common.TypeOfView == 2) {
-						importReadingPassage();
-					}
+				} else {
+					Toast.makeText(DownLoadView.this, R.string.sdcarderror,
+							Toast.LENGTH_SHORT).show();
 				}
 			}
 		});
@@ -317,10 +318,10 @@ public class DownLoadView extends Activity {
 						.setBackgroundResource(R.drawable.ic_preference_single_dark);
 				String path = readingUrl;
 				// SD卡正常挂载
-				if (AppVariable.Common.TypeOfView == 2
-						&& !MyFile.isFileExist("/" + readingFile))
-					if (Environment.getExternalStorageState().equals(
-							Environment.MEDIA_MOUNTED)) {
+				if (Environment.getExternalStorageState().equals(
+						Environment.MEDIA_MOUNTED)) {
+					if (AppVariable.Common.TypeOfView == 2
+							&& !MyFile.isFileExist("/" + readingFile)) {
 						// showDownloadDialog();
 						File dir = new File(Environment
 								.getExternalStorageDirectory() + "/cetpdata/");// 文件保存目录
@@ -329,14 +330,13 @@ public class DownLoadView extends Activity {
 						addProgressBar2();
 						download0(path, dir, handler2, p2, "size2");
 					} else {
-						Toast.makeText(DownLoadView.this, R.string.sdcarderror,
-								Toast.LENGTH_SHORT).show();
+						importListeningConversation();
 					}
-				else {
-					importListeningConversation();
+				} else {
+					Toast.makeText(DownLoadView.this, R.string.sdcarderror,
+							Toast.LENGTH_SHORT).show();
 				}
 			}
-
 		});
 		rlt_download3.setOnClickListener(new Button.OnClickListener() {
 			@Override

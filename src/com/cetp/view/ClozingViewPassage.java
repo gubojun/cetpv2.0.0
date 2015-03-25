@@ -23,9 +23,9 @@ public class ClozingViewPassage {
 	// ------布局方式--------
 	@SuppressWarnings("unused")
 	private final LinearLayout.LayoutParams LP_FF = new LinearLayout.LayoutParams(
-			LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
+			LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
 	private final LinearLayout.LayoutParams LP_FW = new LinearLayout.LayoutParams(
-			LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+			LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
 	@SuppressWarnings("unused")
 	private final LinearLayout.LayoutParams LP_WW = new LinearLayout.LayoutParams(
 			LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
@@ -54,7 +54,7 @@ public class ClozingViewPassage {
 			layout.setOrientation(LinearLayout.VERTICAL); // 控件对其方式为垂直排列
 			layout.setPadding(10, 0, 10, 0);// 设置padding
 			while (cur.moveToNext()) {
-				System.out.println(cur.getCount());
+				//System.out.println(cur.getCount());
 				txtQuestionNumber = new TextView(context);
 				// 原文
 				originalText = new TextView(context);

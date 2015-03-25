@@ -20,18 +20,20 @@ public class ListeningViewQuestiontext {
 
 	// ------布局方式--------
 	private final LinearLayout.LayoutParams LP_FF = new LinearLayout.LayoutParams(
-			LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
+			LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
 	private final LinearLayout.LayoutParams LP_FW = new LinearLayout.LayoutParams(
-			LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+			LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
 	private final LinearLayout.LayoutParams LP_WW = new LinearLayout.LayoutParams(
 			LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 	private Cursor cur;
 	/* 定义进度条 */
 	public static SeekBar audioSeekBar = null;
 	Context context;
-	public ListeningViewQuestiontext(Context c){
-		context =c;
+
+	public ListeningViewQuestiontext(Context c) {
+		context = c;
 	}
+
 	public void setView(View v) {
 		TextView txtQuestionNumber;// 题号
 		TextView originalText;// 原文
@@ -43,11 +45,11 @@ public class ListeningViewQuestiontext {
 			cur = db.getItemFromYM(AppVariable.Common.YearMonth);
 			// cur.moveToFirst();
 		} else {
-			Toast.makeText(context, "数据不存在",
-					Toast.LENGTH_SHORT).show();
+			Toast.makeText(context, "数据不存在", Toast.LENGTH_SHORT).show();
 		}
 
-		ScrollView listeningViewScroll = (ScrollView) v.findViewById(R.id.scr_listening_questiontext);
+		ScrollView listeningViewScroll = (ScrollView) v
+				.findViewById(R.id.scr_listening_questiontext);
 		LinearLayout layout = new LinearLayout(context);
 
 		layout.setOrientation(LinearLayout.VERTICAL); // 控件对其方式为垂直排列
@@ -79,7 +81,8 @@ public class ListeningViewQuestiontext {
 				+ cur.getString(cur.getColumnIndex("QuestionEndNumber"))
 				+ ")");
 		txtQuestionNumber.setTextSize(20);
-		txtQuestionNumber.setTextColor(context.getResources().getColor(R.color.red));
+		txtQuestionNumber.setTextColor(context.getResources().getColor(
+				R.color.red));
 
 		questionText.setText(cur.getString(cur.getColumnIndex("PassageText")));
 		questionText.setTextSize(17);

@@ -70,8 +70,9 @@ public class ReadingViewAnswer {
 
 		layout.setOrientation(LinearLayout.VERTICAL); // 控件对其方式为垂直排列
 		layout.setPadding(10, 0, 10, 0);
+		int dataCount = cur.getCount();
 		int NUMBER = 0;
-		while (cur.moveToNext()) {
+		while (NUMBER < dataCount) {
 			NUMBER++;
 			myLayout = new LinearLayout(context);
 			myLayout.setOrientation(LinearLayout.HORIZONTAL);// 水平布局
@@ -89,6 +90,7 @@ public class ReadingViewAnswer {
 			myLayout.addView(txtReadingAnswerOfUser);
 			layout.addView(txtQuestionNumber);
 			layout.addView(myLayout);
+			cur.moveToNext();
 		}
 		ReadingViewScroll.addView(layout);
 		cur.close();

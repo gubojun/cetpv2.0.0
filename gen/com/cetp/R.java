@@ -541,8 +541,8 @@ public final class R {
         public static final int preference_last_item=0x7f020033;
         public static final int preference_meiri_item=0x7f020034;
         public static final int preference_moni_item=0x7f020035;
-        public static final int preference_shoucang_item=0x7f020036;
-        public static final int preference_single_item=0x7f020037;
+        public static final int preference_single_item=0x7f020036;
+        public static final int preference_wrong_item=0x7f020037;
         public static final int seekbar_bg=0x7f020038;
         public static final int seekbar_style=0x7f020039;
         public static final int seekbar_style_blue=0x7f02003a;
@@ -615,12 +615,12 @@ public final class R {
         public static final int index_img_fenxiang=0x7f0c00aa;
         public static final int index_img_meiri=0x7f0c00b0;
         public static final int index_img_moni=0x7f0c00ae;
-        public static final int index_img_shoucang=0x7f0c00ac;
+        public static final int index_img_wrong=0x7f0c00ac;
         public static final int index_lin_top=0x7f0c00a2;
         public static final int index_rlt_fenxiang=0x7f0c00a9;
         public static final int index_rlt_meiri=0x7f0c00af;
         public static final int index_rlt_moni=0x7f0c00ad;
-        public static final int index_rlt_shoucang=0x7f0c00ab;
+        public static final int index_rlt_wrong=0x7f0c00ab;
         public static final int lin1=0x7f0c0016;
         public static final int lin_clozingquestion_scrollcontext=0x7f0c003b;
         public static final int lin_download=0x7f0c0017;

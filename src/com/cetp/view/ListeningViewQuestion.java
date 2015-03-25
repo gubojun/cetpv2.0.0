@@ -40,6 +40,7 @@ public class ListeningViewQuestion {
 	public static TextView txtListeningTimeTotal;// 音频总时间
 	public static TextView txtListeningTimeNow;// 音频当前时间
 
+	public static String[] listeningQuestion_All = new String[AppVariable.Common.TOTAL_QUESTION_NUMBER];
 	public static String[] listeningAnswer_All = new String[AppVariable.Common.TOTAL_QUESTION_NUMBER];
 	private LinearLayout scrollContext;
 
@@ -62,6 +63,7 @@ public class ListeningViewQuestion {
 		// 新建听力数据类
 		DBListeningOfQuestion db = new DBListeningOfQuestion(context);
 		for (int i = 0; i < AppVariable.Common.TOTAL_QUESTION_NUMBER; i++) {
+			listeningQuestion_All[i] = null;
 			listeningAnswer_All[i] = null;
 		}
 		db.open();
@@ -73,12 +75,14 @@ public class ListeningViewQuestion {
 
 		if (cur.getCount() == 0)
 			Toast.makeText(context, "请先下载并导入数据！", Toast.LENGTH_SHORT).show();
-
+		// 记录题目的数目
+		int dataCount = cur.getCount();
 		int NUMBER = 0;// NUMBER表示id号，表示题号（要加1），表示题目数
-		while (cur.moveToNext()) {// 循环产生RadioGroup控件
+		while (NUMBER < dataCount) {// 循环产生RadioGroup控件
 			NUMBER++;
 			QuestionContext mylayout = new QuestionContext(context, NUMBER, cur);
 			scrollContext.addView(mylayout);
+			cur.moveToNext();
 		}
 		cur.close();
 		/* 得到mp3文件名 */

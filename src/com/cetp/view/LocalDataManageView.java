@@ -156,6 +156,8 @@ public class LocalDataManageView extends FinalActivity {
 
 	public void rltButton(View v) {
 		if (v == rlt_download0) {
+			rlt_download0
+					.setBackgroundResource(R.drawable.ic_preference_single_dark);
 			switch (AppVariable.Common.TypeOfView) {
 			case 0:
 				importListeningQuestion();
@@ -171,6 +173,8 @@ public class LocalDataManageView extends FinalActivity {
 				break;
 			}
 		} else if (v == rlt_download1) {
+			rlt_download1
+					.setBackgroundResource(R.drawable.ic_preference_single_dark);
 			switch (AppVariable.Common.TypeOfView) {
 			case 0:
 				importListeningText();
@@ -183,9 +187,12 @@ public class LocalDataManageView extends FinalActivity {
 				break;
 			}
 		} else if (v == rlt_download2) {
+			rlt_download2
+					.setBackgroundResource(R.drawable.ic_preference_single_dark);
 			importListeningConversation();
 		} else if (v == rlt_download4) {
-
+			rlt_download4
+					.setBackgroundResource(R.drawable.ic_preference_single_dark);
 		} else if (v == rlt_reset) {
 			DatabaseHelper databaseHelper = new DatabaseHelper(
 					getApplicationContext());

@@ -3,6 +3,7 @@ package com.cetp.view;
 import java.util.Calendar;
 
 import com.cetp.R;
+import com.cetp.action.AppVariable;
 import com.cetp.database.DBReadingOfQuestion;
 import com.cetp.question.QuestionContext;
 
@@ -18,12 +19,14 @@ import android.widget.Chronometer;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-public class ReadingViewQuestion  implements Runnable {
+public class ReadingViewQuestion implements Runnable {
 	public static final String TAG = "ReadingViewOfQuestion";
 	private LinearLayout appMenu;// 菜单按钮的弹出菜单
 	boolean preHideTag = false;
-	public static String[] readingAnswer_All = new String[200];
-	
+
+	public static String[] readingQuestion_All = new String[AppVariable.Common.TOTAL_QUESTION_NUMBER];
+	public static String[] readingAnswer_All = new String[AppVariable.Common.TOTAL_QUESTION_NUMBER];
+
 	private Thread mThread;
 	private Handler myHandler;
 	private Calendar myCalendar; // 日历类
@@ -33,11 +36,13 @@ public class ReadingViewQuestion  implements Runnable {
 	int progressbar = 0;// 进度条
 	Context context;
 	Activity activity;
+
 	public ReadingViewQuestion(Context c) {
 		context = c;
-		activity=(Activity) c;
+		activity = (Activity) c;
 	}
-	public void setView(View v){
+
+	public void setView(View v) {
 		// 新建听力数据类
 		DBReadingOfQuestion db = new DBReadingOfQuestion(context);
 		// 找到控件
@@ -77,15 +82,18 @@ public class ReadingViewQuestion  implements Runnable {
 			readingAnswer_All[i] = null;
 		}
 		db.open();
-		LinearLayout scrollContext = (LinearLayout) v.findViewById(R.id.lin_readingquestion_scrollcontext);
+		LinearLayout scrollContext = (LinearLayout) v
+				.findViewById(R.id.lin_readingquestion_scrollcontext);
 		Cursor cur = db.getAllItem();
 		if (cur.getCount() == 0)
 			Toast.makeText(context, "请先下载并导入数据！", Toast.LENGTH_SHORT).show();
+		int dataCount = cur.getCount();
 		int NUMBER = 0;// NUMBER表示id号，表示题号（要加1），表示题目数
-		while (cur.moveToNext()) {// 循环产生RadioGroup控件
+		while (NUMBER < dataCount) {// 循环产生RadioGroup控件
 			NUMBER++;
 			QuestionContext mylayout = new QuestionContext(context, NUMBER, cur);
 			scrollContext.addView(mylayout);
+			cur.moveToNext();
 		}
 		db.close();
 		cur.close();

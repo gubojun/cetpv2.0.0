@@ -31,8 +31,8 @@ public class MainView {
 	// 定义按钮
 	@ViewInject(id = R.id.index_rlt_fenxiang)
 	private RelativeLayout rltIndexfenxiang;
-	@ViewInject(id = R.id.index_rlt_shoucang)
-	private RelativeLayout rltIndexshoucang;
+	@ViewInject(id = R.id.index_rlt_wrong)
+	private RelativeLayout rltIndexWrong;
 	private RelativeLayout rltIndexmoni;
 	private RelativeLayout rltIndexmeiri;
 	private ImageView img1, img2, img3, img4;
@@ -57,13 +57,12 @@ public class MainView {
 
 		rltIndexfenxiang = (RelativeLayout) v
 				.findViewById(R.id.index_rlt_fenxiang);
-		rltIndexshoucang = (RelativeLayout) v
-				.findViewById(R.id.index_rlt_shoucang);
+		rltIndexWrong = (RelativeLayout) v.findViewById(R.id.index_rlt_wrong);
 		rltIndexmoni = (RelativeLayout) v.findViewById(R.id.index_rlt_moni);
 		rltIndexmeiri = (RelativeLayout) v.findViewById(R.id.index_rlt_meiri);
 
 		img1 = (ImageView) v.findViewById(R.id.index_img_fenxiang);
-		img2 = (ImageView) v.findViewById(R.id.index_img_shoucang);
+		img2 = (ImageView) v.findViewById(R.id.index_img_wrong);
 		img3 = (ImageView) v.findViewById(R.id.index_img_moni);
 		img4 = (ImageView) v.findViewById(R.id.index_img_meiri);
 
@@ -119,7 +118,7 @@ public class MainView {
 		});
 
 		rltIndexfenxiang.setOnClickListener(new ViewOnClickListener());
-		rltIndexshoucang.setOnClickListener(new ViewOnClickListener());
+		rltIndexWrong.setOnClickListener(new ViewOnClickListener());
 		rltIndexmoni.setOnClickListener(new ViewOnClickListener());
 		rltIndexmeiri.setOnClickListener(new ViewOnClickListener());
 		img1.setOnClickListener(new ViewOnClickListener());
@@ -193,8 +192,61 @@ public class MainView {
 
 								}).setNegativeButton("取消", null).create();
 				alertDialog.show();
-			} else if (v == rltIndexshoucang || v == img2) {
-				Toast.makeText(mContext, "2", Toast.LENGTH_LONG).show();
+			} else if (v == rltIndexWrong || v == img2) {
+				final String[] array = new String[] { "听力错题", "完型错题", "阅读错题",
+						"词汇错题" };
+				AppVariable.Common.TypeOfView = selectedIndex = myPrefs.getInt(
+						TYPE_OF_VIEW, 0);
+				Dialog alertDialog = new AlertDialog.Builder(mContext)
+						.setTitle("请选择")
+						.setSingleChoiceItems(array,
+								AppVariable.Common.TypeOfView,
+								new DialogInterface.OnClickListener() {
+
+									@Override
+									public void onClick(DialogInterface dialog,
+											int which) {
+										selectedIndex = which;
+									}
+								})
+						.setPositiveButton("确认",
+								new DialogInterface.OnClickListener() {
+
+									@Override
+									public void onClick(DialogInterface arg0,
+											int arg1) {
+										/** 将选择的项目保存 *************************************/
+										Editor editor = myPrefs.edit();
+										editor.putInt(TYPE_OF_VIEW,
+												selectedIndex);
+										// Write other values as desired
+										editor.commit();
+										AppVariable.Common.TypeOfView = selectedIndex;
+										// Toast.makeText(mContext,
+										// array[selectedIndex],
+										// Toast.LENGTH_LONG).show();
+										/** 检查数据表是否存在，数据表中是否有数据，没有则下载数据，导入数据 */
+										if (!DBCommon.checkDB(selectedIndex,
+												mContext,
+												AppVariable.Common.YearMonth)) {
+											Intent intent = new Intent();
+											intent.putExtra("VIEW",
+													selectedIndex);
+											intent.setClass(mContext,
+													DownLoadView.class);
+											mContext.startActivity(intent);
+											// Toast.makeText(mContext, "跳转到下载",
+											// Toast.LENGTH_LONG).show();
+										} else
+											mContext.startActivity(new Intent(
+													mContext, CommonTab.class));
+										// activity.setTitle(array[selectedIndex]);
+									}
+
+								}).setNegativeButton("取消", null).create();
+				alertDialog.show();
+
+				//Toast.makeText(mContext, "2", Toast.LENGTH_LONG).show();
 			} else if (v == rltIndexmoni || v == img3) {
 				Toast.makeText(mContext, "3", Toast.LENGTH_LONG).show();
 			} else if (v == rltIndexmeiri || v == img4) {
