@@ -1,5 +1,8 @@
 package com.cetp.view;
 
+import java.util.List;
+
+import net.tsz.afinal.FinalDb;
 import net.tsz.afinal.annotation.view.ViewInject;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -10,6 +13,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.res.Resources;
+import android.sax.StartElementListener;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -25,6 +29,7 @@ import android.widget.Toast;
 import com.cetp.R;
 import com.cetp.action.AppVariable;
 import com.cetp.database.DBCommon;
+import com.cetp.database.TableListeningOfQuestion;
 
 public class MainView {
 	final String DEFAULTUSER = "defaultUser";
@@ -184,9 +189,16 @@ public class MainView {
 											mContext.startActivity(intent);
 											// Toast.makeText(mContext, "跳转到下载",
 											// Toast.LENGTH_LONG).show();
-										} else
-											mContext.startActivity(new Intent(
-													mContext, CommonTab.class));
+										} else {
+											Intent intent = new Intent();
+											// intent.putExtra("VIEW",
+											// selectedIndex);
+											// intent.putExtra("isWrongView",
+											// false);
+											intent.setClass(mContext,
+													CommonTab.class);
+											mContext.startActivity(intent);
+										}
 										// activity.setTitle(array[selectedIndex]);
 									}
 
@@ -222,35 +234,47 @@ public class MainView {
 										// Write other values as desired
 										editor.commit();
 										AppVariable.Common.TypeOfView = selectedIndex;
-										// Toast.makeText(mContext,
-										// array[selectedIndex],
-										// Toast.LENGTH_LONG).show();
-										/** 检查数据表是否存在，数据表中是否有数据，没有则下载数据，导入数据 */
-										if (!DBCommon.checkDB(selectedIndex,
-												mContext,
-												AppVariable.Common.YearMonth)) {
-											Intent intent = new Intent();
-											intent.putExtra("VIEW",
-													selectedIndex);
-											intent.setClass(mContext,
-													DownLoadView.class);
-											mContext.startActivity(intent);
-											// Toast.makeText(mContext, "跳转到下载",
-											// Toast.LENGTH_LONG).show();
-										} else
-											mContext.startActivity(new Intent(
-													mContext, CommonTab.class));
-										// activity.setTitle(array[selectedIndex]);
+
+										FinalDb fdb = FinalDb.create(mContext,
+												"cetp");
+
+										switch (AppVariable.Common.TypeOfView) {
+										case 0:
+											List<TableListeningOfQuestion> lisOfQList = fdb
+													.findAll(TableListeningOfQuestion.class);
+											if (lisOfQList != null) {
+												Intent intent = new Intent();
+												intent.putExtra("VIEW",
+														selectedIndex);
+												intent.putExtra("isWrongView",
+														true);
+												intent.setClass(mContext,
+														CommonTab.class);
+												mContext.startActivity(intent);
+											}
+											break;
+										case 1:
+											break;
+										case 2:
+											break;
+										case 3:
+											break;
+										}
 									}
 
 								}).setNegativeButton("取消", null).create();
 				alertDialog.show();
 
-				//Toast.makeText(mContext, "2", Toast.LENGTH_LONG).show();
+				// Toast.makeText(mContext, "2", Toast.LENGTH_LONG).show();
 			} else if (v == rltIndexmoni || v == img3) {
-				Toast.makeText(mContext, "3", Toast.LENGTH_LONG).show();
+				Intent intent = new Intent();
+				intent.setClass(mContext, CommonTabSimulation.class);
+				mContext.startActivity(intent);
+				// Toast.makeText(mContext, "3", Toast.LENGTH_LONG).show();
 			} else if (v == rltIndexmeiri || v == img4) {
-				Toast.makeText(mContext, "4", Toast.LENGTH_LONG).show();
+				Intent intent = new Intent();
+				intent.setClass(mContext, EverydayView.class);
+				mContext.startActivity(intent);
 			}
 		}
 	}

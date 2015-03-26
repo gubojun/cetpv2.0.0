@@ -11,6 +11,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup.LayoutParams;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cetp.R;
@@ -34,6 +36,8 @@ public class AboutView extends Activity {
 	private RelativeLayout rltAboutComments;
 	private RelativeLayout rltAboutHelp;
 	private RelativeLayout rltAboutNewVersion;
+
+	private TextView txtAppName;
 
 	private EditText edtCommentIn;
 	/** 检测新版本对话框 */
@@ -65,8 +69,12 @@ public class AboutView extends Activity {
 				finish();
 			}
 		});
+
+		txtAppName = (TextView) findViewById(R.id.txt_app_name);
+		txtAppName.setText(getResources().getString(R.string.app_name)+"(手机版)\nV2.0");
+
 		initRelativeLayoutButton();
-		
+
 		ActionBar actionBar = this.getActionBar();
 		actionBar.setDisplayOptions(ActionBar.DISPLAY_HOME_AS_UP,
 				ActionBar.DISPLAY_HOME_AS_UP);
@@ -76,8 +84,8 @@ public class AboutView extends Activity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == android.R.id.home) {
-//			Intent intent = new Intent(Login.this, Welcome.class);
-//			startActivity(intent);
+			// Intent intent = new Intent(Login.this, Welcome.class);
+			// startActivity(intent);
 			finish();
 			return true;
 		}

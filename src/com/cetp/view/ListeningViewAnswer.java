@@ -235,9 +235,9 @@ public class ListeningViewAnswer {
 						tw.setComments(s);
 						tw.setDate(new Date());
 
-						if (tw.getComments() != "w") {
+						if (!lisOfQList.get(NUM - 1).getComments().trim()
+								.equals("w")) {
 							fdb.save(tw);
-							t.setYYYYMM(lisOfQList.get(NUM - 1).getYYYYMM());
 							fdb.update(
 									t,
 									"YYYYMM=" + t.getYYYYMM()

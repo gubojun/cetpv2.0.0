@@ -1,5 +1,7 @@
 package com.cetp.question;
 
+import java.util.List;
+
 import android.content.Context;
 import android.database.Cursor;
 import android.view.View;
@@ -14,6 +16,7 @@ import android.widget.Toast;
 
 import com.cetp.R;
 import com.cetp.action.AppVariable;
+import com.cetp.database.TableListeningOfQuestionWrong;
 import com.cetp.view.ClozingViewQuestion;
 import com.cetp.view.ListeningViewQuestion;
 import com.cetp.view.ReadingViewQuestion;
@@ -63,6 +66,49 @@ public class QuestionContext extends LinearLayout {
 			txtQuestionText = new TextView(context);
 			txtQuestionText.setText(cur.getString(cur
 					.getColumnIndex("QuestionText")));
+			// 设置背景
+			txtQuestionText.setBackgroundResource(R.drawable.login_input);
+			this.addView(txtQuestionText);
+		}
+		this.addView(radiogroup);
+	}
+
+	public QuestionContext(Context context, int NUMBER, List<?> list) {
+		super(context);
+		/* mylayout是题号行的布局方式 */
+		mylayout = new LinearLayout(context);
+		mylayout.setOrientation(LinearLayout.HORIZONTAL);// 水平线性布局
+		/* 题号 */
+		txtQuestionNumber = new TextView(context);
+		/* 复选框 */
+		checkBoxText = new CheckBox(context);
+		checkBoxText.setOnCheckedChangeListener(new CheckBoxListener());
+		checkBoxText.setChecked(false);
+		checkBoxText.setText("");// setText("标记");
+		checkBoxText.setTextColor(getResources().getColor(R.color.orange));
+		checkBoxText.setTextSize(14);
+		checkBoxText.setVisibility(VISIBLE);
+		/* 单选按钮组 */
+		radiogroup = new RadioGroup(context);
+		setRadioButton(radiogroup, txtQuestionNumber, checkBoxText, context,
+				NUMBER, list);
+		radiogroup.setOnCheckedChangeListener(new myRadioGroupListener());
+		radiogroup.setLayoutParams(LP_FW);
+		radiogroup.setVisibility(View.VISIBLE);
+		// 设置背景
+		radiogroup.setBackgroundResource(R.drawable.login_input);
+		mylayout.addView(txtQuestionNumber);
+		mylayout.addView(checkBoxText);
+		this.setOrientation(LinearLayout.VERTICAL);// 垂直水平线性布局
+		this.addView(mylayout);
+		if (AppVariable.Common.TypeOfView == 1) {
+			txtQuestionText = new TextView(context);
+			//txtQuestionText.setText(((TableListeningOfQuestionWrong)list.get(NUMBER-1)).;
+		} else if (AppVariable.Common.TypeOfView == 3) {
+			/* 题目 */
+			txtQuestionText = new TextView(context);
+//			txtQuestionText.setText(cur.getString(cur
+//					.getColumnIndex("QuestionText")));
 			// 设置背景
 			txtQuestionText.setBackgroundResource(R.drawable.login_input);
 			this.addView(txtQuestionText);
@@ -122,6 +168,48 @@ public class QuestionContext extends LinearLayout {
 		checkBoxText.setId(radiogroup.getId() + 0x20000000);
 	}
 
+	private void setRadioButton(RadioGroup radiogroup,
+			TextView texQuestionNumber, CheckBox checkBoxText, Context context,
+			int NUMBER, List<?> list) {
+		radiogroup.setId(NUMBER * 10);
+
+		RadioButton rdbSelectionA = new RadioButton(context);
+		rdbSelectionA.setId(radiogroup.getId() + 1);
+		rdbSelectionA.setText("A)."
+				+ ((TableListeningOfQuestionWrong) list.get(NUMBER - 1))
+						.getSelectionA());
+		rdbSelectionA.setChecked(false);
+		radiogroup.addView(rdbSelectionA);
+
+		RadioButton rdbSelectionB = new RadioButton(context);
+		rdbSelectionB.setId(radiogroup.getId() + 2);
+		rdbSelectionB.setText("B)."
+				+ ((TableListeningOfQuestionWrong) list.get(NUMBER - 1))
+						.getSelectionB());
+		rdbSelectionB.setChecked(false);
+		radiogroup.addView(rdbSelectionB);
+
+		RadioButton rdbSelectionC = new RadioButton(context);
+		rdbSelectionC.setId(radiogroup.getId() + 3);
+		rdbSelectionC.setText("C)."
+				+ ((TableListeningOfQuestionWrong) list.get(NUMBER - 1))
+						.getSelectionC());
+		rdbSelectionC.setChecked(false);
+		radiogroup.addView(rdbSelectionC);
+
+		RadioButton rdbSelectionD = new RadioButton(context);
+		rdbSelectionD.setId(radiogroup.getId() + 4);
+		rdbSelectionD.setText("D)."
+				+ ((TableListeningOfQuestionWrong) list.get(NUMBER - 1))
+						.getSelectionD());
+		rdbSelectionD.setChecked(false);
+		radiogroup.addView(rdbSelectionD);
+
+		txtQuestionNumber.setText("(" + NUMBER + ")." + "你的答案:");
+		txtQuestionNumber.setId(radiogroup.getId() + 0x10000000);
+		checkBoxText.setId(radiogroup.getId() + 0x20000000);
+	}
+
 	// -------------单选按钮组的点击事件---------------
 	class myRadioGroupListener implements
 			android.widget.RadioGroup.OnCheckedChangeListener {
@@ -136,24 +224,24 @@ public class QuestionContext extends LinearLayout {
 						.subSequence(0,
 								txtQuestionNumber.getText().length() - 1));
 			}
-			//String[] Question_All = null;
+			// String[] Question_All = null;
 			String[] Answer_All = null;
 			switch (AppVariable.Common.TypeOfView) {
 			case 0:
-				//Question_All = ListeningViewQuestion.listeningQuestion_All;
+				// Question_All = ListeningViewQuestion.listeningQuestion_All;
 				Answer_All = ListeningViewQuestion.listeningAnswer_All;
 				break;
 			case 1:
-				//Question_All = ClozingViewQuestion.clozingQuestion_All;
+				// Question_All = ClozingViewQuestion.clozingQuestion_All;
 				Answer_All = ClozingViewQuestion.clozingAnswer_All;
 				break;
 			case 2:
-				//Question_All = ReadingViewQuestion.readingQuestion_All;
+				// Question_All = ReadingViewQuestion.readingQuestion_All;
 				Answer_All = ReadingViewQuestion.readingAnswer_All;
 				break;
 
 			case 3:
-				//Question_All = VocabularyView.vocabularyQuestion_All;
+				// Question_All = VocabularyView.vocabularyQuestion_All;
 				Answer_All = VocabularyView.vocabularyAnswer_All;
 				break;
 			default:

@@ -46,6 +46,7 @@ public class CommonTab extends Activity {
 	private LinearLayout mCloseBtn;
 	private View layout;
 	private boolean menu_display = false;
+	private boolean isWrongView;
 	private PopupWindow menuWindow;
 	private LayoutInflater inflater;
 	final String TYPE_OF_VIEW = "typeofview";
@@ -73,7 +74,11 @@ public class CommonTab extends Activity {
 		SharedPreferences MainTabPrefs = getSharedPreferences("view.MainTab",
 				MODE_PRIVATE);
 		int type = MainTabPrefs.getInt(TYPE_OF_VIEW, 0);
-		final String[] array = new String[] { "Ã˝¡¶¡∑œ∞", "ÕÍ–Õ¡∑œ∞", "‘ƒ∂¡¡∑œ∞", "¥ ª„¡∑œ∞" };
+		Intent intent = getIntent();
+		String[] array;
+		isWrongView = intent.getBooleanExtra("isWrongView", false);
+		array = isWrongView ? new String[] { "Ã˝¡¶¥ÌÃ‚", "ÕÍ–Õ¥ÌÃ‚", "‘ƒ∂¡¥ÌÃ‚", "¥ ª„¥ÌÃ‚" }
+				: new String[] { "Ã˝¡¶¡∑œ∞", "ÕÍ–Õ¡∑œ∞", "‘ƒ∂¡¡∑œ∞", "¥ ª„¡∑œ∞" };
 		setTitle(array[type]);
 		// ≥ı ºªØ∆§∑Ù
 		// SkinSettingManager mSettingManager = new SkinSettingManager(this);
@@ -128,11 +133,18 @@ public class CommonTab extends Activity {
 			view2 = mLi.inflate(R.layout.listeningview_questiontext, null);
 			view3 = mLi.inflate(R.layout.listeningview_answer, null);
 
-			ListeningViewQuestion listeningviewquestion = new ListeningViewQuestion(
-					this);
+			if (!isWrongView) {
+				ListeningViewQuestion listeningviewquestion = new ListeningViewQuestion(
+						this);
+				listeningviewquestion.setView(view1);
+			} else {
+				ListeningViewQuestionWrong listeningviewquestion = new ListeningViewQuestionWrong(
+						this);
+				listeningviewquestion.setView(view1);
+			}
 			ListeningViewQuestiontext listeningviewquestiontext = new ListeningViewQuestiontext(
 					this);
-			listeningviewquestion.setView(view1);
+
 			listeningviewquestiontext.setView(view2);
 			listeningviewanswer.setView(view3);
 		} else if (AppVariable.Common.TypeOfView == 1) {
@@ -375,5 +387,4 @@ public class CommonTab extends Activity {
 			PlayerService.mMediaPlayer.reset();
 		super.onDestroy();
 	}
-
 }

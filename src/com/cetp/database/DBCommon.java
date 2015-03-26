@@ -1,5 +1,7 @@
 package com.cetp.database;
 
+import net.tsz.afinal.FinalDb;
+import net.tsz.afinal.FinalDb.DaoConfig;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -19,6 +21,7 @@ public class DBCommon extends DatabaseHelper {
 	public static boolean isClozingOfQuestion, isClozingOfText;
 	public static boolean isReadingOfQuestion, isReadingOfPassage;
 	public static boolean isVocabulary;
+	final private static int WRONG = 4;
 
 	public DBCommon(Context context) {
 		super(context);
