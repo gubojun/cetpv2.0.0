@@ -35,6 +35,12 @@ public class AppVariable {
 		// 记录程序是否开启过
 		//用于开机检测新版本判断
 		public static Boolean loaded = false;
+		//是否是模拟测试
+		public static boolean isSimulation=false;
+		
+		//是否srcollview滑到最底部变化窗体
+		
+		public boolean isBottomSrcollChange=false;
 	}
 
 	/**

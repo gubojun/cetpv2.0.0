@@ -30,6 +30,7 @@ import android.widget.PopupWindow;
 
 import com.cetp.R;
 import com.cetp.action.AppVariable;
+import com.cetp.action.SkinSettingManager;
 import com.cetp.service.PlayerService;
 
 public class CommonTab extends Activity {
@@ -46,7 +47,7 @@ public class CommonTab extends Activity {
 	private LinearLayout mCloseBtn;
 	private View layout;
 	private boolean menu_display = false;
-	private boolean isWrongView;
+	private int KindOfView;// 0分项，1错题练习，2收藏
 	private PopupWindow menuWindow;
 	private LayoutInflater inflater;
 	final String TYPE_OF_VIEW = "typeofview";
@@ -54,10 +55,11 @@ public class CommonTab extends Activity {
 	ListeningViewAnswer listeningviewanswer = new ListeningViewAnswer(this);
 	ReadingViewAnswer readingviewanswer = new ReadingViewAnswer(this);
 	ClozingViewAnswer clozingviewanswer = new ClozingViewAnswer(this);
+	VocabularyViewAnswer vocabularyviewanswer = new VocabularyViewAnswer(this);
 	// VocabularyViewAnswer vocabularyviewanswer = new VocabularyViewAnswer();
 	View viewAnswer;
 
-	// private Button mRightBtn;
+	private SkinSettingManager mSettingManager;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -65,20 +67,28 @@ public class CommonTab extends Activity {
 		// 去掉标题栏
 		// this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
+		// 初始化皮肤
+		mSettingManager = new SkinSettingManager(this);
+		mSettingManager.initSkins();
+
 		ActionBar actionBar = this.getActionBar();
 		actionBar.setDisplayOptions(ActionBar.DISPLAY_HOME_AS_UP,
 				ActionBar.DISPLAY_HOME_AS_UP);
 
 		setContentView(R.layout.commontab);
-		/** 用于保存用户状态 */
-		SharedPreferences MainTabPrefs = getSharedPreferences("view.MainTab",
-				MODE_PRIVATE);
-		int type = MainTabPrefs.getInt(TYPE_OF_VIEW, 0);
+
 		Intent intent = getIntent();
-		String[] array;
-		isWrongView = intent.getBooleanExtra("isWrongView", false);
-		array = isWrongView ? new String[] { "听力错题", "完型错题", "阅读错题", "词汇错题" }
-				: new String[] { "听力练习", "完型练习", "阅读练习", "词汇练习" };
+		int type;
+		type = intent.getIntExtra("VIEW", 0);
+		String[] array = null;
+		KindOfView = intent.getIntExtra("KindOfView", 0);
+		if (KindOfView == 0)
+			array = new String[] { "听力练习", "完型练习", "阅读练习", "词汇练习" };
+		else if (KindOfView == 1) {
+			array = new String[] { "听力错题", "完型错题", "阅读错题", "词汇错题" };
+		} else if (KindOfView == 2) {
+			array = new String[] { "听力收藏", "完型收藏", "阅读收藏", "词汇收藏" };
+		}
 		setTitle(array[type]);
 		// 初始化皮肤
 		// SkinSettingManager mSettingManager = new SkinSettingManager(this);
@@ -133,14 +143,14 @@ public class CommonTab extends Activity {
 			view2 = mLi.inflate(R.layout.listeningview_questiontext, null);
 			view3 = mLi.inflate(R.layout.listeningview_answer, null);
 
-			if (!isWrongView) {
+			if (KindOfView == 0) {
 				ListeningViewQuestion listeningviewquestion = new ListeningViewQuestion(
 						this);
 				listeningviewquestion.setView(view1);
 			} else {
-				ListeningViewQuestionWrong listeningviewquestion = new ListeningViewQuestionWrong(
+				ListeningViewQuestionC listeningviewquestion = new ListeningViewQuestionC(
 						this);
-				listeningviewquestion.setView(view1);
+				listeningviewquestion.setView(view1, KindOfView);
 			}
 			ListeningViewQuestiontext listeningviewquestiontext = new ListeningViewQuestiontext(
 					this);
@@ -148,6 +158,17 @@ public class CommonTab extends Activity {
 			listeningviewquestiontext.setView(view2);
 			listeningviewanswer.setView(view3);
 		} else if (AppVariable.Common.TypeOfView == 1) {
+			view1 = mLi.inflate(R.layout.clozingview_question, null);
+			view2 = mLi.inflate(R.layout.clozingview_passage, null);
+			view3 = mLi.inflate(R.layout.clozingview_answer, null);
+			ClozingViewQuestion clozingviewquestion = new ClozingViewQuestion(
+					this);
+			ClozingViewPassage clozingviewpassage = new ClozingViewPassage(this);
+
+			clozingviewquestion.setView(view1);
+			clozingviewpassage.setView(view2);
+			clozingviewanswer.setView(view3);
+		} else if (AppVariable.Common.TypeOfView == 2) {
 			view1 = mLi.inflate(R.layout.readingview_question, null);
 			view2 = mLi.inflate(R.layout.readingview_passage, null);
 			view3 = mLi.inflate(R.layout.readingview_answer, null);
@@ -158,28 +179,17 @@ public class CommonTab extends Activity {
 			readingviewquestion.setView(view1);
 			readingviewpassage.setView(view2);
 			readingviewanswer.setView(view3);
-		} else if (AppVariable.Common.TypeOfView == 2) {
-			view1 = mLi.inflate(R.layout.clozingview_question, null);
-			view2 = mLi.inflate(R.layout.clozingview_passage, null);
-			view3 = mLi.inflate(R.layout.clozingview_answer, null);
-			ClozingViewQuestion clozingviewquestion = new ClozingViewQuestion(
-					this);
-			ClozingViewPassage clozingviewpassage = new ClozingViewPassage(this);
 
-			clozingviewquestion.setView(view1);
-			clozingviewpassage.setView(view2);
-			clozingviewanswer.setView(view3);
 		} else {
-			view1 = mLi.inflate(R.layout.clozingview_question, null);
-			view2 = mLi.inflate(R.layout.clozingview_passage, null);
-			view3 = mLi.inflate(R.layout.clozingview_answer, null);
-			ClozingViewQuestion clozingviewquestion = new ClozingViewQuestion(
-					this);
+			view1 = mLi.inflate(R.layout.vocabularyview, null);
+			view2 = mLi.inflate(R.layout.vocabularyview_answer, null);
+			view3 = mLi.inflate(R.layout.vocabularyview_answer, null);
+			VocabularyView vocabularyviewquestion = new VocabularyView(this);
 			ClozingViewPassage clozingviewpassage = new ClozingViewPassage(this);
 
-			clozingviewquestion.setView(view1);
-			clozingviewpassage.setView(view2);
-			clozingviewanswer.setView(view3);
+			vocabularyviewquestion.setView(view1);
+			vocabularyviewanswer.setView(view2);
+			vocabularyviewanswer.setView(view3);
 		}
 		view4 = mLi.inflate(R.layout.settingview, null);
 		// 每个页面的view数据
@@ -274,7 +284,7 @@ public class CommonTab extends Activity {
 				else if (AppVariable.Common.TypeOfView == 2)
 					readingviewanswer.reFresh(viewAnswer);
 				else if (AppVariable.Common.TypeOfView == 3)
-					listeningviewanswer.reFresh(viewAnswer);
+					vocabularyviewanswer.reFresh(viewAnswer);
 				break;
 			case 3:
 				mTab4.setImageDrawable(getResources().getDrawable(
@@ -386,5 +396,11 @@ public class CommonTab extends Activity {
 		if (PlayerService.mMediaPlayer != null)
 			PlayerService.mMediaPlayer.reset();
 		super.onDestroy();
+	}
+
+	@Override
+	protected void onResume() {
+		mSettingManager.initSkins();
+		super.onResume();
 	}
 }

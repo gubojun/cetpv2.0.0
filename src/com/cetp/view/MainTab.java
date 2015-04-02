@@ -10,6 +10,7 @@ import java.util.Locale;
 
 import com.cetp.R;
 import com.cetp.action.AppVariable;
+import com.cetp.action.SkinSettingManager;
 import com.cetp.excel.MyFile;
 import com.cetp.service.PlayerService;
 
@@ -78,6 +79,7 @@ public class MainTab extends Activity {
 	// final int typeOfView = myPrefs.getInt(TYPE_OF_VIEW, 0);
 
 	MainView mainview = new MainView(this);
+	FavoriteView favoriteview = new FavoriteView(this);
 	SettingView settingview = new SettingView(this);
 	MoreView moreview = new MoreView(this);
 
@@ -92,6 +94,8 @@ public class MainTab extends Activity {
 	static final int TIME_DIALOG_ID = 0;
 	static final int DATE_DIALOG_ID = 1;
 
+	private SkinSettingManager mSettingManager;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -103,6 +107,10 @@ public class MainTab extends Activity {
 		getWindow().setSoftInputMode(
 				WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 		instance = this;
+
+		// 初始化皮肤
+		mSettingManager = new SkinSettingManager(this);
+		mSettingManager.initSkins();
 
 		MyFile file = new MyFile();
 		file.createPath();
@@ -126,6 +134,8 @@ public class MainTab extends Activity {
 		Display currDisplay = getWindowManager().getDefaultDisplay();// 获取屏幕当前分辨率
 		int displayWidth = currDisplay.getWidth();
 		int displayHeight = currDisplay.getHeight();
+		AppVariable.Common.SCREEN_WIDTH = displayWidth;
+		AppVariable.Common.SCREEN_HEIGHT = displayHeight;
 		one = displayWidth / 4; // 设置水平动画平移大小
 		two = one * 2;
 		three = one * 3;
@@ -151,6 +161,7 @@ public class MainTab extends Activity {
 		view3 = mLi.inflate(R.layout.settingview, null);
 		view4 = mLi.inflate(R.layout.moreview, null);
 		mainview.setView(view1);
+		favoriteview.setView(view2);
 		settingview.setView(view3);
 		moreview.setView(view4);
 
@@ -212,6 +223,7 @@ public class MainTab extends Activity {
 		mDay = c.get(Calendar.DAY_OF_MONTH);
 		Log.v("yyyyMMdd", mYear + ":" + mMonth + ":" + mDay);
 		updateDisplay();
+		AppVariable.Common.isSimulation = false;
 
 	}
 
@@ -513,5 +525,12 @@ public class MainTab extends Activity {
 			return String.valueOf(c);
 		else
 			return "0" + String.valueOf(c);
+	}
+
+	@Override
+	protected void onResume() {
+		AppVariable.Common.isSimulation = false;
+		mSettingManager.initSkins();
+		super.onResume();
 	}
 }

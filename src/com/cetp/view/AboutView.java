@@ -10,14 +10,11 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
-import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -71,7 +68,8 @@ public class AboutView extends Activity {
 		});
 
 		txtAppName = (TextView) findViewById(R.id.txt_app_name);
-		txtAppName.setText(getResources().getString(R.string.app_name)+"(手机版)\nV2.0");
+		txtAppName.setText(getResources().getString(R.string.app_name)
+				+ "(手机版)\nV2.0");
 
 		initRelativeLayoutButton();
 
@@ -220,7 +218,7 @@ public class AboutView extends Activity {
 	public void showNewVersion() {
 		// AlertDialog.Builder b = new AlertDialog.Builder(AboutView.this);
 		// b.setTitle("检测新版本").setMessage("版本检测中...");
-		// b.setPositiveButton(CETMain.ok, null);
+		// b.setPositiveButton("确定", null);
 		// b.setNegativeButton("取消", null);
 		// b.create().show();
 		/*********************************/
@@ -228,10 +226,10 @@ public class AboutView extends Activity {
 		// intent.setClass(this, UpdateActivity.class);
 		// startActivity(intent);
 		/**********************************/
-		// progressDialog = ProgressDialog.show(AboutView.this, "检测新版本",
-		// "检测中.....", true);
-		// progressDialog.setCancelable(true);// 当点击按钮返回的时候Dialog消失
-		//
-		// Toast.makeText(AboutView.this, "已是最新版本！", Toast.LENGTH_LONG).show();
+		progressDialog = ProgressDialog.show(AboutView.this, "检测新版本",
+				"检测中.....", true);
+		progressDialog.setCancelable(true);// 当点击按钮返回的时候Dialog消失
+
+		Toast.makeText(AboutView.this, "已是最新版本！", Toast.LENGTH_LONG).show();
 	}
 }

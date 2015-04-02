@@ -14,9 +14,11 @@ import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
+import android.util.Log;
 import android.view.View;
 import android.widget.Chronometer;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class ClozingViewQuestion implements Runnable {
@@ -37,6 +39,9 @@ public class ClozingViewQuestion implements Runnable {
 
 	Context context;
 	Activity activity;
+	private int startTime = 0;
+
+	private TextView txt_part_2;
 
 	public ClozingViewQuestion(Context c) {
 		context = c;
@@ -55,7 +60,28 @@ public class ClozingViewQuestion implements Runnable {
 		// 初始化时间
 		timer.setBase(SystemClock.elapsedRealtime());
 		timer.setTextColor(Color.WHITE);
+		startTime = Integer.parseInt(AppVariable.Time.G_TIME_CLOZING) * 60;
+		timer.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
+			@Override
+			public void onChronometerTick(Chronometer chronometer) {
+				// 如果开始计时到现在超过了startime秒
+				if (SystemClock.elapsedRealtime() - chronometer.getBase() > startTime * 1000) {
+					chronometer.stop();
+					// 给用户提示
+					Toast.makeText(context, "时间到。", Toast.LENGTH_LONG).show();
+				}
+			}
+		});
+
 		timer.start();
+
+		txt_part_2 = (TextView) v.findViewById(R.id.textView_part_2);
+		if (!AppVariable.Common.isSimulation) {
+			txt_part_2.setVisibility(View.GONE);
+		} else {
+			txt_part_2.setText("Part II Clozing ("
+					+ AppVariable.Time.G_TIME_CLOZING + "minutes)");
+		}
 
 		activity.setProgressBarVisibility(true);
 
@@ -63,29 +89,29 @@ public class ClozingViewQuestion implements Runnable {
 		activity.setSecondaryProgress(0);
 
 		/* 通过Handler 来接收进程所传递的信息并更新TextView */
-		myHandler = new Handler() {
-			@Override
-			public void handleMessage(Message msg) {
-				switch (msg.what) {
-				case 1:
-					/* 在这处理要TextView对象Show时间的事件 */
-					// 如果进度条没有满，进度条移动
-					if (progressbar < 10000) {
-						if (timerstop != true)
-							progressbar += 100;
-						// Title progress is in range 0..10000
-						activity.setProgress(progressbar);
-					}
-					break;
-				default:
-					break;
-				}
-				super.handleMessage(msg);
-			}
-		};
-		/* 通过进程来持续取得系统时间 */
-		mThread = new Thread(this);
-		mThread.start();
+		// myHandler = new Handler() {
+		// @Override
+		// public void handleMessage(Message msg) {
+		// switch (msg.what) {
+		// case 1:
+		// /* 在这处理要TextView对象Show时间的事件 */
+		// // 如果进度条没有满，进度条移动
+		// if (progressbar < 10000) {
+		// if (timerstop != true)
+		// progressbar += 100;
+		// // Title progress is in range 0..10000
+		// activity.setProgress(progressbar);
+		// }
+		// break;
+		// default:
+		// break;
+		// }
+		// super.handleMessage(msg);
+		// }
+		// };
+		// /* 通过进程来持续取得系统时间 */
+		// mThread = new Thread(this);
+		// mThread.start();
 
 		for (int i = 0; i < 200; i++) {
 			clozingAnswer_All[i] = null;
@@ -96,10 +122,11 @@ public class ClozingViewQuestion implements Runnable {
 				.findViewById(R.id.lin_clozingquestion_scrollcontext);
 
 		Cursor cur;// 结果集
-		cur = db.getAllItem();
+		cur = db.getItemFromYM(AppVariable.Common.YearMonth);
 		if (cur.getCount() == 0)
 			Toast.makeText(context, "请先下载并导入数据！", Toast.LENGTH_SHORT).show();
 		int dataCount = cur.getCount();
+		Log.d(TAG, "dataCount=" + dataCount);
 		int NUMBER = 0;// NUMBER表示id号，表示题号（要加1），表示题目数
 		while (NUMBER < dataCount) {// 循环产生RadioGroup控件
 			NUMBER++;

@@ -188,7 +188,6 @@ public class ListeningViewAnswer {
 
 		Log.v(TAG, "questionAmount=" + questionAmount + "  dataCount="
 				+ dataCount);
-
 		// 20150324--------------------------------------------------------
 		// 判断数据库是否有数据
 		if (dataCount != 0) {
@@ -231,12 +230,17 @@ public class ListeningViewAnswer {
 						t.setAnswer(s);
 						tw.setAnswer(s);
 						s = lisOfQList.get(NUM - 1).getComments();
-						t.setComments("w");
+						if (lisOfQList.get(NUM - 1).getComments().equals("")) {
+							t.setComments("w");// 错误wrong
+						} else {
+							t.setComments("wf");// 错误wrong和收藏favorite
+						}
 						tw.setComments(s);
 						tw.setDate(new Date());
 
-						if (!lisOfQList.get(NUM - 1).getComments().trim()
-								.equals("w")) {
+						if (!(lisOfQList.get(NUM - 1).getComments().trim()
+								.equals("w") || lisOfQList.get(NUM - 1)
+								.getComments().trim().equals("wf"))) {
 							fdb.save(tw);
 							fdb.update(
 									t,

@@ -7,8 +7,11 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
+import android.widget.Chronometer;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
@@ -26,7 +29,7 @@ import com.cetp.service.PlayerService;
 public class ListeningViewQuestion {
 	public int FINGER_MOVE_ACTION = 0;
 
-	public static final String TAG = "ListeningView";
+	public static final String TAG = "ListeningViewQuestion";
 	// 新建听力数据类
 	// DBListeningOfQuestion db = new DBListeningOfQuestion(this);
 	// 音乐
@@ -43,7 +46,11 @@ public class ListeningViewQuestion {
 	public static String[] listeningQuestion_All = new String[AppVariable.Common.TOTAL_QUESTION_NUMBER];
 	public static String[] listeningAnswer_All = new String[AppVariable.Common.TOTAL_QUESTION_NUMBER];
 	private LinearLayout scrollContext;
-
+	// 计时器
+	private Chronometer chrTime;
+	private int startTime;
+	//
+	private TextView txt_part_1;
 	boolean preHideTag = false;
 	/* 定义进度条 */
 	public static SeekBar audioSeekBar = null;
@@ -60,37 +67,7 @@ public class ListeningViewQuestion {
 	public void setView(View v) {
 		findView(v);
 		setListener(context);
-		// 新建听力数据类
-		DBListeningOfQuestion db = new DBListeningOfQuestion(context);
-		for (int i = 0; i < AppVariable.Common.TOTAL_QUESTION_NUMBER; i++) {
-			listeningQuestion_All[i] = null;
-			listeningAnswer_All[i] = null;
-		}
-		db.open();
-
-		// sqlite数据库游标
-		Cursor cur;// = db.getAllItem();
-		cur = db.getItemFromYM(AppVariable.Common.YearMonth);
-		Log.v("ListeningViewQuestion1", AppVariable.Common.YearMonth);
-
-		if (cur.getCount() == 0)
-			Toast.makeText(context, "请先下载并导入数据！", Toast.LENGTH_SHORT).show();
-		// 记录题目的数目
-		int dataCount = cur.getCount();
-		int NUMBER = 0;// NUMBER表示id号，表示题号（要加1），表示题目数
-		while (NUMBER < dataCount) {// 循环产生RadioGroup控件
-			NUMBER++;
-			QuestionContext mylayout = new QuestionContext(context, NUMBER, cur);
-			scrollContext.addView(mylayout);
-			cur.moveToNext();
-		}
-		cur.close();
-		/* 得到mp3文件名 */
-		AppVariable.Common.MP3FILE = "/Lis_cet" + AppVariable.Common.CetX + "_"
-				+ AppVariable.Common.YearMonth + "_mp3.mp3";
-		if (!MyFile.isFileExist(AppVariable.Common.MP3FILE)) {
-			dialogDownloadTip();
-		}
+		init();
 	}
 
 	/**
@@ -113,6 +90,8 @@ public class ListeningViewQuestion {
 				.findViewById(R.id.txt_listening_time_total);
 		txtListeningTimeNow = (TextView) v
 				.findViewById(R.id.txt_listening_time_now);
+		chrTime = (Chronometer) v.findViewById(R.id.chr_listening_time);
+		txt_part_1 = (TextView) v.findViewById(R.id.textView_part_1);
 	}
 
 	/**
@@ -132,6 +111,65 @@ public class ListeningViewQuestion {
 	// startActivity(new Intent(this, SettingView.class));
 	// }
 	// }
+
+	private void init() {
+		if (!AppVariable.Common.isSimulation) {
+			chrTime.setVisibility(View.GONE);
+			txt_part_1.setVisibility(View.GONE);
+		} else {
+			// 初始化时间
+			chrTime.setBase(SystemClock.elapsedRealtime());
+			chrTime.setTextColor(Color.GRAY);
+			startTime = Integer.parseInt(AppVariable.Time.G_TIME_LISTENING) * 60;
+			chrTime.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
+				@Override
+				public void onChronometerTick(Chronometer chronometer) {
+					// 如果开始计时到现在超过了startime秒
+					if (SystemClock.elapsedRealtime() - chronometer.getBase() > startTime * 1000) {
+						chronometer.stop();
+						// 给用户提示
+						Toast.makeText(context, "时间到。", Toast.LENGTH_LONG)
+								.show();
+					}
+				}
+			});
+			chrTime.start();
+			txt_part_1.setText("Part I Listening ("
+					+ AppVariable.Time.G_TIME_LISTENING + "minutes)");
+		}
+		// 新建听力数据类
+		DBListeningOfQuestion db = new DBListeningOfQuestion(context);
+		for (int i = 0; i < AppVariable.Common.TOTAL_QUESTION_NUMBER; i++) {
+			listeningQuestion_All[i] = null;
+			listeningAnswer_All[i] = null;
+		}
+		db.open();
+
+		// sqlite数据库游标
+		Cursor cur;// = db.getAllItem();
+		cur = db.getItemFromYM(AppVariable.Common.YearMonth);
+		Log.v(TAG, AppVariable.Common.YearMonth);
+
+		if (cur.getCount() == 0)
+			Toast.makeText(context, "请先下载并导入数据！", Toast.LENGTH_SHORT).show();
+		// 记录题目的数目
+		int dataCount = cur.getCount();
+		int NUMBER = 0;// NUMBER表示id号，表示题号（要加1），表示题目数
+		while (NUMBER < dataCount) {// 循环产生RadioGroup控件
+			NUMBER++;
+			QuestionContext mylayout = new QuestionContext(context, NUMBER, cur);
+			scrollContext.addView(mylayout);
+			cur.moveToNext();
+		}
+		cur.close();
+		/* 得到mp3文件名 */
+		AppVariable.Common.MP3FILE = "/Lis_cet" + AppVariable.Common.CetX + "_"
+				+ AppVariable.Common.YearMonth + "_mp3.mp3";
+		if (!MyFile.isFileExist(AppVariable.Common.MP3FILE)) {
+			dialogDownloadTip();
+		}
+	}
+
 	/**
 	 * 关于：音乐播放 音乐播放的动作
 	 */

@@ -4,7 +4,7 @@ import net.tsz.afinal.annotation.sqlite.Id;
 import net.tsz.afinal.annotation.sqlite.Table;
 
 @Table(name = "wrong_listening_q")
-public class QuestionWrongListeningQ {
+public class WrongListeningQ {
 	@Id(column = "ID")
 	private String ID;
 	private String YYYYMM;// ÄêÔÂ

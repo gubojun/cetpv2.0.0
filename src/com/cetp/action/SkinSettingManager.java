@@ -4,6 +4,8 @@ import com.cetp.R;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 
 /**
  * 皮肤管理器
@@ -21,9 +23,10 @@ public class SkinSettingManager {
 	 */
 	public SharedPreferences skinSettingPreference;
 
-	private int[] skinResources = { R.drawable.wallpaper_default,
-			R.drawable.wallpaper_2, R.drawable.wallpaper_3,
-			R.drawable.wallpaper_4, R.drawable.wallpaper_5 };
+	private int[] skinResources = { R.drawable.wallpaper_2,
+			R.drawable.wallpaper_default, R.drawable.wallpaper_3,
+			R.drawable.wallpaper_4, R.drawable.wallpaper_5,
+			R.drawable.wallpaper_6 };
 
 	private Activity mActivity;
 
@@ -52,6 +55,37 @@ public class SkinSettingManager {
 		String key = "skin_type";
 
 		editor.putInt(key, j);
+		editor.commit();
+	}
+
+	/**
+	 * 获取当前程序的颜色背景判断值
+	 * 
+	 * @return boolean
+	 */
+	public boolean isColorBG() {
+		String key = "is_colorbackground";
+		return skinSettingPreference.getBoolean(key, false);
+	}
+
+	public void setisColorBG(boolean b) {
+		SharedPreferences.Editor editor = skinSettingPreference.edit();
+		String key = "is_colorbackground";
+
+		editor.putBoolean(key, b);
+		editor.commit();
+	}
+
+	public int getBGColor() {
+		String key = "background_color";
+		return skinSettingPreference.getInt(key, -2634021);
+	}
+
+	public void setBGColor(int i) {
+		SharedPreferences.Editor editor = skinSettingPreference.edit();
+		String key = "background_color";
+
+		editor.putInt(key, i);
 		editor.commit();
 	}
 
@@ -90,8 +124,12 @@ public class SkinSettingManager {
 	 * 用于初始化皮肤
 	 */
 	public void initSkins() {
-		mActivity.getWindow()
-				.setBackgroundDrawableResource(getCurrentSkinRes());
+		if (isColorBG())
+			mActivity.getWindow().setBackgroundDrawable(
+					new ColorDrawable(getBGColor()));
+		else
+			mActivity.getWindow().setBackgroundDrawableResource(
+					getCurrentSkinRes());
 	}
 
 	/**
@@ -102,8 +140,12 @@ public class SkinSettingManager {
 		setSkinType(id);
 		mActivity.getWindow().setBackgroundDrawable(null);
 		try {
-			mActivity.getWindow().setBackgroundDrawableResource(
-					getCurrentSkinRes());
+			if (isColorBG())
+				mActivity.getWindow().setBackgroundDrawable(
+						new ColorDrawable(getBGColor()));
+			else
+				mActivity.getWindow().setBackgroundDrawableResource(
+						getCurrentSkinRes());
 		} catch (Throwable e) {
 			e.printStackTrace();
 		}

@@ -48,10 +48,6 @@ public class SettingView {
 	}
 
 	public void setView(View v) {
-		// // -------------°æ≥ı ºªØ∆§∑Ù°ø--------------------------
-		// SkinSettingManager mSettingManager = new SkinSettingManager(this);
-		// mSettingManager.initSkins();
-
 		findView(v);
 		initRelativeLayoutButton();
 

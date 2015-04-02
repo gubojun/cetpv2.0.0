@@ -58,7 +58,7 @@
             android:name="com.cetp.view.LocalDataManageView"
             android:label="@string/title_activity_local_datamanage_view" >
         </activity>
-        <activity android:name="com.cetp.view.BackgroundSettingView" >
+        <activity android:name="com.cetp.view.BackgroundSettingView" android:label="@string/title_activity_backgroundsetting_view">
         </activity>
         <activity android:name="com.cetp.view.FontSettingView" >
         </activity>
@@ -68,7 +68,7 @@
             android:name="com.cetp.view.ColorSelectView"
             android:label="@string/title_activity_color_select_view" >
         </activity>
-        <activity android:name="com.cetp.view.CommonTabSimulation" >
+        <activity android:name="com.cetp.view.CommonTabSimulation" android:label="@string/title_activity_commontabsimulation_view">
         </activity>
         <activity
             android:name="com.cetp.view.EverydayView"

@@ -22,15 +22,16 @@ import com.cetp.R;
 import com.cetp.action.AppConstant;
 import com.cetp.action.AppVariable;
 import com.cetp.database.DBListeningOfQuestion;
+import com.cetp.database.TableListeningOfQuestionFavorite;
 import com.cetp.database.TableListeningOfQuestionWrong;
 import com.cetp.excel.MyFile;
 import com.cetp.question.QuestionContext;
 import com.cetp.service.PlayerService;
 
-public class ListeningViewQuestionWrong {
+public class ListeningViewQuestionC {
 	public int FINGER_MOVE_ACTION = 0;
 
-	public static final String TAG = "ListeningViewQuestionWrong";
+	public static final String TAG = "ListeningViewQuestionCommon";
 	// 新建听力数据类
 	// DBListeningOfQuestion db = new DBListeningOfQuestion(this);
 	// 音乐
@@ -56,12 +57,12 @@ public class ListeningViewQuestionWrong {
 	Context context;
 
 	// View view;
-	public ListeningViewQuestionWrong(Context c) {
+	public ListeningViewQuestionC(Context c) {
 		context = c;
 		// view =v;
 	}
 
-	public void setView(View v) {
+	public void setView(View v, int kind) {
 		findView(v);
 		setListener(context);
 
@@ -72,9 +73,17 @@ public class ListeningViewQuestionWrong {
 			listeningAnswer_All[i] = null;
 		}
 
-		List<TableListeningOfQuestionWrong> lisOfQList = fdb.findAllByWhere(
-				TableListeningOfQuestionWrong.class, "YYYYMM = '"
-						+ AppVariable.Common.YearMonth + "'");
+		List<?> lisOfQList = null;
+
+		if (kind == 1) {
+			lisOfQList = fdb.findAllByWhere(
+					TableListeningOfQuestionWrong.class, "YYYYMM = '"
+							+ AppVariable.Common.YearMonth + "'");
+		} else if (kind == 2) {
+			lisOfQList = fdb.findAllByWhere(
+					TableListeningOfQuestionFavorite.class, "YYYYMM = '"
+							+ AppVariable.Common.YearMonth + "'");
+		}
 
 		/***************************************************/
 		Log.v(TAG, AppVariable.Common.YearMonth);
@@ -88,7 +97,7 @@ public class ListeningViewQuestionWrong {
 		while (NUMBER < dataCount) {// 循环产生RadioGroup控件
 			NUMBER++;
 			QuestionContext mylayout = new QuestionContext(context, NUMBER,
-					lisOfQList);
+					lisOfQList, kind);
 			scrollContext.addView(mylayout);
 		}
 
@@ -219,8 +228,8 @@ public class ListeningViewQuestionWrong {
 			int secondTime = totalTime % 60;// 计算秒数
 			int minuteTime = totalTime / 60;// 计算分钟数
 			// 设置当前时间
-			ListeningViewQuestionWrong.txtListeningTimeNow.setText(String
-					.format("%1$02d", minuteTime)
+			ListeningViewQuestionC.txtListeningTimeNow.setText(String.format(
+					"%1$02d", minuteTime)
 					+ ":"
 					+ String.format("%1$02d", secondTime));
 		}

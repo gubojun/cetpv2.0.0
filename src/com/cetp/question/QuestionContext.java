@@ -1,9 +1,13 @@
 package com.cetp.question;
 
+import java.util.Date;
 import java.util.List;
+
+import net.tsz.afinal.FinalDb;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -16,6 +20,8 @@ import android.widget.Toast;
 
 import com.cetp.R;
 import com.cetp.action.AppVariable;
+import com.cetp.database.TableListeningOfQuestion;
+import com.cetp.database.TableListeningOfQuestionFavorite;
 import com.cetp.database.TableListeningOfQuestionWrong;
 import com.cetp.view.ClozingViewQuestion;
 import com.cetp.view.ListeningViewQuestion;
@@ -23,17 +29,20 @@ import com.cetp.view.ReadingViewQuestion;
 import com.cetp.view.VocabularyView;
 
 public class QuestionContext extends LinearLayout {
+	private final String TAG = "QuestionContext";
 	LinearLayout mylayout;
 	TextView txtQuestionNumber;
 	TextView txtQuestionText;
 	CheckBox checkBoxText;
 	RadioGroup radiogroup;
+	Context mContext;
 	// ------布局方式--------
 	private final LinearLayout.LayoutParams LP_FW = new LinearLayout.LayoutParams(
 			LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
 
 	public QuestionContext(Context context, int NUMBER, Cursor cur) {
 		super(context);
+		mContext = context;
 		/* mylayout是题号行的布局方式 */
 		mylayout = new LinearLayout(context);
 		mylayout.setOrientation(LinearLayout.HORIZONTAL);// 水平线性布局
@@ -42,7 +51,7 @@ public class QuestionContext extends LinearLayout {
 		/* 复选框 */
 		checkBoxText = new CheckBox(context);
 		checkBoxText.setOnCheckedChangeListener(new CheckBoxListener());
-		checkBoxText.setChecked(false);
+		// checkBoxText.setChecked(true);
 		checkBoxText.setText("");// setText("标记");
 		checkBoxText.setTextColor(getResources().getColor(R.color.orange));
 		checkBoxText.setTextSize(14);
@@ -60,7 +69,8 @@ public class QuestionContext extends LinearLayout {
 		mylayout.addView(checkBoxText);
 		this.setOrientation(LinearLayout.VERTICAL);// 垂直水平线性布局
 		this.addView(mylayout);
-		if (AppVariable.Common.TypeOfView == 1
+		// 如果是阅读（TypeOfView==2）或者词汇（TypeOfView==3）有题目文本框显示
+		if (AppVariable.Common.TypeOfView == 2
 				|| AppVariable.Common.TypeOfView == 3) {
 			/* 题目 */
 			txtQuestionText = new TextView(context);
@@ -71,9 +81,14 @@ public class QuestionContext extends LinearLayout {
 			this.addView(txtQuestionText);
 		}
 		this.addView(radiogroup);
+		String str = cur.getString(cur.getColumnIndex("Comments"));
+		if (str.equals("f") || str.equals("wf"))
+			checkBoxText.setChecked(true);
+		else
+			checkBoxText.setChecked(false);
 	}
 
-	public QuestionContext(Context context, int NUMBER, List<?> list) {
+	public QuestionContext(Context context, int NUMBER, List<?> list, int kind) {
 		super(context);
 		/* mylayout是题号行的布局方式 */
 		mylayout = new LinearLayout(context);
@@ -83,15 +98,20 @@ public class QuestionContext extends LinearLayout {
 		/* 复选框 */
 		checkBoxText = new CheckBox(context);
 		checkBoxText.setOnCheckedChangeListener(new CheckBoxListener());
-		checkBoxText.setChecked(false);
+
 		checkBoxText.setText("");// setText("标记");
 		checkBoxText.setTextColor(getResources().getColor(R.color.orange));
 		checkBoxText.setTextSize(14);
-		checkBoxText.setVisibility(VISIBLE);
+		checkBoxText.setVisibility(INVISIBLE);
+
 		/* 单选按钮组 */
 		radiogroup = new RadioGroup(context);
-		setRadioButton(radiogroup, txtQuestionNumber, checkBoxText, context,
-				NUMBER, list);
+		if (kind == 1)
+			setRadioButton(radiogroup, txtQuestionNumber, checkBoxText,
+					context, NUMBER, list);
+		else if (kind == 2)
+			setRadioButtonF(radiogroup, txtQuestionNumber, checkBoxText,
+					context, NUMBER, list);
 		radiogroup.setOnCheckedChangeListener(new myRadioGroupListener());
 		radiogroup.setLayoutParams(LP_FW);
 		radiogroup.setVisibility(View.VISIBLE);
@@ -101,19 +121,30 @@ public class QuestionContext extends LinearLayout {
 		mylayout.addView(checkBoxText);
 		this.setOrientation(LinearLayout.VERTICAL);// 垂直水平线性布局
 		this.addView(mylayout);
-		if (AppVariable.Common.TypeOfView == 1) {
+		if (AppVariable.Common.TypeOfView == 2) {
 			txtQuestionText = new TextView(context);
-			//txtQuestionText.setText(((TableListeningOfQuestionWrong)list.get(NUMBER-1)).;
+			// txtQuestionText.setText(((TableListeningOfQuestionWrong)list.get(NUMBER-1)).;
 		} else if (AppVariable.Common.TypeOfView == 3) {
 			/* 题目 */
 			txtQuestionText = new TextView(context);
-//			txtQuestionText.setText(cur.getString(cur
-//					.getColumnIndex("QuestionText")));
+			// txtQuestionText.setText(cur.getString(cur
+			// .getColumnIndex("QuestionText")));
 			// 设置背景
 			txtQuestionText.setBackgroundResource(R.drawable.login_input);
 			this.addView(txtQuestionText);
 		}
 		this.addView(radiogroup);
+
+		// if (kind == 1) {
+		// String str = ((TableListeningOfQuestionWrong) list.get(NUMBER - 1))
+		// .getComments();
+		// if (str.equals("f") || str.equals("wf"))
+		// checkBoxText.setChecked(true);
+		// else
+		// checkBoxText.setChecked(false);
+		// } else if (kind == 2) {
+		// checkBoxText.setChecked(true);
+		// }
 	}
 
 	/**
@@ -201,6 +232,48 @@ public class QuestionContext extends LinearLayout {
 		rdbSelectionD.setId(radiogroup.getId() + 4);
 		rdbSelectionD.setText("D)."
 				+ ((TableListeningOfQuestionWrong) list.get(NUMBER - 1))
+						.getSelectionD());
+		rdbSelectionD.setChecked(false);
+		radiogroup.addView(rdbSelectionD);
+
+		txtQuestionNumber.setText("(" + NUMBER + ")." + "你的答案:");
+		txtQuestionNumber.setId(radiogroup.getId() + 0x10000000);
+		checkBoxText.setId(radiogroup.getId() + 0x20000000);
+	}
+
+	private void setRadioButtonF(RadioGroup radiogroup,
+			TextView texQuestionNumber, CheckBox checkBoxText, Context context,
+			int NUMBER, List<?> list) {
+		radiogroup.setId(NUMBER * 10);
+
+		RadioButton rdbSelectionA = new RadioButton(context);
+		rdbSelectionA.setId(radiogroup.getId() + 1);
+		rdbSelectionA.setText("A)."
+				+ ((TableListeningOfQuestionFavorite) list.get(NUMBER - 1))
+						.getSelectionA());
+		rdbSelectionA.setChecked(false);
+		radiogroup.addView(rdbSelectionA);
+
+		RadioButton rdbSelectionB = new RadioButton(context);
+		rdbSelectionB.setId(radiogroup.getId() + 2);
+		rdbSelectionB.setText("B)."
+				+ ((TableListeningOfQuestionFavorite) list.get(NUMBER - 1))
+						.getSelectionB());
+		rdbSelectionB.setChecked(false);
+		radiogroup.addView(rdbSelectionB);
+
+		RadioButton rdbSelectionC = new RadioButton(context);
+		rdbSelectionC.setId(radiogroup.getId() + 3);
+		rdbSelectionC.setText("C)."
+				+ ((TableListeningOfQuestionFavorite) list.get(NUMBER - 1))
+						.getSelectionC());
+		rdbSelectionC.setChecked(false);
+		radiogroup.addView(rdbSelectionC);
+
+		RadioButton rdbSelectionD = new RadioButton(context);
+		rdbSelectionD.setId(radiogroup.getId() + 4);
+		rdbSelectionD.setText("D)."
+				+ ((TableListeningOfQuestionFavorite) list.get(NUMBER - 1))
 						.getSelectionD());
 		rdbSelectionD.setChecked(false);
 		radiogroup.addView(rdbSelectionD);
@@ -302,16 +375,93 @@ public class QuestionContext extends LinearLayout {
 			}
 			/*******************************************/
 			radiogroup = (RadioGroup) findViewById(buttonView.getId() - 0x20000000);
+
+			int NUM = radiogroup.getId() / 10;
+			Log.v(TAG, "NUM=" + NUM);
+			int dataCount = 0;
+			// radiogroup.setBackgroundColor(getResources().getColor(
+			// R.color.gray));
+
+			// ----------------------------------------------------------------
+			TableListeningOfQuestion t = new TableListeningOfQuestion();
+			TableListeningOfQuestionFavorite tf = new TableListeningOfQuestionFavorite();
+			FinalDb fdb = FinalDb.create(mContext, "cetp");
+			List<TableListeningOfQuestion> lisOfQList = fdb.findAllByWhere(
+					TableListeningOfQuestion.class, "YYYYMM="
+							+ AppVariable.Common.YearMonth);
+			dataCount = lisOfQList.size();
+			Log.v(TAG, "dataCount=" + dataCount);
+
+			if (lisOfQList != null) {
+				String s;
+				s = lisOfQList.get(NUM - 1).getYYYYMM();
+				t.setYYYYMM(s);
+				tf.setYYYYMM(s);
+				s = lisOfQList.get(NUM - 1).getQuestionType();
+				t.setQuestionType(s);
+				tf.setQuestionType(s);
+				s = lisOfQList.get(NUM - 1).getQuestionNumber();
+				t.setQuestionNumber(s);
+				tf.setQuestionNumber(s);
+				s = lisOfQList.get(NUM - 1).getSelectionA();
+				t.setSelectionA(s);
+				tf.setSelectionA(s);
+				s = lisOfQList.get(NUM - 1).getSelectionB();
+				t.setSelectionB(s);
+				tf.setSelectionB(s);
+				s = lisOfQList.get(NUM - 1).getSelectionC();
+				t.setSelectionC(s);
+				tf.setSelectionC(s);
+				s = lisOfQList.get(NUM - 1).getSelectionD();
+				t.setSelectionD(s);
+				tf.setSelectionD(s);
+				s = lisOfQList.get(NUM - 1).getAnswer();
+				t.setAnswer(s);
+				tf.setAnswer(s);
+
+			}
+			Log.v(TAG, "记录数量：" + (lisOfQList != null ? lisOfQList.size() : 0));
+
+			// ----------------------------------------------------------------
+
 			if (isChecked == true) {
-				// radiogroup.setBackgroundColor(getResources().getColor(
-				// R.color.gray));
+				String s;
+				s = lisOfQList.get(NUM - 1).getComments();
+				if (lisOfQList.get(NUM - 1).getComments().equals("")) {
+					t.setComments("f");// 收藏favorite
+				} else {
+					t.setComments("wf");// 错误wrong和收藏favorite
+				}
+				tf.setComments(s);
+				tf.setDate(new Date());
+				if (!(lisOfQList.get(NUM - 1).getComments().trim().equals("f") || lisOfQList
+						.get(NUM - 1).getComments().trim().equals("wf"))) {
+					fdb.save(tf);
+					fdb.update(t, "YYYYMM=" + t.getYYYYMM()
+							+ " and QuestionNumber=" + t.getQuestionNumber());
+				}
 				radiogroup.setBackgroundResource(R.drawable.login_input_dark);
-			} else if (Answer_All[radiogroup.getId() / 10] != null) {
-				radiogroup.setBackgroundResource(R.drawable.login_input_light);
 			} else {
-				radiogroup.setBackgroundResource(R.drawable.login_input);
-				checkBoxText = (CheckBox) findViewById(buttonView.getId());
-				checkBoxText.setChecked(false);
+				if (lisOfQList.get(NUM - 1).getComments().equals("f")) {
+					t.setComments("");// 收藏favorite
+				} else {
+					t.setComments("w");// 错误wrong和收藏favorite
+				}
+				fdb.update(t, "YYYYMM=" + t.getYYYYMM()
+						+ " and QuestionNumber=" + t.getQuestionNumber());
+				fdb.deleteByWhere(
+						TableListeningOfQuestionFavorite.class,
+						"YYYYMM = '" + t.getYYYYMM() + "' and QuestionNumber = '"
+								+ t.getQuestionNumber()+"'");
+
+				if (Answer_All[radiogroup.getId() / 10] != null) {
+					radiogroup
+							.setBackgroundResource(R.drawable.login_input_light);
+				} else {
+					radiogroup.setBackgroundResource(R.drawable.login_input);
+					checkBoxText = (CheckBox) findViewById(buttonView.getId());
+					checkBoxText.setChecked(false);
+				}
 			}
 		}
 	}

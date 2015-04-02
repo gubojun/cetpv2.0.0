@@ -11,6 +11,7 @@ import net.tsz.afinal.annotation.view.ViewInject;
 import com.cetp.R;
 import com.cetp.R.layout;
 import com.cetp.R.menu;
+import com.cetp.action.SkinSettingManager;
 import com.cetp.question.QuestionWrongStat;
 
 import android.os.Bundle;
@@ -34,10 +35,17 @@ public class WrongStat extends FinalActivity {
 	private Handler mHandler;
 	private int mX = 0;
 
+	private SkinSettingManager mSettingManager;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.wrong_stat);
+
+		// ≥ı ºªØ∆§∑Ù
+		mSettingManager = new SkinSettingManager(this);
+		mSettingManager.initSkins();
+
 		ActionBar actionBar = this.getActionBar();
 		actionBar.setDisplayOptions(ActionBar.DISPLAY_HOME_AS_UP,
 				ActionBar.DISPLAY_HOME_AS_UP);
@@ -63,7 +71,7 @@ public class WrongStat extends FinalActivity {
 		while (i.hasNext()) {
 			QuestionWrongStat t = (QuestionWrongStat) i.next();
 			String s = t.getYYYYMMDDHHMMSS();
-			x[c] = s.substring(4, 6)+"-" + s.substring(6, 8);
+			x[c] = s.substring(4, 6) + "-" + s.substring(6, 8);
 			data[c++] = t.getWrongStat();
 		}
 		mLineView.SetInfo(x, // X÷·øÃ∂»
@@ -86,5 +94,11 @@ public class WrongStat extends FinalActivity {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
+	protected void onResume() {
+		mSettingManager.initSkins();
+		super.onResume();
 	}
 }

@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cetp.R;
+import com.cetp.action.AppVariable;
 import com.cetp.database.DBVocabulary;
 
 /**
@@ -28,8 +29,8 @@ import com.cetp.database.DBVocabulary;
  * @author 胡灿华
  * @data 2013/5/9
  */
-public class VocabularyViewAnswer extends Activity {
-	private String TAG = "VocabularyViewQuestiontext";
+public class VocabularyViewAnswer {
+	private String TAG = "VocabularyViewAnswer";
 	/** 题号 */
 	private TextView txtQuestionNumber;
 	/** 水平线性布局 */
@@ -55,25 +56,24 @@ public class VocabularyViewAnswer extends Activity {
 	// ------布局方式--------
 	@SuppressWarnings("unused")
 	private final LinearLayout.LayoutParams LP_FF = new LinearLayout.LayoutParams(
-			LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
+			LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
 	@SuppressWarnings("unused")
 	private final LinearLayout.LayoutParams LP_FW = new LinearLayout.LayoutParams(
-			LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+			LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
 	@SuppressWarnings("unused")
 	private final LinearLayout.LayoutParams LP_WW = new LinearLayout.LayoutParams(
 			LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 	private Cursor cur;
 
-	DBVocabulary db = new DBVocabulary(this);
 	private static String[] theCorrectAnswer = new String[200];
+	Context context;
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		Log.v(TAG, "Activity State: onCreate()");
-		super.onCreate(savedInstanceState);
-		this.requestWindowFeature(Window.FEATURE_NO_TITLE);// 去掉标题栏
-		setContentView(R.layout.vocabularyview_answer);
+	public VocabularyViewAnswer(Context c) {
+		context = c;
+	}
 
+	public void setView(View v) {
+		DBVocabulary db = new DBVocabulary(context);
 		// 初始化题目数目
 		questionAmount = 0;
 
@@ -81,14 +81,14 @@ public class VocabularyViewAnswer extends Activity {
 		Log.v(TAG, "Activity State: checkTableExists()");
 		if (db.checkTableExists("Vocabulary_and_Structure")) {
 			// ---取出所有数据---
-			cur = db.getAllItem();
+			cur = db.getItemFromYM(AppVariable.Common.YearMonth);
 		} else {
-			Toast.makeText(VocabularyViewAnswer.this, "数据不存在",
-					Toast.LENGTH_SHORT).show();
+			Toast.makeText(context, "数据不存在", Toast.LENGTH_SHORT).show();
 		}
 
-		ScrollView VocabularyViewScroll = (ScrollView) findViewById(R.id.scr_vocabularyview_answer);
-		layout = new LinearLayout(this);
+		ScrollView VocabularyViewScroll = (ScrollView) v
+				.findViewById(R.id.scr_vocabularyview_answer);
+		layout = new LinearLayout(context);
 
 		layout.setOrientation(LinearLayout.VERTICAL); // 控件对其方式为垂直排列
 		layout.setPadding(10, 0, 10, 0);
@@ -98,17 +98,17 @@ public class VocabularyViewAnswer extends Activity {
 		while (NUMBER < dataCount) {
 			NUMBER++;
 			// 每道题的线性布局
-			myLayout = new LinearLayout(this);
+			myLayout = new LinearLayout(context);
 			myLayout.setOrientation(LinearLayout.HORIZONTAL);// 水平布局
 			myLayout.setLayoutParams(LP_FW);
 			myLayout.setBackgroundResource(R.drawable.login_input);// 设置背景
 
-			txtQuestionNumber = new TextView(this);
-			txtVocabularyAnswer = new TextView(this);// 正确答案
-			txtVocabularyAnswerOfUser = new TextView(this);// 用户答案
+			txtQuestionNumber = new TextView(context);
+			txtVocabularyAnswer = new TextView(context);// 正确答案
+			txtVocabularyAnswerOfUser = new TextView(context);// 用户答案
 			txtVocabularyAnswerOfUser.setId(NUMBER);
 			setAnswerText(txtQuestionNumber, txtVocabularyAnswer,
-					txtVocabularyAnswerOfUser, NUMBER, this);
+					txtVocabularyAnswerOfUser, NUMBER, context);
 			// 每道题的线性布局包括题目的答案，用户的答案
 			myLayout.addView(txtVocabularyAnswer);
 			myLayout.addView(txtVocabularyAnswerOfUser);
@@ -122,7 +122,6 @@ public class VocabularyViewAnswer extends Activity {
 		VocabularyViewScroll.addView(layout);
 		cur.close();
 		db.close();
-
 	}
 
 	/**
@@ -142,7 +141,8 @@ public class VocabularyViewAnswer extends Activity {
 		txtQuestionNumber.setText(cur.getString(cur
 				.getColumnIndex("QuestionNumber")));
 		txtQuestionNumber.setTextSize(20);
-		txtQuestionNumber.setTextColor(getResources().getColor(R.color.red));
+		txtQuestionNumber.setTextColor(context.getResources().getColor(
+				R.color.red));
 		String theAnswer = VocabularyView.vocabularyAnswer_All[Integer
 				.parseInt((String) txtQuestionNumber.getText()) - 40];
 		theCorrectAnswer[NUMBER] = cur.getString(cur.getColumnIndex("Answer"));
@@ -178,21 +178,8 @@ public class VocabularyViewAnswer extends Activity {
 		builder.show();
 	}
 
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		// TODO Auto-generated method stub
-
-		switch (keyCode) {
-		case KeyEvent.KEYCODE_BACK:
-			finish();
-			break;
-		}
-
-		return super.onKeyDown(keyCode, event);
-	}
-
 	/** 更新题目答案 */
-	private void reFresh() {
+	void reFresh(View v) {
 		int NUM = 0;
 		String theAnswer;
 		userRightAnswer = 0;
@@ -202,57 +189,30 @@ public class VocabularyViewAnswer extends Activity {
 			while (NUM != questionAmount) {
 				NUM++;
 				theAnswer = VocabularyView.vocabularyAnswer_All[NUM];
-				txtVocabularyAnswerOfUser = (TextView) findViewById(NUM);
+				txtVocabularyAnswerOfUser = (TextView) v.findViewById(NUM);
 				if (theAnswer == null) {
 					theAnswer = "未作答";
 				} else if (!theAnswer.equals(theCorrectAnswer[NUM])) {
-					txtVocabularyAnswerOfUser.setBackgroundColor(getResources()
-							.getColor(R.color.red));
+					txtVocabularyAnswerOfUser.setBackgroundColor(context
+							.getResources().getColor(R.color.red));
 					userWrongAnswer++;
 				} else {
 					txtVocabularyAnswerOfUser
-							.setBackgroundColor(BIND_AUTO_CREATE);
+							.setBackgroundColor(context.BIND_AUTO_CREATE);
 					userRightAnswer++;
 				}
 				txtVocabularyAnswerOfUser.setText(theAnswer);
 			}
 		}
 
-		userAnswerDiolog = (Button) findViewById(R.id.user_vocabulary_diolog);
+		userAnswerDiolog = (Button) v.findViewById(R.id.user_vocabulary_diolog);
 		userAnswerDiolog.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				showDialog(VocabularyViewAnswer.this);
+				showDialog(context);
 			}
-
 		});
-	}
-
-	@Override
-	protected void onDestroy() {
-		// TODO Auto-generated method stub
-		super.onDestroy();
-		Log.w(TAG, "onDestroy");
-	}
-
-	@Override
-	protected void onPause() {
-		// TODO Auto-generated method stub
-		super.onPause();
-		Log.w(TAG, "onPause");
-	}
-
-	@Override
-	protected void onResume() {
-		super.onResume();
-		Log.w(TAG, "onResume");
-		// 更新题目答案
-		reFresh();
-		// 初始化字体
-		// TextSettingManager mSettingManager = new TextSettingManager(this);
-		// mSettingManager.initText();
-		// txtVocabularyAnswer.setTextColor(AppVariable.Font.G_TEXTCOLOR_PASSAGE);
 	}
 }

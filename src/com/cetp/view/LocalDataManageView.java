@@ -114,7 +114,7 @@ public class LocalDataManageView extends FinalActivity {
 				txt = (TextView) rlt_download1.findViewById(R.id.txt_loadload1);
 				txt.setText("导入完型原文");
 			}
-
+			rlt_download2.setVisibility(View.GONE);
 			rlt_download3.setVisibility(View.GONE);
 			rlt_download4.setVisibility(View.GONE);
 			break;
@@ -132,7 +132,6 @@ public class LocalDataManageView extends FinalActivity {
 				txt = (TextView) rlt_download1.findViewById(R.id.txt_loadload1);
 				txt.setText("导入阅读原文");
 			}
-
 			rlt_download2.setVisibility(View.GONE);
 			rlt_download3.setVisibility(View.GONE);
 			rlt_download4.setVisibility(View.GONE);
@@ -209,11 +208,11 @@ public class LocalDataManageView extends FinalActivity {
 			case 0:
 				return getResources().openRawResource(R.raw.lis_cet4_201106);
 			case 1:
-				return null;
+				return getResources().openRawResource(R.raw.clo_cet4_201106);
 			case 2:
-				return null;// getResources().openRawResource(R.raw.rea_cet4_201106);
+				return getResources().openRawResource(R.raw.rea_cet4_201106);
 			case 3:
-				return null;
+				return getResources().openRawResource(R.raw.voc_cet4_201106);
 			}
 		} else if (yyyymm.equals("201112")) {
 			return null;
@@ -367,7 +366,7 @@ public class LocalDataManageView extends FinalActivity {
 	public void importVocabularyQuestion() {
 		DBVocabulary db1 = new DBVocabulary(getApplicationContext());
 		db1.open();// 打开数据库
-
+		cur = db1.getItemFromYM(AppVariable.Common.YearMonth);
 		if (cur.getCount() == 0) {
 			InputStream ips = getInputStream(AppVariable.Common.YearMonth);
 			if (ips != null) {

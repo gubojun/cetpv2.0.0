@@ -1,6 +1,7 @@
 package com.cetp.view;
 
 import com.cetp.R;
+import com.cetp.action.AppVariable;
 import com.cetp.database.DBClozingOfQuestion;
 
 import android.app.AlertDialog;
@@ -64,8 +65,8 @@ public class ClozingViewAnswer {
 		Log.v(TAG, "Activity State: checkTableExists()");
 		if (db.checkTableExists("Clozing_Passage")) {
 			// ---取出所有数据---
-			cur = db.getAllItem();
-			// cur.moveToFirst();
+			cur = db.getItemFromYM(AppVariable.Common.YearMonth);
+			cur.moveToFirst();
 		} else {
 			Toast.makeText(context, "数据不存在", Toast.LENGTH_SHORT).show();
 		}
@@ -103,7 +104,7 @@ public class ClozingViewAnswer {
 			layout.addView(txtQuestionNumber);
 			// 题目布局加入总的线性布局
 			layout.addView(myLayout);
-			cur.moveToNext();
+			 cur.moveToNext();
 		}
 		clozingViewScroll.addView(layout);
 		cur.close();

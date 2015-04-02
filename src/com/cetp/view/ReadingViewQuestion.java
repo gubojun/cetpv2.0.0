@@ -17,6 +17,7 @@ import android.os.SystemClock;
 import android.view.View;
 import android.widget.Chronometer;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class ReadingViewQuestion implements Runnable {
@@ -32,10 +33,14 @@ public class ReadingViewQuestion implements Runnable {
 	private Calendar myCalendar; // 日历类
 	protected static final int msg_Key = 0x1234;
 	private Chronometer timer;
+
+	private TextView txt_part_3;
+
 	private boolean timerstop = false;
 	int progressbar = 0;// 进度条
 	Context context;
 	Activity activity;
+	private int startTime = 0;
 
 	public ReadingViewQuestion(Context c) {
 		context = c;
@@ -53,7 +58,28 @@ public class ReadingViewQuestion implements Runnable {
 		// 初始化时间
 		timer.setBase(SystemClock.elapsedRealtime());
 		timer.setTextColor(Color.WHITE);
+		startTime = Integer.parseInt(AppVariable.Time.G_TIME_READING) * 60;
+		timer.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
+			@Override
+			public void onChronometerTick(Chronometer chronometer) {
+				// 如果开始计时到现在超过了startime秒
+				if (SystemClock.elapsedRealtime() - chronometer.getBase() > startTime * 1000) {
+					chronometer.stop();
+					// 给用户提示
+					Toast.makeText(context, "时间到。", Toast.LENGTH_LONG).show();
+				}
+			}
+		});
 		timer.start();
+
+		txt_part_3 = (TextView) v.findViewById(R.id.textView_part_3);
+		if (!AppVariable.Common.isSimulation) {
+			txt_part_3.setVisibility(View.GONE);
+		} else {
+			txt_part_3.setText("Part III Reading ("
+					+ AppVariable.Time.G_TIME_READING + "minutes)");
+		}
+
 		/* 通过Handler 来接收进程所传递的信息并更新TextView */
 		myHandler = new Handler() {
 			@Override
@@ -84,7 +110,7 @@ public class ReadingViewQuestion implements Runnable {
 		db.open();
 		LinearLayout scrollContext = (LinearLayout) v
 				.findViewById(R.id.lin_readingquestion_scrollcontext);
-		Cursor cur = db.getAllItem();
+		Cursor cur = db.getItemFromYM(AppVariable.Common.YearMonth);
 		if (cur.getCount() == 0)
 			Toast.makeText(context, "请先下载并导入数据！", Toast.LENGTH_SHORT).show();
 		int dataCount = cur.getCount();

@@ -18,255 +18,254 @@
             android:paddingBottom="@dimen/activity_vertical_margin"
             android:paddingTop="@dimen/activity_vertical_margin" >
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
+            <LinearLayout
+                android:id="@+id/index_lin_top"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:drawable/edit_text"
+                android:orientation="vertical" >
 
                 <LinearLayout
-                    android:id="@+id/index_lin_top"
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@android:drawable/edit_text"
-                    android:orientation="vertical" >
+                    android:layout_weight="1"
+                    android:gravity="center" >
 
                     <LinearLayout
-                        android:layout_width="310dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1" >
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center" >
 
-                        <LinearLayout
+                        <ImageView
+                            android:id="@+id/imageView1"
                             android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:gravity="center" >
+                            android:layout_height="wrap_content"
+                            android:src="@android:drawable/ic_menu_today" />
 
-                            <ImageView
-                                android:id="@+id/imageView1"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:src="@android:drawable/ic_menu_today" />
-
-                            <TextView
-                                android:id="@+id/txtdate"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="20150125" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:gravity="center" >
-
-                            <ImageView
-                                android:id="@+id/imageView2"
-                                android:layout_width="32dp"
-                                android:layout_height="wrap_content"
-                                android:src="@drawable/ic_user" />
-
-                            <TextView
-                                android:id="@+id/txt_username"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="gubojun" />
-                        </LinearLayout>
+                        <TextView
+                            android:id="@+id/txtdate"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="20150125" />
                     </LinearLayout>
 
                     <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:paddingLeft="@dimen/activity_vertical_margin"
-                        android:paddingRight="@dimen/activity_vertical_margin" >
-
-                        <TextView
-                            android:id="@+id/textView5"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="测试年份：" />
-
-                        <Spinner
-                            android:id="@+id/spn_ym"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:drawSelectorOnTop="true" />
-
-                        <TextView
-                            android:id="@+id/txt_setting1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="设置"
-                            android:visibility="gone" />
+                        android:layout_width="40dp"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical" >
                     </LinearLayout>
 
                     <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:paddingLeft="@dimen/activity_vertical_margin"
-                        android:paddingRight="@dimen/activity_vertical_margin"
-                        android:visibility="gone" >
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center" >
+
+                        <ImageView
+                            android:id="@+id/imageView2"
+                            android:layout_width="32dp"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_user" />
 
                         <TextView
-                            android:id="@+id/textView3"
+                            android:id="@+id/txt_username"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="距离考试还有：" />
-
-                        <TextView
-                            android:id="@+id/txt_setting2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="设置" />
+                            android:text="gubojun" />
                     </LinearLayout>
+
                 </LinearLayout>
-            </RelativeLayout>
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:paddingLeft="@dimen/activity_vertical_margin"
+                    android:paddingRight="@dimen/activity_vertical_margin" >
+
+                    <TextView
+                        android:id="@+id/textView5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="测试年份：" />
+
+                    <Spinner
+                        android:id="@+id/spn_ym"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawSelectorOnTop="true" />
+
+                    <TextView
+                        android:id="@+id/txt_setting1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="设置"
+                        android:visibility="gone" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:paddingLeft="@dimen/activity_vertical_margin"
+                    android:paddingRight="@dimen/activity_vertical_margin"
+                    android:visibility="gone" >
+
+                    <TextView
+                        android:id="@+id/textView3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="距离考试还有：" />
+
+                    <TextView
+                        android:id="@+id/txt_setting2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="设置" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
 
                 <LinearLayout
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical" >
+                    android:orientation="horizontal" >
 
-                    <LinearLayout
-                        android:layout_width="fill_parent"
+                    <RelativeLayout
+                        android:id="@+id/index_rlt_fenxiang"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal" >
+                        android:layout_margin="14dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/preference_fenxiang_item"
+                        android:clickable="true"
+                        android:focusable="false"
+                        android:gravity="center_vertical" >
 
-                        <RelativeLayout
-                            android:id="@+id/index_rlt_fenxiang"
-                            android:layout_width="0dp"
+                        <ImageView
+                            android:id="@+id/index_img_fenxiang"
+                            android:layout_width="72dp"
+                            android:layout_height="72dp"
+                            android:layout_alignParentTop="true"
+                            android:layout_centerHorizontal="true"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/fenxiang" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_margin="14dp"
-                            android:layout_weight="1"
-                            android:background="@drawable/preference_fenxiang_item"
-                            android:clickable="true"
-                            android:gravity="center_vertical" >
+                            android:layout_below="@id/index_img_fenxiang"
+                            android:layout_centerHorizontal="true"
+                            android:padding="8dp"
+                            android:text="分项练习"
+                            android:textColor="#FFF"
+                            android:textSize="17sp" />
+                    </RelativeLayout>
 
-                            <ImageView
-                                android:id="@+id/index_img_fenxiang"
-                                android:layout_width="72dp"
-                                android:layout_height="72dp"
-                                android:layout_alignParentTop="true"
-                                android:layout_centerHorizontal="true"
-                                android:clickable="true"
-                                android:scaleType="centerCrop"
-                                android:src="@drawable/fenxiang" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@id/index_img_fenxiang"
-                                android:layout_centerHorizontal="true"
-                                android:padding="8dp"
-                                android:text="分项练习"
-                                android:textColor="#FFF"
-                                android:textSize="17sp" />
-                        </RelativeLayout>
-
-                        <RelativeLayout
-                            android:id="@+id/index_rlt_wrong"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="14dp"
-                            android:layout_weight="1"
-                            android:background="@drawable/preference_wrong_item"
-                            android:clickable="true"
-                            android:gravity="center_vertical" >
-
-                            <ImageView
-                                android:id="@+id/index_img_wrong"
-                                android:layout_width="72dp"
-                                android:layout_height="72dp"
-                                android:layout_alignParentTop="true"
-                                android:layout_centerHorizontal="true"
-                                android:clickable="true"
-                                android:scaleType="centerCrop"
-                                android:src="@drawable/wrong" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@id/index_img_wrong"
-                                android:layout_centerHorizontal="true"
-                                android:padding="8dp"
-                                android:text="我的错题"
-                                android:textColor="#FFF"
-                                android:textSize="17sp" />
-                        </RelativeLayout>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="fill_parent"
+                    <RelativeLayout
+                        android:id="@+id/index_rlt_wrong"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal" >
+                        android:layout_margin="14dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/preference_wrong_item"
+                        android:clickable="true"
+                        android:focusable="false"
+                        android:gravity="center_vertical" >
 
-                        <RelativeLayout
-                            android:id="@+id/index_rlt_moni"
-                            android:layout_width="0dp"
+                        <ImageView
+                            android:id="@+id/index_img_wrong"
+                            android:layout_width="72dp"
+                            android:layout_height="72dp"
+                            android:layout_alignParentTop="true"
+                            android:layout_centerHorizontal="true"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/wrong" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_margin="14dp"
-                            android:layout_weight="1"
-                            android:background="@drawable/preference_moni_item"
-                            android:clickable="true"
-                            android:gravity="center_vertical" >
-
-                            <ImageView
-                                android:id="@+id/index_img_moni"
-                                android:layout_width="72dp"
-                                android:layout_height="72dp"
-                                android:layout_alignParentTop="true"
-                                android:layout_centerHorizontal="true"
-                                android:clickable="true"
-                                android:scaleType="centerCrop"
-                                android:src="@drawable/moni" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@id/index_img_moni"
-                                android:layout_centerHorizontal="true"
-                                android:padding="8dp"
-                                android:text="模拟练习"
-                                android:textColor="#fff"
-                                android:textSize="17sp" />
-                        </RelativeLayout>
-
-                        <RelativeLayout
-                            android:id="@+id/index_rlt_meiri"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="14dp"
-                            android:layout_weight="1"
-                            android:background="@drawable/preference_meiri_item"
-                            android:clickable="true"
-                            android:gravity="center_vertical" >
-
-                            <ImageView
-                                android:id="@+id/index_img_meiri"
-                                android:layout_width="72dp"
-                                android:layout_height="72dp"
-                                android:layout_alignParentTop="true"
-                                android:layout_centerHorizontal="true"
-                                android:clickable="true"
-                                android:scaleType="centerCrop"
-                                android:src="@drawable/meiri" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@id/index_img_meiri"
-                                android:layout_centerHorizontal="true"
-                                android:padding="8dp"
-                                android:text="每日知识"
-                                android:textColor="#FFF"
-                                android:textSize="17sp" />
-                        </RelativeLayout>
-                    </LinearLayout>
+                            android:layout_below="@id/index_img_wrong"
+                            android:layout_centerHorizontal="true"
+                            android:padding="8dp"
+                            android:text="我的错题"
+                            android:textColor="#FFF"
+                            android:textSize="17sp" />
+                    </RelativeLayout>
                 </LinearLayout>
-            </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" >
+
+                    <RelativeLayout
+                        android:id="@+id/index_rlt_moni"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="14dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/preference_moni_item"
+                        android:clickable="true"
+                        android:focusable="false"
+                        android:gravity="center_vertical" >
+
+                        <ImageView
+                            android:id="@+id/index_img_moni"
+                            android:layout_width="72dp"
+                            android:layout_height="72dp"
+                            android:layout_alignParentTop="true"
+                            android:layout_centerHorizontal="true"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/moni" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/index_img_moni"
+                            android:layout_centerHorizontal="true"
+                            android:padding="8dp"
+                            android:text="模拟练习"
+                            android:textColor="#fff"
+                            android:textSize="17sp" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/index_rlt_meiri"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="14dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/preference_meiri_item"
+                        android:clickable="true"
+                        android:focusable="false"
+                        android:gravity="center_vertical" >
+
+                        <ImageView
+                            android:id="@+id/index_img_meiri"
+                            android:layout_width="72dp"
+                            android:layout_height="72dp"
+                            android:layout_alignParentTop="true"
+                            android:layout_centerHorizontal="true"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/meiri" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/index_img_meiri"
+                            android:layout_centerHorizontal="true"
+                            android:padding="8dp"
+                            android:text="每日知识"
+                            android:textColor="#FFF"
+                            android:textSize="17sp" />
+                    </RelativeLayout>
+                </LinearLayout>
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 

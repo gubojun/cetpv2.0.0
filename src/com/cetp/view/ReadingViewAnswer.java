@@ -1,6 +1,7 @@
 package com.cetp.view;
 
 import com.cetp.R;
+import com.cetp.action.AppVariable;
 import com.cetp.database.DBReadingOfQuestion;
 
 import android.app.AlertDialog;
@@ -58,7 +59,7 @@ public class ReadingViewAnswer {
 		Log.v(TAG, "Activity State: checkTableExists()");
 		if (db.checkTableExists("Reading_Comprehension_Question")) {
 			// ---取出所有数据---
-			cur = db.getAllItem();
+			cur = db.getItemFromYM(AppVariable.Common.YearMonth);
 		} else {
 			Toast.makeText(context, "数据不存在", Toast.LENGTH_SHORT).show();
 		}

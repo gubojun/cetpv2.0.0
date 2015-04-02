@@ -4,12 +4,169 @@
     android:layout_height="fill_parent"
     android:orientation="vertical" >
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/lin_vertical_padding"
+        android:paddingRight="@dimen/lin_vertical_padding"
+        android:paddingTop="@dimen/lin_vertical_padding" >
+
+        <RelativeLayout
+            android:id="@+id/rlt_img1"
+            android:layout_width="50dp"
+            android:layout_height="120dp"
+            android:padding="@dimen/lin_vertical_padding" >
+
+            <ImageView
+                android:id="@+id/img_bgsetting1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                android:src="@drawable/wallpaper_2" />
+
+            <ImageView
+                android:id="@+id/imageView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:src="@android:drawable/checkbox_on_background"
+                android:visibility="invisible" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rlt_img2"
+            android:layout_width="50dp"
+            android:layout_height="120dp"
+            android:layout_toRightOf="@id/rlt_img1"
+            android:padding="@dimen/lin_vertical_padding" >
+
+            <ImageView
+                android:id="@+id/img_bgsetting2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                android:src="@drawable/wallpaper_default" />
+
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:src="@android:drawable/checkbox_on_background"
+                android:visibility="invisible" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rlt_img3"
+            android:layout_width="50dp"
+            android:layout_height="120dp"
+            android:layout_toRightOf="@id/rlt_img2"
+            android:padding="@dimen/lin_vertical_padding" >
+
+            <ImageView
+                android:id="@+id/img_bgsetting3"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                android:src="@drawable/wallpaper_3" />
+
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:src="@android:drawable/checkbox_on_background"
+                android:visibility="invisible" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/lin_vertical_padding" >
+
+        <RelativeLayout
+            android:id="@+id/rlt_img4"
+            android:layout_width="50dp"
+            android:layout_height="120dp"
+            android:padding="@dimen/lin_vertical_padding" >
+
+            <ImageView
+                android:id="@+id/img_bgsetting4"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                android:src="@drawable/wallpaper_4" />
+
+            <ImageView
+                android:id="@+id/imageView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:src="@android:drawable/checkbox_on_background"
+                android:visibility="invisible" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rlt_img5"
+            android:layout_width="50dp"
+            android:layout_height="120dp"
+            android:layout_toRightOf="@id/rlt_img4"
+            android:padding="@dimen/lin_vertical_padding" >
+
+            <ImageView
+                android:id="@+id/img_bgsetting5"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                android:src="@drawable/wallpaper_5" />
+
+            <ImageView
+                android:id="@+id/imageView5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:src="@android:drawable/checkbox_on_background"
+                android:visibility="invisible" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rlt_img6"
+            android:layout_width="50dp"
+            android:layout_height="120dp"
+            android:layout_toRightOf="@id/rlt_img5"
+            android:padding="@dimen/lin_vertical_padding" >
+
+            <ImageView
+                android:id="@+id/img_bgsetting6"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                android:src="@drawable/wallpaper_6" />
+
+            <ImageView
+                android:id="@+id/imageView6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:src="@android:drawable/checkbox_on_background"
+                android:visibility="invisible" />
+        </RelativeLayout>
+    </RelativeLayout>
+
     <LinearLayout
         android:id="@+id/lnr_backgroundsetting_title"
         android:layout_width="fill_parent"
         android:layout_height="45dp"
         android:background="@drawable/title_bar"
-        android:gravity="center_horizontal|center_vertical" >
+        android:gravity="center_horizontal|center_vertical"
+        android:visibility="gone" >
 
         <TextView
             android:layout_width="wrap_content"
@@ -19,60 +176,16 @@
             android:textSize="20sp" />
     </LinearLayout>
 
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="30dp"
-        android:gravity="center"
-        android:text="程序皮肤更换"
-        android:textColor="#ff00ff" />
-
-    <RadioGroup
-        android:id="@+id/skin_options"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center" >
-
-        <RadioButton
-            android:id="@+id/radioButton1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="风格1" />
-
-        <RadioButton
-            android:id="@+id/radioButton2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="风格2" />
-
-        <RadioButton
-            android:id="@+id/radioButton3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="风格3" />
-
-        <RadioButton
-            android:id="@+id/radioButton4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="风格4" />
-
-        <RadioButton
-            android:id="@+id/radioButton5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="风格5" />
-    </RadioGroup>
-
     <Button
         android:id="@+id/button1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="颜色背景" />
+
+    <CheckBox
+        android:id="@+id/checkBox1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Button" />
+        android:text="应用颜色背景" />
 
 </LinearLayout>

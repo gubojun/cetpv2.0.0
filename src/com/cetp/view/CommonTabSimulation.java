@@ -7,21 +7,32 @@ import java.util.ArrayList;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.View.OnTouchListener;
 import android.view.WindowManager.LayoutParams;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
@@ -32,6 +43,8 @@ import android.widget.ScrollView;
 
 import com.cetp.R;
 import com.cetp.action.AppVariable;
+import com.cetp.action.SkinSettingManager;
+import com.cetp.database.DBCommon;
 import com.cetp.service.PlayerService;
 import com.cetp.view.CommonTab.MyOnClickListener;
 import com.cetp.view.CommonTab.MyOnPageChangeListener;
@@ -63,59 +76,35 @@ public class CommonTabSimulation extends Activity {
 	private LayoutInflater inflater;
 	final String TYPE_OF_VIEW = "typeofview";
 
-	
 	ListeningViewAnswer listeningviewanswer = new ListeningViewAnswer(this);
 	ReadingViewAnswer readingviewanswer = new ReadingViewAnswer(this);
 	ClozingViewAnswer clozingviewanswer = new ClozingViewAnswer(this);
-	// VocabularyViewAnswer vocabularyviewanswer = new VocabularyViewAnswer();
+	VocabularyViewAnswer vocabularyviewanswer = new VocabularyViewAnswer(this);
 	View viewAnswer;
 
+	ScrollView scroll;
+
 	// private Button mRightBtn;
+	SkinSettingManager mSettingManager;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		// 去掉标题栏
 		// this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-
-		ActionBar actionBar = this.getActionBar();
-		actionBar.setDisplayOptions(ActionBar.DISPLAY_HOME_AS_UP,
-				ActionBar.DISPLAY_HOME_AS_UP);
-
 		setContentView(R.layout.commontab);
-		/** 用于保存用户状态 */
-		SharedPreferences MainTabPrefs = getSharedPreferences("view.MainTab",
-				MODE_PRIVATE);
-		int type = MainTabPrefs.getInt(TYPE_OF_VIEW, 0);
-		Intent intent = getIntent();
-		setTitle("模拟测试");
+		// 设置ActionBar
+		setDisplayOptions();
 		// 初始化皮肤
-		// SkinSettingManager mSettingManager = new SkinSettingManager(this);
-		// mSettingManager.initSkins();
-
+		initSkins();
 		// 启动activity时不自动弹出软键盘
 		getWindow().setSoftInputMode(
 				WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 		instance = this;
-		/*
-		 * mRightBtn = (Button) findViewById(R.id.right_btn);
-		 * mRightBtn.setOnClickListener(new Button.OnClickListener() { @Override
-		 * public void onClick(View v) { showPopupWindow
-		 * (MainWeixin.this,mRightBtn); } });
-		 */
 
-		mTabPager = (ViewPager) findViewById(R.id.tabpager);
-		mTabPager.setOnPageChangeListener(new MyOnPageChangeListener());
+		findView();
+		setListener();
 
-		mTab1 = (ImageView) findViewById(R.id.img_question);
-		mTab2 = (ImageView) findViewById(R.id.img_passage);
-		mTab3 = (ImageView) findViewById(R.id.img_answer);
-		mTab4 = (ImageView) findViewById(R.id.img_settings);
-		mTabImg = (ImageView) findViewById(R.id.img_tab_now);
-		mTab1.setOnClickListener(new MyOnClickListener(0));
-		mTab2.setOnClickListener(new MyOnClickListener(1));
-		mTab3.setOnClickListener(new MyOnClickListener(2));
-		mTab4.setOnClickListener(new MyOnClickListener(3));
 		Display currDisplay = getWindowManager().getDefaultDisplay();// 获取屏幕当前分辨率
 		int displayWidth = currDisplay.getWidth();
 		int displayHeight = currDisplay.getHeight();
@@ -134,6 +123,139 @@ public class CommonTabSimulation extends Activity {
 		mTabImg.setX(sw > 0 ? sw : 0);
 		// set();
 		// InitImageView();//使用动画
+
+		setView();
+		// 在setView方法中找到scroll
+		scroll.setOnTouchListener(new OnTouchListener() {
+
+			private int scrollViewMeasuredHeight;
+			private int lastY = 0;
+			private int touchEventId = -9983761;
+			Handler handler = new Handler() {
+				@Override
+				public void handleMessage(Message msg) {
+					super.handleMessage(msg);
+					View scroller = (View) msg.obj;
+					if (msg.what == touchEventId) {
+						if (lastY == scroller.getScrollY()) {
+							isBottom(scroller, lastY);
+							handleStop(scroller);
+						} else {
+							handler.sendMessageDelayed(handler.obtainMessage(
+									touchEventId, scroller), 5);
+							lastY = scroller.getScrollY();
+							isBottom(scroller, lastY);
+						}
+					}
+				}
+
+			};
+
+			/**
+			 * 是否滑动停止的处理方法
+			 * 
+			 * @param scroller
+			 */
+			private void handleStop(View scroller) {
+				Log.d(TAG, "the scrollView is stop:"
+						+ scroller.getClass().getName());
+			}
+
+			@Override
+			public boolean onTouch(View view, MotionEvent e) {
+
+				switch (e.getAction()) {
+				case MotionEvent.ACTION_MOVE:
+					scrollViewMeasuredHeight = ((ScrollView) view)
+							.getChildAt(0).getMeasuredHeight();
+					isBottom(view, view.getScrollY());
+					break;
+				case MotionEvent.ACTION_CANCEL:
+				case MotionEvent.ACTION_UP:
+					handler.sendMessageDelayed(
+							handler.obtainMessage(touchEventId, view), 5);
+					break;
+				}
+				return false;
+			}
+
+			boolean isShow;
+
+			private void isBottom(View view, int scrollY) {
+
+				if (scrollY == 0) {
+					boolean BACK = false;
+					if (isShow) {
+						isShow = false;
+						showMessage(BACK);
+					}
+				} else if (scrollY + view.getHeight() == scrollViewMeasuredHeight) {
+					Log.d(TAG, "it is buttom,scrollY:" + scrollY + "  Height:"
+							+ view.getHeight() + "  scrollViewMeasuredHeight:"
+							+ scrollViewMeasuredHeight);
+					boolean NEXT = true;
+					if (isShow) {
+						isShow = false;
+						showMessage(NEXT);
+					}
+				} else {
+					isShow = true;
+					Log.d(TAG, "it is not buttom,scrollY:" + scrollY
+							+ "  Height:" + view.getHeight()
+							+ "  scrollViewMeasuredHeight:"
+							+ scrollViewMeasuredHeight);
+				}
+			}
+		});
+	}
+
+	// 设置ActionBar-----------------------------------------------------------------
+	private void setDisplayOptions() {
+		ActionBar actionBar = this.getActionBar();
+		actionBar.setDisplayOptions(ActionBar.DISPLAY_HOME_AS_UP,
+				ActionBar.DISPLAY_HOME_AS_UP);
+
+		// actionBar.setSubtitle("mytest");
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if (item.getItemId() == android.R.id.home) {
+			finish();
+			// intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+
+	// 初始化皮肤----------------------------------------------------------------------
+	private void initSkins() {
+		mSettingManager = new SkinSettingManager(this);
+		mSettingManager.initSkins();
+	}
+
+	// ----------------------------------------------------------------------------
+	private void findView() {
+		mTabPager = (ViewPager) findViewById(R.id.tabpager);
+		mTab1 = (ImageView) findViewById(R.id.img_question);
+		mTab2 = (ImageView) findViewById(R.id.img_passage);
+		mTab3 = (ImageView) findViewById(R.id.img_answer);
+		mTab4 = (ImageView) findViewById(R.id.img_settings);
+		mTabImg = (ImageView) findViewById(R.id.img_tab_now);
+	}
+
+	// ----------------------------------------------------------------------------
+	private void setListener() {
+		mTabPager.setOnPageChangeListener(new MyOnPageChangeListener());
+
+		mTab1.setOnClickListener(new MyOnClickListener(0));
+		mTab2.setOnClickListener(new MyOnClickListener(1));
+		mTab3.setOnClickListener(new MyOnClickListener(2));
+		mTab4.setOnClickListener(new MyOnClickListener(3));
+	}
+
+	// ----------------------------------------------------------------------------
+	private void setView() {
 		// 将要分页显示的View装入数组中
 		LayoutInflater mLi = LayoutInflater.from(this);
 		View view1, view2, view3, view4;
@@ -142,21 +264,29 @@ public class CommonTabSimulation extends Activity {
 			view2 = mLi.inflate(R.layout.listeningview_questiontext, null);
 			view3 = mLi.inflate(R.layout.listeningview_answer, null);
 
-			if (!isWrongView) {
-				ListeningViewQuestion listeningviewquestion = new ListeningViewQuestion(
-						this);
-				listeningviewquestion.setView(view1);
-			} else {
-				ListeningViewQuestionWrong listeningviewquestion = new ListeningViewQuestionWrong(
-						this);
-				listeningviewquestion.setView(view1);
-			}
+			ListeningViewQuestion listeningviewquestion = new ListeningViewQuestion(
+					this);
+			listeningviewquestion.setView(view1);
+
 			ListeningViewQuestiontext listeningviewquestiontext = new ListeningViewQuestiontext(
 					this);
-
 			listeningviewquestiontext.setView(view2);
 			listeningviewanswer.setView(view3);
+			scroll = (ScrollView) view1
+					.findViewById(R.id.scr_listeningquestion_scroll);
 		} else if (AppVariable.Common.TypeOfView == 1) {
+			view1 = mLi.inflate(R.layout.clozingview_question, null);
+			view2 = mLi.inflate(R.layout.clozingview_passage, null);
+			view3 = mLi.inflate(R.layout.clozingview_answer, null);
+			ClozingViewQuestion clozingviewquestion = new ClozingViewQuestion(
+					this);
+			ClozingViewPassage clozingviewpassage = new ClozingViewPassage(this);
+
+			clozingviewquestion.setView(view1);
+			clozingviewpassage.setView(view2);
+			clozingviewanswer.setView(view3);
+			scroll = (ScrollView) view1.findViewById(R.id.scr_clozing_question);
+		} else if (AppVariable.Common.TypeOfView == 2) {
 			view1 = mLi.inflate(R.layout.readingview_question, null);
 			view2 = mLi.inflate(R.layout.readingview_passage, null);
 			view3 = mLi.inflate(R.layout.readingview_answer, null);
@@ -167,34 +297,26 @@ public class CommonTabSimulation extends Activity {
 			readingviewquestion.setView(view1);
 			readingviewpassage.setView(view2);
 			readingviewanswer.setView(view3);
-		} else if (AppVariable.Common.TypeOfView == 2) {
-			view1 = mLi.inflate(R.layout.clozingview_question, null);
-			view2 = mLi.inflate(R.layout.clozingview_passage, null);
-			view3 = mLi.inflate(R.layout.clozingview_answer, null);
-			ClozingViewQuestion clozingviewquestion = new ClozingViewQuestion(
-					this);
-			ClozingViewPassage clozingviewpassage = new ClozingViewPassage(this);
+			scroll = (ScrollView) view1
+					.findViewById(R.id.scr_readingview_question);
 
-			clozingviewquestion.setView(view1);
-			clozingviewpassage.setView(view2);
-			clozingviewanswer.setView(view3);
 		} else {
-			view1 = mLi.inflate(R.layout.clozingview_question, null);
-			view2 = mLi.inflate(R.layout.clozingview_passage, null);
-			view3 = mLi.inflate(R.layout.clozingview_answer, null);
-			ClozingViewQuestion clozingviewquestion = new ClozingViewQuestion(
-					this);
-			ClozingViewPassage clozingviewpassage = new ClozingViewPassage(this);
-
-			clozingviewquestion.setView(view1);
-			clozingviewpassage.setView(view2);
-			clozingviewanswer.setView(view3);
+			view1 = mLi.inflate(R.layout.vocabularyview, null);
+			view2 = mLi.inflate(R.layout.vocabularyview_answer, null);
+			view3 = mLi.inflate(R.layout.vocabularyview_answer, null);
+			VocabularyView vocabularyviewquestion = new VocabularyView(this);
+			vocabularyviewquestion.setView(view1);
+			vocabularyviewanswer.setView(view2);
+			vocabularyviewanswer.setView(view3);
+			scroll = (ScrollView) view1
+					.findViewById(R.id.scr_vocabulary_question);
 		}
 		view4 = mLi.inflate(R.layout.settingview, null);
 		// 每个页面的view数据
 		final ArrayList<View> views = new ArrayList<View>();
 		views.add(view1);
-		views.add(view2);
+		if (AppVariable.Common.TypeOfView != 3)
+			views.add(view2);
 		views.add(view3);
 		viewAnswer = view3;
 		views.add(view4);
@@ -231,13 +353,57 @@ public class CommonTabSimulation extends Activity {
 		mTabPager.setAdapter(mPagerAdapter);
 	}
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		if (item.getItemId() == android.R.id.home) {
-			finish();
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
+	public void showMessage(final boolean next) {
+		Builder builder = new AlertDialog.Builder(CommonTabSimulation.this)
+				.setTitle("提示").setIcon(android.R.drawable.ic_dialog_info)
+				.setMessage(next ? "是否进入下一项？" : "是否返回上一项？")
+				.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface arg0, int arg1) {
+						boolean wrong = false;
+						if (AppVariable.Common.TypeOfView == 0) {
+							if (next) {
+								AppVariable.Common.TypeOfView = 1;
+							} else {
+								wrong = true;
+								Log.v(TAG, "showMessage wrong 0");
+							}
+						} else if (AppVariable.Common.TypeOfView == 1) {
+							if (next) {
+								AppVariable.Common.TypeOfView = 2;
+							} else
+								AppVariable.Common.TypeOfView = 0;
+						} else if (AppVariable.Common.TypeOfView == 2) {
+							if (next) {
+								AppVariable.Common.TypeOfView = 3;
+							} else
+								AppVariable.Common.TypeOfView = 1;
+						} else if (AppVariable.Common.TypeOfView == 3) {
+							if (next) {
+								wrong = true;
+								Log.v(TAG, "showMessage wrong 1");
+							} else
+								AppVariable.Common.TypeOfView = 2;
+						} else {
+							wrong = true;
+							Log.v(TAG, "showMessage wrong 5");
+						}
+						if (!wrong) {
+							instance.finish();
+							Intent intent = new Intent();
+							intent.setClass(getApplicationContext(),
+									CommonTabSimulation.class);
+							startActivity(intent);
+						}
+					}
+
+				}).setNegativeButton("取消", null);
+		if ((AppVariable.Common.TypeOfView == 0 && !next)
+				|| (AppVariable.Common.TypeOfView == 3 && next))
+			;
+		else
+			builder.show();
+
 	}
 
 	/**
@@ -391,10 +557,14 @@ public class CommonTabSimulation extends Activity {
 		// stopService(intent);// 停止Service
 		// if(PlayerService.mMediaPlayer!=null)
 		// PlayerService.mMediaPlayer=null;
-
 		if (PlayerService.mMediaPlayer != null)
 			PlayerService.mMediaPlayer.reset();
 		super.onDestroy();
 	}
 
+	@Override
+	protected void onResume() {
+		mSettingManager.initSkins();
+		super.onResume();
+	}
 }

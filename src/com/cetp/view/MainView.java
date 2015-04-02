@@ -13,15 +13,25 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.res.Resources;
+import android.os.Handler;
+import android.os.Message;
 import android.sax.StartElementListener;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnTouchListener;
+import android.view.ViewGroup;
+import android.webkit.WebView.FindListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,6 +42,7 @@ import com.cetp.database.DBCommon;
 import com.cetp.database.TableListeningOfQuestion;
 
 public class MainView {
+	private static final String TAG = "MainView";
 	final String DEFAULTUSER = "defaultUser";
 	// 定义按钮
 	@ViewInject(id = R.id.index_rlt_fenxiang)
@@ -40,11 +51,14 @@ public class MainView {
 	private RelativeLayout rltIndexWrong;
 	private RelativeLayout rltIndexmoni;
 	private RelativeLayout rltIndexmeiri;
-	private ImageView img1, img2, img3, img4;
+	// private ImageView img1, img2, img3, img4;
+
+	private LinearLayout linIndexTop;
 
 	private RadioGroup rgIndexfenxiang;
 	private RadioButton rb0, rb1, rb2, rb3;
 	private TextView txtUserName;
+	private Spinner spnYM;
 	private int Type;
 	Context mContext;
 	Activity activity;
@@ -59,34 +73,32 @@ public class MainView {
 	}
 
 	public void setView(View v) {
+		findView(v);
+		setListener();
+		init();
+	}
 
+	private void findView(View v) {
 		rltIndexfenxiang = (RelativeLayout) v
 				.findViewById(R.id.index_rlt_fenxiang);
 		rltIndexWrong = (RelativeLayout) v.findViewById(R.id.index_rlt_wrong);
 		rltIndexmoni = (RelativeLayout) v.findViewById(R.id.index_rlt_moni);
 		rltIndexmeiri = (RelativeLayout) v.findViewById(R.id.index_rlt_meiri);
 
-		img1 = (ImageView) v.findViewById(R.id.index_img_fenxiang);
-		img2 = (ImageView) v.findViewById(R.id.index_img_wrong);
-		img3 = (ImageView) v.findViewById(R.id.index_img_moni);
-		img4 = (ImageView) v.findViewById(R.id.index_img_meiri);
+		linIndexTop = (LinearLayout) v.findViewById(R.id.index_lin_top);
 
 		txtUserName = (TextView) v.findViewById(R.id.txt_username);
-		/** 显示用户名 ***/
-		AppstartPrefs = mContext.getSharedPreferences("view.Login",
-				mContext.MODE_PRIVATE);
-		AppVariable.User.G_USER_NAME = AppstartPrefs.getString(DEFAULTUSER,
-				null);
-		txtUserName.setText(AppVariable.User.G_USER_NAME);
+
+		spnYM = (Spinner) v.findViewById(R.id.spn_ym);
+	}
+
+	private void setListener() {
 		/** 加载存储文件中的数据 */
 		AppstartPrefs = mContext.getSharedPreferences("view.MainTab",
 				mContext.MODE_PRIVATE);
 		AppVariable.Common.YearMonth = AppstartPrefs.getString(YEARMONTH,
 				"200606");
-		// ////////////////////////////////////////////////
-		System.out.println(AppVariable.Common.YearMonth);
-		// ////////////////////////////////////////////////
-		Spinner spnYM = (Spinner) v.findViewById(R.id.spn_ym);
+
 		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
 				mContext, R.array.yearmonth,
 				android.R.layout.simple_spinner_item);
@@ -126,10 +138,34 @@ public class MainView {
 		rltIndexWrong.setOnClickListener(new ViewOnClickListener());
 		rltIndexmoni.setOnClickListener(new ViewOnClickListener());
 		rltIndexmeiri.setOnClickListener(new ViewOnClickListener());
-		img1.setOnClickListener(new ViewOnClickListener());
-		img2.setOnClickListener(new ViewOnClickListener());
-		img3.setOnClickListener(new ViewOnClickListener());
-		img4.setOnClickListener(new ViewOnClickListener());
+	}
+
+	private void init() {
+		/** 显示用户名 ***/
+		AppstartPrefs = mContext.getSharedPreferences("view.Login",
+				mContext.MODE_PRIVATE);
+		AppVariable.User.G_USER_NAME = AppstartPrefs.getString(DEFAULTUSER,
+				null);
+		txtUserName.setText(AppVariable.User.G_USER_NAME);
+		if (AppVariable.Common.SCREEN_HEIGHT > 900) {
+			// ------布局方式--------
+			LinearLayout.LayoutParams LP_FW = new LinearLayout.LayoutParams(
+					LinearLayout.LayoutParams.MATCH_PARENT,
+					AppVariable.Common.SCREEN_HEIGHT / 4);
+
+			LinearLayout.LayoutParams rlt_LP_FW = (LinearLayout.LayoutParams) rltIndexfenxiang
+					.getLayoutParams();
+			rlt_LP_FW.height = AppVariable.Common.SCREEN_HEIGHT / 4;
+
+			linIndexTop.setLayoutParams(LP_FW);
+			// 重新设置高度
+			rltIndexfenxiang.setLayoutParams(rlt_LP_FW);
+			rltIndexmeiri.setLayoutParams(rlt_LP_FW);
+			rltIndexmoni.setLayoutParams(rlt_LP_FW);
+			rltIndexWrong.setLayoutParams(rlt_LP_FW);
+
+			Log.d(TAG, "height=" + AppVariable.Common.SCREEN_HEIGHT);
+		}
 	}
 
 	void showToast(CharSequence msg) {
@@ -144,7 +180,7 @@ public class MainView {
 
 		@Override
 		public void onClick(View v) {
-			if (v == rltIndexfenxiang || v == img1) {
+			if (v == rltIndexfenxiang) {
 				final String[] array = new String[] { "听力练习", "完型练习", "阅读练习",
 						"词汇练习" };
 				AppVariable.Common.TypeOfView = selectedIndex = myPrefs.getInt(
@@ -204,7 +240,7 @@ public class MainView {
 
 								}).setNegativeButton("取消", null).create();
 				alertDialog.show();
-			} else if (v == rltIndexWrong || v == img2) {
+			} else if (v == rltIndexWrong) {
 				final String[] array = new String[] { "听力错题", "完型错题", "阅读错题",
 						"词汇错题" };
 				AppVariable.Common.TypeOfView = selectedIndex = myPrefs.getInt(
@@ -246,8 +282,7 @@ public class MainView {
 												Intent intent = new Intent();
 												intent.putExtra("VIEW",
 														selectedIndex);
-												intent.putExtra("isWrongView",
-														true);
+												intent.putExtra("KindOfView", 1);// 错题练习代码是1
 												intent.setClass(mContext,
 														CommonTab.class);
 												mContext.startActivity(intent);
@@ -266,12 +301,45 @@ public class MainView {
 				alertDialog.show();
 
 				// Toast.makeText(mContext, "2", Toast.LENGTH_LONG).show();
-			} else if (v == rltIndexmoni || v == img3) {
-				Intent intent = new Intent();
-				intent.setClass(mContext, CommonTabSimulation.class);
-				mContext.startActivity(intent);
+			} else if (v == rltIndexmoni) {
+
+				if (!DBCommon
+						.checkDB(0, mContext, AppVariable.Common.YearMonth)) {
+					Intent intent = new Intent();
+					AppVariable.Common.TypeOfView = 0;
+					intent.setClass(mContext, DownLoadView.class);
+					mContext.startActivity(intent);
+					// Toast.makeText(mContext, "跳转到下载",
+					// Toast.LENGTH_LONG).show();
+				} else if (!DBCommon.checkDB(1, mContext,
+						AppVariable.Common.YearMonth)) {
+					Intent intent = new Intent();
+					AppVariable.Common.TypeOfView = 1;
+					intent.setClass(mContext, DownLoadView.class);
+					mContext.startActivity(intent);
+				} else if (!DBCommon.checkDB(2, mContext,
+						AppVariable.Common.YearMonth)) {
+					Intent intent = new Intent();
+					AppVariable.Common.TypeOfView = 2;
+					intent.setClass(mContext, DownLoadView.class);
+					mContext.startActivity(intent);
+				} else if (!DBCommon.checkDB(3, mContext,
+						AppVariable.Common.YearMonth)) {
+					Intent intent = new Intent();
+					AppVariable.Common.TypeOfView = 3;
+					intent.setClass(mContext, DownLoadView.class);
+					mContext.startActivity(intent);
+				} else {
+					AppVariable.Common.isSimulation = true;
+					// 模拟测试开始的时候是听力界面，所以把TypeOfView设置为0
+					AppVariable.Common.TypeOfView = 0;
+					// 转到模拟测试通用Tab界面
+					Intent intent = new Intent();
+					intent.setClass(mContext, CommonTabSimulation.class);
+					mContext.startActivity(intent);
+				}
 				// Toast.makeText(mContext, "3", Toast.LENGTH_LONG).show();
-			} else if (v == rltIndexmeiri || v == img4) {
+			} else if (v == rltIndexmeiri) {
 				Intent intent = new Intent();
 				intent.setClass(mContext, EverydayView.class);
 				mContext.startActivity(intent);

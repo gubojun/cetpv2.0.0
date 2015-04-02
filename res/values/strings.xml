@@ -11,5 +11,7 @@
     <string name="title_activity_local_datamanage_view">本地数据管理</string>
     <string name="title_activity_color_select_view">颜色选择</string>
     <string name="title_activity_everyday_view">每日知识</string>
+    <string name="title_activity_backgroundsetting_view">背景设置</string>
+    <string name="title_activity_commontabsimulation_view">模拟测试</string>
 
 </resources>
