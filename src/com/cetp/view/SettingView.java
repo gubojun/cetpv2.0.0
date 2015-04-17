@@ -139,9 +139,8 @@ public class SettingView {
 		@Override
 		public void onClick(View v) {
 			if (v == rltSettingPersonalized) {
-				// context.startActivity(new
-				// Intent(context.getApplicationContext(),
-				// PersonalizedView.class));
+				context.startActivity(new Intent(context
+						.getApplicationContext(), PersonalizedView.class));
 				// 第一个参数为启动时动画效果，第二个参数为退出时动画效果
 				((Activity) context).overridePendingTransition(
 						ChangeType[AppVariable.Common.CHANGETYPE][0],

@@ -95,7 +95,7 @@ public class Appstart extends Activity {
 						else if (AppVariable.Common.CetX == 6)
 							AppVariable.Common.QUESTION_FILENAME = AppVariable.Common.QUESTION_FILENAME
 									+ "CET6_";
-						AppVariable.Common.YearMonth = "201106";
+						AppVariable.Common.YearMonth = "201406";
 						intent = new Intent(Appstart.this, MainTab.class);
 						// **********¥∞ÃÂ«–ªª∂Øª≠*********
 						int version = Integer

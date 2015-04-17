@@ -6,7 +6,7 @@ import net.tsz.afinal.annotation.sqlite.Id;
 import net.tsz.afinal.annotation.sqlite.Table;
 
 
-@Table(name = "favorite_listening_q")
+@Table(name = "favorite_clozing_q")
 public class TableListeningOfQuestionFavorite {
 	@Id(column = "ID")
 	private String ID;

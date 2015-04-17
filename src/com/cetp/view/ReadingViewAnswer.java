@@ -1,8 +1,19 @@
 package com.cetp.view;
 
+import java.util.Date;
+import java.util.List;
+
+import net.tsz.afinal.FinalDb;
+
 import com.cetp.R;
 import com.cetp.action.AppVariable;
 import com.cetp.database.DBReadingOfQuestion;
+import com.cetp.database.DBWrongStat;
+import com.cetp.database.TableClozingOfQuestion;
+import com.cetp.database.TableClozingOfQuestionWrong;
+import com.cetp.database.TableReadingOfQuestion;
+import com.cetp.database.TableReadingOfQuestionWrong;
+import com.cetp.view.MainTab.DateUtils;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -156,6 +167,18 @@ public class ReadingViewAnswer {
 		String theAnswer;
 		userRightAnswer = 0;
 		userWrongAnswer = 0;
+		// ----------------------------------------------------------------
+		TableReadingOfQuestion t = new TableReadingOfQuestion();
+		TableReadingOfQuestionWrong tw = new TableReadingOfQuestionWrong();
+		FinalDb fdb = FinalDb.create(context, "cetp");
+		List<TableReadingOfQuestion> lisOfQList = fdb.findAllByWhere(
+				TableReadingOfQuestion.class, "YYYYMM="
+						+ AppVariable.Common.YearMonth);
+
+		Log.v(TAG, "questionAmount=" + questionAmount + "  dataCount="
+				+ dataCount);
+		// ----------------------------------------------------------------
+		// 判断数据库是否有数据
 		if (dataCount != 0) {
 			while (NUM != questionAmount) {
 				NUM++;
@@ -168,6 +191,56 @@ public class ReadingViewAnswer {
 					myLayout.setBackgroundResource(R.drawable.login_input_dark);// 设置背景
 					txtReadingAnswerOfUser.setTextColor(context.getResources()
 							.getColor(R.color.red));
+					// 错题写回数据库--------------------------------------------------
+					if (lisOfQList != null) {
+						String s;
+						s = lisOfQList.get(NUM - 1).getYYYYMM();
+						t.setYYYYMM(s);
+						tw.setYYYYMM(s);
+						s = lisOfQList.get(NUM - 1).getQuestionType();
+						t.setQuestionType(s);
+						tw.setQuestionType(s);
+						s = lisOfQList.get(NUM - 1).getQuestionNumber();
+						t.setQuestionNumber(s);
+						tw.setQuestionNumber(s);
+						s = lisOfQList.get(NUM - 1).getQuestionText();
+						t.setQuestionText(s);
+						tw.setQuestionText(s);
+						s = lisOfQList.get(NUM - 1).getSelectionA();
+						t.setSelectionA(s);
+						tw.setSelectionA(s);
+						s = lisOfQList.get(NUM - 1).getSelectionB();
+						t.setSelectionB(s);
+						tw.setSelectionB(s);
+						s = lisOfQList.get(NUM - 1).getSelectionC();
+						t.setSelectionC(s);
+						tw.setSelectionC(s);
+						s = lisOfQList.get(NUM - 1).getSelectionD();
+						t.setSelectionD(s);
+						tw.setSelectionD(s);
+						s = lisOfQList.get(NUM - 1).getAnswer();
+						t.setAnswer(s);
+						tw.setAnswer(s);
+						s = lisOfQList.get(NUM - 1).getComments();
+						if (lisOfQList.get(NUM - 1).getComments().equals("")) {
+							t.setComments("w");// 错误wrong
+						} else {
+							t.setComments("wf");// 错误wrong和收藏favorite
+						}
+						tw.setComments(s);
+						tw.setDate(new Date());
+
+						if (!(lisOfQList.get(NUM - 1).getComments().trim()
+								.equals("w") || lisOfQList.get(NUM - 1)
+								.getComments().trim().equals("wf"))) {
+							fdb.save(tw);
+							fdb.update(
+									t,
+									"YYYYMM=" + t.getYYYYMM()
+											+ " and QuestionNumber="
+											+ t.getQuestionNumber());
+						}
+					}
 					userWrongAnswer++;
 				} else {
 					myLayout.setBackgroundResource(R.drawable.login_input_light);// 设置背景
@@ -189,5 +262,22 @@ public class ReadingViewAnswer {
 			}
 
 		});
+		Log.v(TAG, "记录数量：" + (lisOfQList != null ? lisOfQList.size() : 0));
+
+		Date dateNow = new Date(System.currentTimeMillis());// 获取当前时间
+		/** 用于保存错误率 */
+		DBWrongStat dbWrong = new DBWrongStat(context);
+		dbWrong.open();
+		int wrongstat = userRightAnswer + userWrongAnswer > 0 ? userWrongAnswer
+				* 100 / (userRightAnswer + userWrongAnswer) : -1;
+		// 年月，错题数，题目总数
+		String[] result = new String[] {
+				DateUtils.dateToStr("yyyyMMddHHmmss", dateNow),
+				String.valueOf(userWrongAnswer),
+				String.valueOf(questionAmount), String.valueOf(wrongstat) };
+		if (wrongstat >= 0)
+			dbWrong.insertItem(result[0], result[1], result[2], result[3]);
+		dbWrong.close();
+		// -----------------------------------------------------------------------------------
 	}
 }

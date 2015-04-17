@@ -15,7 +15,7 @@ public class AppVariable {
 		//最大题目数,初始化题目数组时使用
 		public static int TOTAL_QUESTION_NUMBER=200;
 		// 记录题目的年份月份
-		public static String YearMonth = "200606";
+		public static String YearMonth = "201406";
 		// 记录四级六级
 		public static int CetX = 4;
 		// 记录音频文件名

@@ -80,6 +80,7 @@ public class CommonTabSimulation extends Activity {
 	ReadingViewAnswer readingviewanswer = new ReadingViewAnswer(this);
 	ClozingViewAnswer clozingviewanswer = new ClozingViewAnswer(this);
 	VocabularyViewAnswer vocabularyviewanswer = new VocabularyViewAnswer(this);
+	SettingView settingview = new SettingView(this);
 	View viewAnswer;
 
 	ScrollView scroll;
@@ -312,6 +313,7 @@ public class CommonTabSimulation extends Activity {
 					.findViewById(R.id.scr_vocabulary_question);
 		}
 		view4 = mLi.inflate(R.layout.settingview, null);
+		settingview.setView(view4);
 		// 每个页面的view数据
 		final ArrayList<View> views = new ArrayList<View>();
 		views.add(view1);

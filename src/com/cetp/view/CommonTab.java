@@ -58,7 +58,7 @@ public class CommonTab extends Activity {
 	VocabularyViewAnswer vocabularyviewanswer = new VocabularyViewAnswer(this);
 	// VocabularyViewAnswer vocabularyviewanswer = new VocabularyViewAnswer();
 	View viewAnswer;
-
+	SettingView settingview = new SettingView(this);
 	private SkinSettingManager mSettingManager;
 
 	@Override
@@ -192,6 +192,7 @@ public class CommonTab extends Activity {
 			vocabularyviewanswer.setView(view3);
 		}
 		view4 = mLi.inflate(R.layout.settingview, null);
+		settingview.setView(view4);
 		// 每个页面的view数据
 		final ArrayList<View> views = new ArrayList<View>();
 		views.add(view1);

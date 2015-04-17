@@ -13,5 +13,16 @@
     <string name="title_activity_everyday_view">每日知识</string>
     <string name="title_activity_backgroundsetting_view">背景设置</string>
     <string name="title_activity_commontabsimulation_view">模拟测试</string>
+    <string name="view1">CETP，不只是个考试工具</string>
+    <string name="view2">第一次，你可以使用漂亮的背景，来表达你此刻的心情</string>
+    <string name="view3">第二次，你可以根据自己的愿望选择想要的年份</string>
+    <string name="view4">第三次，你可以使给自己的答案，设定自己的时间</string>
+    <string name="view5">第四次，你可以换个“绿色”背景，让自己心满意足</string>
+    <string name="view6">第五次，你想干啥干啥去吧，不指挥你了</string>
+    <string name="view7">第六次，你要记得经常更新哦</string>
+    <string name="view8">第七次，你可以卖萌了，看来你很有卖萌的潜质</string>
+    <string name="view9_button">开始我的考试</string>
+    <string name="viewdoor_logo_left">破碎背景，Logo的左半边</string>
+    <string name="viewdoor_logo_right">破碎背景，Logo的右半边</string>
 
 </resources>

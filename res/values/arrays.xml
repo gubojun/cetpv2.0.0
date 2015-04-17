@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="yearmonth">
+        <item>2014.06</item>
+        <item>2013.12</item>
+        <item>2013.06</item>
+        <item>2012.12</item>
+        <item>2012.06</item>
         <item>2011.12</item>
         <item>2011.06</item>
         <item>2010.12</item>
         <item>2010.06</item>
-        <item>2009.12</item>
-        <item>2009.06</item>
-        <item>2008.12</item>
-        <item>2008.06</item>
-        <item>2007.12</item>
     </string-array>
 </resources>

@@ -9,10 +9,14 @@ import android.content.Intent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 public class FavoriteView {
 	//
-	private ImageView imgFavoriteListening;
+
+	private RelativeLayout rltListening;
+	private RelativeLayout rltClozing;
+	private RelativeLayout rltReading;
 	Context context;
 	Activity activity;
 
@@ -23,8 +27,7 @@ public class FavoriteView {
 
 	public void setView(View v) {
 		findView(v);
-		imgFavoriteListening.setOnClickListener(new OnClickListener() {
-
+		rltListening.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
 				Intent intent = new Intent();
@@ -34,9 +37,31 @@ public class FavoriteView {
 				context.startActivity(intent);
 			}
 		});
+		rltClozing.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				Intent intent = new Intent();
+				intent.putExtra("VIEW", 1);
+				intent.putExtra("KindOfView", 2);
+				intent.setClass(context, CommonTab.class);
+				context.startActivity(intent);
+			}
+		});
+		rltReading.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				Intent intent = new Intent();
+				intent.putExtra("VIEW", 2);
+				intent.putExtra("KindOfView", 2);
+				intent.setClass(context, CommonTab.class);
+				context.startActivity(intent);
+			}
+		});
 	}
 
 	private void findView(View v) {
-		imgFavoriteListening = (ImageView) v.findViewById(R.id.imageView1);
+		rltListening=(RelativeLayout)v.findViewById(R.id.fav_rlt_listening);
+		rltClozing=(RelativeLayout)v.findViewById(R.id.fav_rlt_clozing);
+		rltReading=(RelativeLayout)v.findViewById(R.id.fav_rlt_reading);
 	}
 }

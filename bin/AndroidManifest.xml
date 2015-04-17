@@ -74,6 +74,11 @@
             android:name="com.cetp.view.EverydayView"
             android:label="@string/title_activity_everyday_view" >
         </activity>
+        <activity android:name=".view.Viewpager"></activity>
+        <activity android:name=".view.PersonalizedView"></activity>
+        <activity android:name=".view.Whatsnew"></activity>
+        <activity android:name=".view.WhatsnewDoor"></activity>
+        <activity android:name=".view.Viewdoor"></activity>
     </application>
 
 </manifest>

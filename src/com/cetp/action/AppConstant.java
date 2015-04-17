@@ -12,7 +12,7 @@ public interface AppConstant {
 	public class PlayerMag {
 		public static final int PLAY_MAG = 1;// 开始播放
 		public static final int PAUSE = 2;// 暂停播放
-		public static final String LISTENING_MUSIC_NAME = "/"+"cet4_201106.mp3";
+		public static final String LISTENING_MUSIC_NAME = "/"+"cet4_201406.mp3";
 		@SuppressLint("SdCardPath")
 		public static final String MUSIC_PATH = "/mnt/sdcard/cetpdata/";
 	}

@@ -227,8 +227,8 @@ public class MainView {
 											// Toast.LENGTH_LONG).show();
 										} else {
 											Intent intent = new Intent();
-											// intent.putExtra("VIEW",
-											// selectedIndex);
+											intent.putExtra("VIEW",
+													selectedIndex);
 											// intent.putExtra("isWrongView",
 											// false);
 											intent.setClass(mContext,

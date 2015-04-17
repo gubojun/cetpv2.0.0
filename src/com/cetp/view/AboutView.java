@@ -9,6 +9,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
 import android.util.Log;
@@ -111,10 +112,9 @@ public class AboutView extends Activity {
 		@Override
 		public void onClick(View v) {
 			if (v == rltAboutWelcomePage) {
-				// startActivity(new Intent(AboutView.this, Viewpager.class));
+				startActivity(new Intent(AboutView.this, Viewpager.class));
 			} else if (v == rltAboutFunctionIntroduce) {
-				// startActivity(new Intent(AboutView.this, Whatsnew.class));
-				// showFunctionIntroduce();// 显示功能介绍
+				startActivity(new Intent(AboutView.this, Whatsnew.class));
 			} else if (v == rltAboutComments) {
 				showComments();// 显示意见反馈界面
 			} else if (v == rltAboutHelp) {

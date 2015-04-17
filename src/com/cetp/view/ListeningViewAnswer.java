@@ -268,7 +268,6 @@ public class ListeningViewAnswer {
 
 		Log.v(TAG, "记录数量：" + (lisOfQList != null ? lisOfQList.size() : 0));
 
-		cur.close();
 
 		Date dateNow = new Date(System.currentTimeMillis());// 获取当前时间
 		/** 用于保存错误率 */

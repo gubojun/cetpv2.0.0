@@ -5,6 +5,7 @@ import com.cetp.R;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.view.View;
 /**
@@ -33,9 +34,17 @@ public class Welcome extends Activity {
 //		intent.setClass(Welcome.this, CETMain.class);
 //		startActivity(intent);
 //		this.finish();
-		Uri uri = Uri.parse("http://www.guanghezhang.com/userRegister.php");
-		Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-		startActivity(intent);
+		//---------------------------------------------------------------------
+		AlertDialog.Builder b = new AlertDialog.Builder(Welcome.this);
+		String str = "用户名：cetp\n密码：cetp";
+		b.setTitle("系统默认账户").setMessage(str);
+		b.setPositiveButton("确定", null);
+		b.create().show();
+		
+		
+//		Uri uri = Uri.parse("http://www.guanghezhang.com/userRegister.php");
+//		Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+//		startActivity(intent);
 	}
 
 }

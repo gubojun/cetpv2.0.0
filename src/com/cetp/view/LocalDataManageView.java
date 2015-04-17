@@ -214,8 +214,17 @@ public class LocalDataManageView extends FinalActivity {
 			case 3:
 				return getResources().openRawResource(R.raw.voc_cet4_201106);
 			}
-		} else if (yyyymm.equals("201112")) {
-			return null;
+		} else if (yyyymm.equals("201406")) {
+			switch (AppVariable.Common.TypeOfView) {
+			case 0:
+				return getResources().openRawResource(R.raw.lis_cet4_201406);
+			case 1:
+				return getResources().openRawResource(R.raw.clo_cet4_201406);
+			case 2:
+				return getResources().openRawResource(R.raw.rea_cet4_201406);
+			case 3:
+				return getResources().openRawResource(R.raw.voc_cet4_201406);
+			}
 		}
 		return null;
 	}
